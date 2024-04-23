@@ -1,0 +1,597 @@
+%function [csovek,cpnevsor,csom,varargout]=olvas7r(fnev,debug)
+function out = olvas7r(fnev,debug)
+
+if debug==1
+  fprintf('\n\nRugalmas elemek olvasasa...')
+end
+
+if debug>1
+  fprintf('\n\n****************************************************');
+  fprintf('\n*          RUGALMAS ELEMEK OLVASASA                *');
+  fprintf('\n****************************************************\n\n');  
+end
+
+if debug>0
+  fprintf('\n  Feladat neve: %s',fnev);
+  fprintf('\n  Adatfile megnyitasa...');
+end
+  
+%...file-nev es kiterjesztes...
+kiterjeszt='.rdt';
+fnevdat=strcat(fnev,kiterjeszt);
+if debug>0
+  fprintf('\n  Adatok olvasasa...');
+end
+
+[be]=textread(fnevdat,'%s','delimiter',',');
+
+data{1}=struct(); % rugalmas cso
+data{2}=struct(); % csatorna
+data{3}=struct(); % viszkoelasztikus cso
+amoba_data=struct();
+type_exists = zeros(1,length(data)+1); % +1 az amoba
+
+while ~isempty(be)    
+    tipus=char(be(1));
+    switch tipus
+        case 'rugalmas_cso'
+            [be,data{1}] = get_rugcso_data(be,data{1},debug);
+            type_exists(1)=1;
+        case 'csatorna'
+            [be,data{2}] = get_csatorna_data(be,data{2},debug);
+            type_exists(2)=1;
+        case 'viszkcso'
+            [be,data{3}] = get_viszkcso_data(be,data{3},debug);
+            type_exists(3)=1;            
+        case 'amoba'
+            [be,amoba_data] = get_amoba_data(be,amoba_data,debug);
+            type_exists(end)=1;
+            
+        otherwise
+            disp(be);
+            error('olvas7r: Ismeretlen rugalmas elem tipus: %s (rugalmas_cso|csatorna|amoba)',tipus);
+    end
+end
+
+% csompont nevsor epitese
+out.cpnevsor=cell(1,1);
+for i=1:length(data)
+    if type_exists(i)
+        out.cpnevsor=build_cpnevsor(out.cpnevsor,data{i},debug);
+    end
+end
+
+if debug>2
+    fprintf('\n\n===================================================\n');
+    fprintf('Csomopontok a rugalmas adatfajlban:\n\n  jc    csp. nev');
+    for jc=1:length(out.cpnevsor)
+        fprintf('\n %3i  %8s',jc,char(out.cpnevsor{jc}))
+    end
+    fprintf('\n\n');
+end
+
+% amoba epitese
+if type_exists(end)
+    out.amoba = build_amoba(amoba_data,debug);
+    out.amoba_exists=1;
+else
+    out.amoba_exists=0;
+end
+
+% csom epitese
+out.csom=build_csom(data,type_exists,out.cpnevsor,debug);        
+
+% konstruktorok hivasa
+out.csovek=call_constructors(data,out.csom,type_exists,debug);      
+
+%------------------------------------------------------------------------
+
+function [be,rugcso_data] = get_rugcso_data(be,rugcso_data,debug)
+
+% Az elem szama
+if isfield(rugcso_data,'nev')
+    no = length(rugcso_data.nev)+1;
+else
+    no=1;
+end
+
+if (length(be)<14)
+    error('HIBA: rugalmas cso (neve:%s), nincs eleg adat: %g van de min. %g kellene!',...
+        be{2},length(be),14);
+end
+
+agnev=char(be(2));            % agnev
+cpele=char(be(3));            % cpnev eleje
+cpveg=char(be(4));            % cpnev vege
+d    =str2double(char(be(5)));   % atmero [m]
+lam  =str2double(char(be(6)));   % lambda
+del  =str2double(char(be(7)));   % falvastagsag [m]
+L    =str2double(char(be(8)));   % hossz [m]
+Ec   =str2double(char(be(9)));   % cso rug.mod [Pa]
+Ef   =str2double(char(be(10)));  % foly. rug.mod [Pa]
+m    =str2double(char(be(11)));  % tomegaram, t=0 [m3/s]
+pe   =str2double(char(be(12)));  % nyomas, t=0, cso elejen, [Pa]
+ro   =str2double(char(be(13)));  % suruseg [kg/m3]
+opsz =str2double(char(be(14)));  % osztaspontok szama
+
+Er =(1/Ef+d/del/Ec)^(-1);
+aa =sqrt(Er/ro);
+dx =L/(opsz-1);
+dt =dx/aa;
+
+if debug>1
+    fprintf('\n\n===================================================\n tipus: rugalmas cso (%d.)\n',no);
+    fprintf('\n         agnev     cp_1  ->  cp_2    d[m]     del[m]   L[m]     E[Pa]    opsz  m0[kg/s]  p0[bar]  ro[kg/m^3]   Ef[Pa]   a[m/s]   dt[s]');
+    fprintf('\n--------------------------------------------------------------------------------------------------------------------------------------------');
+    fprintf('\n %2d.  %8s  %8s  %8s  %6.4f   %6.4f   %6.1f   %6.2e  %3d   %6.2f    %5.2f      %4.1f    %6.2e  %7.2f  %3.3f',no,agnev,cpele,cpveg,d,del,L,Ec,opsz,m,pe/1e5,ro,Ef,aa,dt);
+end
+
+% osztasponti adatok
+Ds=L/(opsz-1);
+A=d^2*pi/4;
+seb=m/ro/A;
+Dpv=lam*Ds/d*ro/2*seb*abs(seb);
+
+for i=1:opsz
+    h(i)=str2double(char(be(14+i)));
+    if i==1
+        p(i)=pe;
+    else
+        p(i)=p(i-1)-ro*9.81*(h(i)-h(i-1))-Dpv; 
+    end
+end
+
+if debug>2
+    fprintf('\n\n   opsz.    h          p        v');
+    fprintf('\n  -------------------------------------');
+    for i=1:opsz
+        fprintf('\n   %3i  %7.3f  %10.0f  %6.3f',i,h(i),p(i),seb);
+    end
+    fprintf('\n  -------------------------------------');
+end
+
+% Adatok beolvasasa kesz, utolagos muveletek
+
+be=be(14+opsz+1:end);
+
+rugcso_data.nev{no}   = agnev;
+rugcso_data.cpele{no} = cpele;           
+rugcso_data.cpveg{no} = cpveg;
+rugcso_data.d(no)     = d;
+rugcso_data.lam(no)   = lam;
+rugcso_data.del(no)   = del;
+rugcso_data.L(no)     = L;
+rugcso_data.Ec(no)    = Ec;
+rugcso_data.opsz(no)  = opsz;
+rugcso_data.ro(no)    = ro;
+rugcso_data.Ef(no)    = Ef;
+rugcso_data.seb(no)   = seb;
+rugcso_data.p{no}     = p;
+rugcso_data.h{no}     = h;
+
+% Ilyen a rugcso konstruktora:
+% agnev,cpele_szam,cpveg_szam,d,lam,del,L,Ec,opsz,ro,Ef,seb,p,h
+
+if debug>2
+    fprintf('\n\n %s nevu rugalmas cso adatainak beolvasasa kesz.',agnev);
+end
+
+%------------------------------------------------------------------------
+
+function [be,data] = get_csatorna_data(be,data,debug)
+
+% Az elem szama
+if isfield(data,'nev')
+    no = length(data.nev)+1;
+else
+    no=1;
+end
+
+if (length(be)<15)
+    error('HIBA: csatorna (neve:%s), nincs eleg adat: %g van de min. %g kellene!',...
+        be{2},length(be),14);
+end
+
+agnev = char(be(2));               % agnev
+cpele = char(be(3));               % cpnev eleje
+cpveg = char(be(4));               % cpnev vege
+tipus = char(be(5));               % tipus: kor,teglalap
+switch tipus
+    case 'kor'
+        dvB = str2double(char(be(6)));   % atmero [m]
+    case 'teglalap'
+        dvB = str2double(char(be(6)));   % szelesseg [m]
+    otherwise
+        error('Ismeretlen a %d. csatorna tipusa: %s, megengedett: kor,teglalap',no,tipus);
+end
+L     = str2double(char(be(7)));   % hossz [m]
+ze    = str2double(char(be(8)));   % eleje fenekszint [m]
+zv    = str2double(char(be(9)));   % vege fenekszint [m]
+n     = str2double(char(be(10)));  % Manning-fele n
+m     = str2double(char(be(11)));  % tomegaram, t=0 [m3/s]
+y0    = str2double(char(be(12)));  % vizszint t=0, [m]
+ro    = str2double(char(be(13)));  % suruseg [kg/m3]
+opsz  = str2double(char(be(14)));  % osztaspontok szama
+op_h  = char(be(15));              % osztaspontok magassaganak feltoltese: 'auto', 'user'
+
+v=zeros(1,opsz);
+y=ones(1,opsz)*y0;
+
+switch op_h
+    case 'auto'
+        h=interp1([0 L],[ze zv],linspace(0,L,opsz),'linear');
+    case 'user'
+        for i=1:opsz
+            h(i)=str2double(char(be(15+i)));
+        end
+    otherwise
+        error('Ismeretlen a %d. csatorna osztaspont magassaganak feltoltese: %s, megengedett: user,auto',no,op_h);
+end
+
+if debug>1
+    fprintf('\n\n===================================================\n tipus: csatorna (%d.)\n',no);
+    fprintf('\n         agnev     cp_1  ->  cp_2    dvB[m]      n[-]    L[m]      ze[m]     zv[m]   m0[kg/s]  y0[bar]  ro[kg/m^3]   opsz');
+    fprintf('\n--------------------------------------------------------------------------------------------------------------------------------------------');
+    fprintf('\n %2d.  %8s  %8s  %8s  %6.4f   %6.4f   %6.1f   %6.2f  %6.2f    %5.2f      %4.1f    %6.2e  %d',no,agnev,cpele,cpveg,dvB,n,L,ze,zv,m,y0,ro,opsz);
+end
+
+if debug>2
+    fprintf('\n\n   opsz.    z          y        v');
+    fprintf('\n  -------------------------------------');
+    for i=1:opsz
+        fprintf('\n   %3i  %7.3f  %7.3f  %6.3f',i,h(i),y(i),v(i));
+    end
+    fprintf('\n  -------------------------------------');
+end
+
+% Adatok beolvasasa kesz, utolagos muveletek
+
+be=be(14+opsz+1:end);
+
+data.nev{no}   = agnev;
+data.cpele{no} = cpele;           
+data.cpveg{no} = cpveg;
+data.tipus{no} = tipus;
+data.dvB(no)   = dvB;
+data.n(no)     = n;
+data.L(no)     = L;
+data.ze(no)    = ze;
+data.zv(no)    = zv;
+data.y0(no)    = y0;
+data.ro(no)    = ro;
+data.y{no}     = y;
+data.v{no}     = v;
+data.h{no}     = h;
+
+% Ilyen a csatorna konstruktora:
+% agnev,cpele_szam,cpveg_szam,d,lam,del,L,Ec,opsz,ro,Ef,seb,p,h
+
+if debug>2
+    fprintf('\n\n %s nevu csatorna adatainak beolvasasa kesz.',agnev);
+end
+
+%------------------------------------------------------------------------
+
+function [be,viszkcso_data] = get_viszkcso_data(be,viszkcso_data,debug)
+
+% Az elem szama
+if isfield(viszkcso_data,'nev')
+    no = length(viszkcso_data.nev)+1;
+else
+    no=1;
+end
+
+if (length(be)<15)
+    error('HIBA: viszkoelasztikus cso (neve:%s), nincs eleg adat: %g van de min. %g kellene!',...
+        be{2},length(be),15);
+end
+
+%viszk_cso,vcso1,csp1,csp2,0.006,9e-6,0.001,1.86,2e2,30,0.00,1.1e5,900,2e2,9e6,9e5,150000
+
+agnev=char(be(2));            % agnev
+cpele=char(be(3));            % cpnev eleje
+cpveg=char(be(4));            % cpnev vege
+d0    =str2double(char(be(5)));   % atmero [m]
+nu  =str2double(char(be(6)));    % kin. viszkozitas [m^2/s]
+del  =str2double(char(be(7)));   % falvastagsag [m]
+L    =str2double(char(be(8)));   % hossz [m]
+%Ec   =str2double(char(be(9)));   % cso rug.mod [Pa]
+%Ef   =str2double(char(be(10)));  % foly. rug.mod [Pa]
+m    =str2double(char(be(9)));   % tomegaram, t=0 [m3/s]
+pe   =str2double(char(be(10)));  % nyomas, t=0, cso elejen, [Pa]
+ro   =str2double(char(be(11)));  % suruseg [kg/m3]
+opsz =str2double(char(be(12)));  % osztaspontok szama
+E1   =str2double(char(be(13)));  % E1 rug. mod. (Stuart modell)
+E2   =str2double(char(be(14)));  % E2 rug. mod. (Stuart modell)
+eta2 =str2double(char(be(15)));  % eta2 csillapítás (Stuart modell)
+
+%Er =(1/Ef+d/del/Ec)^(-1);
+%aa =sqrt(Er/ro);
+
+% Kezdeti hullámsebesség beállítása
+
+alp = d0/del;
+gam = (1 + alp*pe/E1);   % gamma --> A
+%bet = sqrt(E1/(alp*ro*gam));     % beta --> lambda     
+a0 = sqrt(E1*gam/(alp*ro));
+dx =L/(opsz-1);
+dt0 =dx/a0;
+
+if debug>1
+    fprintf('\n\n===================================================\n tipus: viszkoelasztikus cso (%d.)\n',no);
+    fprintf('\n         agnev     cp_1  ->  cp_2    d[m]     del[m]   L[m]     E[Pa]    opsz  m0[kg/s]  p0[bar]  ro[kg/m^3]   Ef[Pa]   a[m/s]   dt[s]');
+    fprintf('\n--------------------------------------------------------------------------------------------------------------------------------------------');
+    fprintf('\n %2d.  %8s  %8s  %8s  %6.4f   %6.4f   %6.1f   %6.2e  %3d   %6.2f    %5.2f      %4.1f    %6.2e  %7.2f  %3.3f',no,agnev,cpele,cpveg,d,del,L,Ec,opsz,m,pe/1e5,ro,Ef,aa,dt);
+end
+
+% osztasponti adatok
+Ds = L/(opsz-1);
+A = d0^2*pi/4;
+seb = m/ro/A;
+%Dpv = lam*Ds/d*ro/2*seb*abs(seb);
+Dpv = 32*nu/(d0^2)*abs(seb)*ro*Ds; % Nyomásveszteség
+
+for i=1:opsz
+    h(i) = str2double(char(be(14+i)));
+    a(i) = a0;
+    d(i) = d0;
+    if i==1
+        p(i)=pe;
+    else
+        p(i)=p(i-1)-ro*9.81*(h(i)-h(i-1))-Dpv; 
+    end
+end
+
+if debug>2
+    fprintf('\n\n   opsz.    h          p        v         a');
+    fprintf('\n  -------------------------------------');
+    for i=1:opsz
+        fprintf('\n   %3i  %7.3f  %10.0f  %6.3f %6.3f',i,h(i),p(i),seb,a(i));
+    end
+    fprintf('\n  -------------------------------------');
+end
+
+% Adatok beolvasasa kesz, utolagos muveletek
+
+be = be(15+opsz+1:end);
+
+viszkcso_data.nev{no}   = agnev;
+viszkcso_data.cpele{no} = cpele;           
+viszkcso_data.cpveg{no} = cpveg;
+viszkcso_data.d(no)     = d0;
+viszkcso_data.lam(no)   = nu;
+viszkcso_data.del(no)   = del;
+viszkcso_data.L(no)     = L;
+%viszkcso_data.Ec(no)    = Ec;
+viszkcso_data.opsz(no)  = opsz;
+viszkcso_data.ro(no)    = ro;
+%viszkcso_data.Ef(no)    = Ef;
+viszkcso_data.seb(no)   = seb;
+viszkcso_data.p{no}     = p;
+viszkcso_data.h{no}     = h;
+viszkcso_data.E1{no}     = E1;
+viszkcso_data.E2{no}     = E2;
+viszkcso_data.eta2{no}     = eta2;
+
+% Ilyen a rugcso konstruktora:
+% agnev,cpele_szam,cpveg_szam,d,lam,del,L,Ec,opsz,ro,Ef,seb,p,h
+
+if debug>2
+    fprintf('\n\n %s nevu viszkoelasztikus cso adatainak beolvasasa kesz.',agnev);
+end
+
+%------------------------------------------------------------------------
+
+function [be,amoba_data] = get_amoba_data(be,amoba_data,debug)
+
+% Az elem szama
+if isfield(amoba_data,'nev')
+    no = length(amoba_data.nev)+1;
+else
+    no=1;
+end
+
+if (length(be)<4)
+    error('HIBA: amoba csp. (neve:%s), nincs eleg adat: %g van de min. %g kellene!',...
+        be{2},length(be),4);
+end
+
+amoba_data.nev{no}  = char(be(2));
+amoba_data.h(no)    = str2double(char(be(3)));
+amoba_data.fogy(no) = str2double(char(be(4)));
+
+be=be(5:end);
+
+if debug>1
+    fprintf('\n\n===================================================\n tipus: amoba csomopont (%d.)\n',no);
+    fprintf('\n nev : %s',amoba_data.nev{no});   
+    fprintf('\n h   : %g [m]',amoba_data.h(no));
+    fprintf('\n fogy: %g [m3/s]',amoba_data.fogy(no));      
+end
+
+if debug>2
+    fprintf('\n\n %s nevu amoba csompont adatainak beolvasasa kesz.',amoba_data.nev{no});
+end
+
+%------------------------------------------------------------------------
+
+function cpnevsor = build_cpnevsor(cpnevsor,data,debug)
+
+offset=length(cpnevsor);
+if offset==1
+    offset=0;
+end
+
+for i=1:length(data.nev)
+    cpnevsor{offset+i}=data.cpele{i};
+end
+for i=1:length(data.nev)
+    cpnevsor{offset+length(data.nev)+i}=data.cpveg{i};
+end
+cpnevsor=unique(cpnevsor);
+
+ 
+%------------------------------------------------------------------------
+
+function csom = build_csom(data,type_exists,cpnevsor,debug)
+% csom matrix:
+% sorok: csomopont szam
+% oszlopol: erkezo (-) ill. tavozo (+) csovek szama elojelesen
+
+for i=1:length(cpnevsor)
+    j=0;
+    for type_no=1:length(type_exists)-1 % Az utolso type az amoba csp.
+        if type_exists(type_no)
+            for k=1:length(data{type_no}.nev)
+                if strcmp(cpnevsor{i},data{type_no}.cpele{k})
+                    j=j+1;
+                    csom(i,j)=-k;
+                end
+                if strcmp(cpnevsor{i},data{type_no}.cpveg{k})
+                    j=j+1;
+                    csom(i,j)=k;
+                end
+            end
+        end
+    end
+end
+
+%------------------------------------------------------------------------
+
+function csovek = call_constructors(data,csom,type_exists,debug)
+
+% Kikeressuk az eleje es vege csompont szamat es meghivjuk a konstruktort
+db=1;
+for type=1:length(data)
+    if type_exists(type)
+        for k=1:length(data{type}.nev)
+            data{type}.cpele_szam(k)=0;
+            data{type}.cpveg_szam(k)=0;
+            for i=1:length(csom(:,1))
+                for j=1:length(csom(1,:))
+                    if csom(i,j)==-k
+                        data{type}.cpele_szam(k)=i;
+                    end
+                    if csom(i,j)==k
+                        data{type}.cpveg_szam(k)=i;
+                    end
+                end
+            end
+
+            if data{type}.cpele_szam(k)==0
+                error('Nem talalom az eleje csomopontot: %s elem',data{type}.nev{k});
+            elseif data{type}.cpveg_szam(k)==0
+                error('Nem talalom a vege csomopontot: %s elem',data{type}.nev{k});
+            else
+                % Rugalmas cso
+                if type==1
+                    if debug>1
+                        fprintf('\n%2d./%2d rugalmas cso letrehozasa... ',...
+                            k,length(data{type}.nev));
+                    end
+                    tmp=data{type};
+                    csovek{db}=cso(...
+                        tmp.nev{k},...
+                        tmp.cpele_szam(k),...
+                        tmp.cpveg_szam(k),...
+                        tmp.d(k),...
+                        tmp.lam(k),...
+                        tmp.del(k),...
+                        tmp.L(k),...
+                        tmp.Ec(k),...
+                        tmp.opsz(k),...
+                        tmp.ro(k),...
+                        tmp.Ef(k),...
+                        tmp.seb(k),...
+                        tmp.p{k},...
+                        tmp.h{k});
+                    if debug>1, fprintf(' OK'); end
+                end
+                
+                % Csatorna
+                
+                if type==2
+                    if debug>1
+                        fprintf('\n%2d./%2d csatorna letrehozasa... ',...
+                            k,length(data{type}.nev));
+                    end
+                    tmp=data{type};
+                    csovek{db}=csatorna(...
+                        tmp.nev{k},...
+                        tmp.cpele_szam(k),...
+                        tmp.cpveg_szam(k),...
+                        tmp.tipus{k},...
+                        tmp.dvB(k),...
+                        tmp.L(k),...
+                        tmp.ze(k),...
+                        tmp.zv(k),...
+                        tmp.n(k),...
+                        tmp.ro(k),...
+                        tmp.y{k},...
+                        tmp.v{k},...
+                        tmp.h{k});
+                    if debug>1, fprintf(' OK'); end
+                end
+                
+                % Viszkoelasztikus cso
+                
+                if type == 3
+                    if debug>1
+                        fprintf('\n%2d./%2d viszkoelasztikus cso letrehozasa... ',...
+                            k,length(data{type}.nev));
+                    end
+                    tmp=data{type};
+                    csovek{db}=cso(...
+                        tmp.nev{k},...
+                        tmp.cpele_szam(k),...
+                        tmp.cpveg_szam(k),...
+                        tmp.d(k),...
+                        tmp.lam(k),...
+                        tmp.del(k),...
+                        tmp.L(k),...
+                        tmp.Ec(k),...
+                        tmp.opsz(k),...
+                        tmp.ro(k),...
+                        tmp.Ef(k),...
+                        tmp.seb(k),...
+                        tmp.p{k},...
+                        tmp.h{k});
+                    
+                    viszkcso_data.nev{no}   = agnev;
+viszkcso_data.cpele{no} = cpele;           
+viszkcso_data.cpveg{no} = cpveg;
+viszkcso_data.d(no)     = d0;
+viszkcso_data.lam(no)   = nu;
+viszkcso_data.del(no)   = del;
+viszkcso_data.L(no)     = L;
+%viszkcso_data.Ec(no)    = Ec;
+viszkcso_data.opsz(no)  = opsz;
+viszkcso_data.ro(no)    = ro;
+%viszkcso_data.Ef(no)    = Ef;
+viszkcso_data.seb(no)   = seb;
+viszkcso_data.p{no}     = p;
+viszkcso_data.h{no}     = h;
+viszkcso_data.E1{no}     = E1;
+viszkcso_data.E2{no}     = E2;
+viszkcso_data.eta2{no}     = eta2;
+                    
+                    
+                    
+                    if debug>1, fprintf(' OK'); end                    
+                end
+                
+            end
+            db=db+1;
+        end
+    end
+end
+
+%------------------------------------------------------------------------
+
+function amoba = build_amoba(amoba_data,debug)
+
+for i=1:length(amoba_data.nev)
+    amoba{i}{1}=amoba_data.nev{i}; 
+    amoba{i}{2}=amoba_data.fogy(i);
+    amoba{i}{3}=amoba_data.h(i);
+end

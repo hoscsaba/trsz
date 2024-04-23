@@ -1,0 +1,7 @@
+mar,medence
+nyomas,medence,medencecsp,1000,4,3e5
+csp,medencecsp,0,0,const
+
+rugalmas_cso,cso
+medencecsp,csoveg,1000,4,3e5,0.15,0,5e-3,1040,2.4e9,2.2e9,10,auto,0,0
+amoba,csoveg,0,0,const

@@ -1,0 +1,145 @@
+function mar = merev_alrendszer(flag,varargin)
+
+mar.plot_iter =0;
+mar.save_level=5;
+mar.wdir = varargi
+
+switch flag
+ case 0
+  % Fileb�l �ll�tjuk el� a merev alrendszert
+  mar.fp=fopen(strcat(fnev,'.dat'),'r');
+  mar.fnev=strcat(fnev,'.out');
+  mar.nev=fnev;
+  
+  mar.n_elem=str2num(fgetl(mar.fp));
+  for i=1:mar.n_elem, temp{i}=fgetl(mar.fp); end
+
+  for i=1:length(temp)
+    [tipus,rem]=strtok(temp{i},',');  
+    mar.elemek{i}=build_element(temp{i},i);
+  end
+
+  i=1;
+  while ~(feof(mar.fp))
+    temp=fgetl(mar.fp);
+    [tok,temp]=strtok(temp,',');
+    %tok
+    %pause
+    if str2num(tok)
+        mar.csp{i}{1}=str2num(tok);
+    else
+        fprintf('\n Adatfile: %s',mar.fnev);
+        fprintf('\n Beolvastam %d db �gelemet, most a csomopontok adatait varom: csp. szam, h[m], Q[l/s]',length(mar.elemek));
+        fprintf('\n(Lehet, hogy nem az elso sorban megadott szamu elem van definialva?)');
+        error('???Csom�pontok beolvasasa...')
+    end
+    [tok,temp]=strtok(temp,','); mar.csp{i}{2}=str2num(tok); % csp magassaga
+    [tok,temp]=strtok(temp,','); mar.csp{i}{5}=str2num(tok); % elvetel
+    mar.csp{i}{4}=0;   % itt lesz a nyomas, most hozzuk l�tre a mezot
+    mar.csp{i}{3}=[];  % terfogataramok helye
+    mar.csp{i}{6}=cspnevsor{i};  % neve helye
+    i=i+1;
+  end
+  mar.n_csp=length(mar.csp);
+  fclose(mar.fp);
+  
+ case 1
+  % A konstruktor argumentum�ban adottak az elemek �s a csom�pontok
+  fnev=varargin{1};
+  mar.fp=fopen(strcat(fnev,'.dat'),'r');
+  mar.fnev=strcat(fnev,'.out');
+  mar.nev=fnev;
+  mar.n_elem=length(varargin{2});
+  mar.n_csp =length(varargin{3});
+  for i=1:mar.n_elem, mar.elemek{i}=varargin{2}{i}; end
+  for i=1:mar.n_csp, mar.csp{i}=varargin{3}{i}; end
+  
+end
+
+mar.warnings=0; % 0->off, 1->on
+
+if mar.save_level>0 mar.fout=fopen(strcat(fnev,'.out'),'w'); end
+
+%_____________________________________________________________________
+% Meg a csomopontok atszamozasa elott elmentjuk a bemenetet           |
+if mar.save_level>0 mar.fout=fopen(strcat(fnev,'.out'),'w'); end
+if mar.save_level>0
+    save_merev(fnev,mar.elemek,mar.csp); fclose(mar.fout);
+end
+if mar.save_level>1    
+    for i=1:mar.n_elem, info(mar.elemek{i},2,strcat(fnev,'.out')); end    
+end
+
+%% Rendszermatrix felepitese
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ll=1;
+for j=1:mar.n_elem
+    for i=1:length(mar.elemek{j}.csp)
+        temp=mar.elemek{j}.csp; 
+	k=temp(i);
+	cspszam=1;
+	while ~(k==cspszam), cspszam=cspszam+1; end
+        RM(cspszam,j)=i; ll=ll+1;
+    end
+end
+
+%fprintf('\n A rendszerm�trix: (sor -> csom�pont, oszlop -> �g)\n'); disp(RM);
+
+if flag==0
+  for i=1:length(mar.csp)
+    for j=1:length(mar.elemek)
+        if RM(i,j)==1, mar.csp{i}{3}=[mar.csp{i}{3}, -j]; end
+        if RM(i,j)==2, mar.csp{i}{3}=[mar.csp{i}{3}, j]; end
+    end
+  end
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+mar.x=[];
+mar.plot_it=[0 0];
+mar.lepes=1; mar.iter=1;
+mar.t=-1e-10; % Ez nagyon fontos!
+mar.gorbek=[];
+
+mar = class(mar,'merev_alrendszer');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function save_merev(fnev,elem,csp)
+
+ncsp=length(csp); nelem=length(elem);
+
+fout=fopen(strcat(fnev,'.out'),'a');
+fprintf(fout,'\nMerev alrendszer adatai\n');
+clockk=clock;
+fprintf(fout,'\nl�trehoz�s d�tuma: %g/%g/%g  %g:%g:%g',clockk(1),clockk(2),clockk(3),clockk(4),clockk(5),round(clockk(6)));
+fprintf(fout,'\nn�v:               %s',fnev);
+fprintf(fout,'\ncsom�pontok sz�ma: %d',length(csp));
+fprintf(fout,'\nelemek sz�ma:      %d',length(elem));
+
+ fprintf(fout,'\n\n\nElemek felsorol�sa:');
+ fprintf(fout,'\n\n ssz.  n�v           csp1          csp2 ');
+ fprintf(fout,'\n-----------------------------------------------');
+ for i=1:length(elem)
+     fprintf(fout,'\n%3d.  %s',i,elem{i}.nev);
+     temp=elem{i}.csp;
+     switch length(temp)
+         case 1
+             fprintf(fout,'\t %5s (%2d)',csp{temp(1)}{6},temp(1));
+         case 2
+            fprintf(fout,'\t %5s (%2d)  -> %5s (%2d)',csp{temp(1)}{6},temp(1),csp{temp(2)}{6},temp(2));
+     end
+end
+
+fprintf(fout,'\n\n\nCsom�pontok felsorol�sa:');
+fprintf(fout,  '\n\nssz.    n�v         h[m]      m_be[kg/s]      befut�(+) �s t�voz�(-) �gak');
+fprintf(fout,    '\n-----------------------------------------------------------------------------');
+for i=1:length(csp)
+    fprintf(fout,'\n%3d. %8s    %+6.4e    %+5.2e       ',i,csp{i}{6},csp{i}{2},csp{i}{5});
+    temp=csp{i}{3};
+    for j=1:length(temp), fprintf(fout,' %+d',temp(j));  end    
+end
+
+fprintf(fout,'\n\n*****************************************************************************');
+fprintf(fout,'\n*                     Elemek r�szletes le�r�sa                              *');
+fprintf(fout,'\n*****************************************************************************\n');

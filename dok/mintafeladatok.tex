@@ -1,0 +1,384 @@
+\chapter{Mintafeladatok}
+
+\section{1.\,feladat (Vízütés)}
+
+A feladat \aref{1abra} ábrán látható egyszerû rendszerben a nyomáslengések kiszámítása. Az $1040\,m$ hosszú NÁ 150 méretû csõben (MSZ 99 szerint, $5\,mm$ falvastagságú) csõben víz áramlik, $3\,bar$ a kezdeti nyomással és $4\,kg/s$ a tömegárammal ($E_f=2.2\times10^9\,Pa$, $E_{cs,azb.cem.}=2.4\times10^9\,Pa$). A nyomáslengést hirtelen zárás feltételezésével számítsuk ki.
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics[width=14cm]{abrak/feladat1abra.eps}
+    \caption{\label{1abra}1. feladat vázlata}
+  \end{center}
+\end{figure}
+
+\emph{Megoldás}
+
+A csõben a hullámsebesség: $E_r=\left(\frac{1}{E_f}+\frac{D}{\delta\cdot E_{cs,azb.cem.}}\right)=1.5385\times10^9\,Pa$ $\rightarrow$ $a=\sqrt{\frac{E_r}{\rho}}=1240\,m/s$.\\
+Az áramlási sebesség: $v=\frac{\dot m}{A\cdot\rho}=0.2264\, m/s$.\\
+A kialakuló nyomásugrás: $\Delta p=\rho\cdot a\cdot \Delta v=2.81\,bar$.
+
+%\begin{center}
+%  \begin{tabular}{|l|p{8cm}|}
+%    \emph{Parancs} & \emph{Magyarázat}\\ \hline \hline
+%    {\tt >> trsz('f1','f1',10)} & Szimuláció 10s-ig. \\ \hline
+%    {\tt >> trsz\_rajz('f1','fe11','rugcso','ev','p')} & Nyomáslefutás rajzolása a {\tt rugcso} elem elején és végén (ld. \aref{1mo_abra}).\\ \hline
+%  \end{tabular}
+%\end{center}
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat1.eps}
+    \caption{\label{1mo_abra}1. feladat megoldása}
+  \end{center}
+\end{figure}
+
+%\noindent {\bf Gyakorló feladatok:}
+%\begin{enumerate}
+%\item A {\tt rugcso} belsõ osztáspontjainak számát és geodetikus magasságát változtassuk meg! Mit tapasztalunk? ({\tt f1a})
+%\item A {\tt rugcso} rugalmas csövet több rugamlas csõbõl állítsuk össze és ismételjük meg a számítást! ({\tt f1b})
+%\item A {\tt rugcso} elem a fenti esetben súrlódásmentes. Végezzük el a számítást $\lambda=0.02$-es súrlódási tényezõvel is! Mit tapasztalunk?
+%\item Növeljük meg a zárás sebességét $10s$-ra. Hogyan hat ez a fellépõ maximális nyomáscsúcsra?
+%\end{enumerate}
+
+\vfill
+
+\pagebreak
+
+%-------------------------------------------------------------------------
+
+\section{2.\,feladat (Vízütés súrlódásos csõben)}
+
+Az elõzõ feladat szerinti számításokat végezzük el veszteséges áramlás esetére is. Az átlagos csõsúrlódási tényezõ értékét $0.02$-re vettük fel. A megoldás \aref{2mo_abra} ábrán látható.
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat2.eps}
+    \caption{\label{2mo_abra} 2. feladat megoldása}
+  \end{center}
+\end{figure}
+
+%-------------------------------------------------------------------------
+
+\section{3.\,feladat (Szivattyú kiesés)}
+
+Egy szivattyútelep az alsó medencébõl vizet szállít a felsõ medencébe. A folyadék visszaáramlását visszacsapó szelep akadályozza. A csõvezeték hossz szelvénye \aref{3f_cso} ábrán látható. A csõ adatai: $L=2250\,m$, $D=0.253\,m$, $\delta=13\,mm$, $E_{cs,azb.cem.}=2.4 \times10^9\,Pa$, $E_f=2.2\times 10^9\,Pa$. 
+
+\clearpage
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat3nyv.eps}
+    \caption{\label{3f_cso} A csõ nyomvonala a 3. feladathoz.}
+  \end{center}
+\end{figure}
+
+A beépített búvárszivattyú adatai:
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|}\hline
+Ssz. & $Q\,[m^3/s]$ & $H\,[m]$  & $P_{be}\,[kW]$\\ \hline \hline
+1    &  0.000   		& 110 & 16.8\\ \hline
+2    &  0.005      & 105 & 18.0\\ \hline
+3    &  0.010     	& 98  & 20.8\\ \hline
+4    &  0.015      & 93  & 23.2\\ \hline
+5    &  0.020     	& 88  & 25.6\\ \hline
+6    &  0.025      & 84  & 28.0\\ \hline
+7    &  0.030     	& 72  & 30.0\\ \hline
+8    &  0.035      & 65  & 32.0\\ \hline
+\end{tabular}
+\end{center}
+
+A szivattyú fordulatszáma $1450\ 1/perc$, a szivattyú és motor gépcsoport együttes lendítõnyomatéka $GD^2=1.9\,Nm^2$. Az átlagos csõsúrlódási tényezõ $0.029$. Számítsa ki a szivattyú áramkimaradása miatt bekövetkezõ nyomáslengéseket. Ismételje meg a számítást tízszeresére ill. százszorosára megnövelt tehetetlenségi nyomatékkal! Végezzen számítást acél- ($E_{\textrm{cs,acél}}=2.1\times10^{11}\,Pa$) és kemény polietilén ($E_{cs,KPE}=690\times10^{6}\,Pa$) csövekre.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat3.eps}
+    \caption{\label{3mo_abra} A 3. feladat megoldása}
+  \end{center}
+\end{figure}
+
+%-------------------------------------------------------------------------
+
+\section{4.\,feladat (Szivattyú kiesés tolózárral)}
+
+A 3.\,feladat szerinti berendezésben a vezeték $1500\,m$-es szelvényében egy részben nyitott tolózár van. A tolózár ellenállás tényezõje $\zeta=565$. Határozza meg a rendszer munkapontját. Végezzen számítást áramkimaradás esetére.
+
+(Fojtási tényezõ: $f=\frac{\zeta}{2A^2}$)
+%
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat4cso1.eps}
+    \caption{\label{4mo_abra1} A 4. feladat megoldása. $cso1$ Nyomás-grafikonja.}
+  \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat4cso2.eps}
+    \caption{\label{4mo_abra2} A 4. feladat megoldása. $cso2$ Nyomás-grafikonja.}
+  \end{center}
+\end{figure}
+
+%-------------------------------------------------------------------------
+
+\section{5.\,feladat (Légüst méretezés)}
+
+A 3.\,feladat szerinti berendezésben a szivattyúkifutás során a csõvezeték elején fellépõ nyomás meghaladja a csõre vonatkozó névleges nyomás értékét. Határozza meg számítással a szivattyútelepre beépítendõ légüst gáztartalmát ($V_{0}$) úgy, hogy az elsõ nyomáscsúcs ne haladja meg a $10\,bar$ értéket, valamint a légüst ne ürüljön ki.
+
+A rendszer elemeinek bekötési sorrendje:
+\begin{enumerate}
+	\item medence I.
+	\item szivattyú
+	\item visszacsapó szelep
+	\item légüst
+	\item rugalmas csõ
+	\item medence II.
+\end{enumerate}
+
+\textbf{Légüst:}\\
+$n=1.4$, $p_{0}=3\times10^5\,Pa$, $A=0.8\,m^2$, $l=0.2\,m$, $H=2\,m$.
+%
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat5.eps}
+    \caption{\label{7mo_abra} Az 5. feladat megoldása.}
+  \end{center}
+\end{figure}
+%-------------------------------------------------------------------------
+
+\section{6. feladat (Kétüstös lengõrendszer)}
+
+Egy állandó keresztmetszetû csõ két végén egy-egy légüst helyezkedik el. A bal oldali légüstöt ,,1'', a jobb oldalit ,,2'' jelöli, a csõ paramétereit pedig ,,cs'' indexszel jelöljük. A légüstökben a folyadék felszínen a nyomás $p_1$ ill. $p_2$. A csõ két végén $p_{cs,1}+\frac{\rho}{2v^2}=p_1+\rho\,g\,L_1$ és $p_{cs,2}+\frac{\rho}{2v^2}=p_2+\rho\,g\,L_2$. Az instacioner Bernoulli egyenletet alkalmazva kapjuk, hogy
+%
+\begin{equation*}
+p_1 + \rho\,g\,L_1 = p_2 + \rho\,g\,L_2 +\lambda \frac{L_{cs}}{D}\,\frac{\rho}{2 A_{cs}^2}\,Q^2 + \frac{\rho L}{A_{cs}}\,\frac{dQ}{dt}.
+\end{equation*}
+%
+Mivel a légüstben politropikus az állapotváltozás, tudjuk, hogy $p\,V^n=konst$, így
+%
+\begin{equation*}
+0=\frac{d \left(p\,V^n \right)}{dt} = \frac{dp}{dt}\,V^n + n\,V^{n-1}\,p\,\frac{dV}{dt} \quad \rightarrow \quad \frac{dp}{dt} = -n\,\frac{p}{V}\,\frac{dV}{dt}.
+\end{equation*}
+%
+Bár $dV/dt=Q$, az elõjelekre oda kell figyelni, mert ha a csõben a balról jobbra irányt tekintjük pozitív áramlási iránynak, $dV_1/dt=-Q$ és $dV_2/dt=Q$. Ha a légüstök teljes magasságát $H$-val, felületét $A$-val jelöljük, a folyadékoszlopok magassága
+%
+\begin{eqnarray*}
+L_1(t) &= H_1 - \frac{V_1(t)}{A_1} = H_1 - \frac{V_{10}-\int\!Q dt}{A_1},\\
+L_2(t) &= H_2 - \frac{V_2(t)}{A_2} = H_2 - \frac{V_{20}+\int\!Q dt}{A_2}.
+\end{eqnarray*}
+%
+Tehát a megoldandó egyenletrendszer:
+%
+\begin{equation*}
+\left\{ 
+\begin{array}{lll}
+\dot Q   & = & \frac{A_{cs}}{\rho\,L_{cs}} \left( p_1-p_2+\rho\,g \left(L_1-L_2\right) - \lambda\, \frac{L_{cs}}{D}\, \frac{\rho}{2 A_{cs}^2}\,Q\,|Q|\right)\\
+\dot p_1 & = &  n\,\frac{p_1}{V_{10}+z}\,Q\\
+\dot p_2 & = & -\,n\,\frac{p_2}{V_{20}-z}\,Q\\
+\dot z   & = & Q\\
+\end{array}
+\right.
+\end{equation*}
+%
+és $L_1=H_1 - (V_{10}+z)/A_1$, $L_2=H_2 - (V_{20}-z)/A_2$. 
+
+Az 1. (bal oldali) légüst adatai: $n=1.4$, $V_0=1\,m^3$, $A=1\,m^2$, $l=0\,m$ és $H=2\,m$. A 2. (jobb oldali) légüst adatai ugyanezek, kiv. $p_0=1\,bar$. A rugalmas csõ adatai: $D=0.3\,m$, $L=10\,m$, $\lambda=0$, $E_f=2.1\times 10^9\,Pa$, $E_c=2.1\times 10^{11}\,Pa$, $p_0=0$ és ${\dot m}_0=0$. \Aref{7a_mo_abra}. ábrán a 2. légüst talppontjának a nyomáslefutását vetjük össze a fenti KDER numerikus (Runge-Kutta) megoldásával.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat6.eps}
+    \caption{\label{7a_mo_abra} A 6. feladat megoldása.}
+  \end{center}
+\end{figure}
+
+%-----------------------
+
+\section{7.\,feladat (Nyíltfelszínû áramlás)}
+Két aknából és egy az azokat összekötõ kör keresztmetszetû csatornából álló hálózat adatai a következõk: $A_{1}=10.5\,m^2$,\\ $h_{1,min}=98.43\,m$, $h_{1,max}=105\,m$, $h_{1,0}=1.5\,m$.\\
+$A_{2}=10.5\,m^2$, $h_{2,min}=101.6\,m$, $h_{2,max}=106.07\,m$,\\ $h_{2,0}=0.3\,m$.
+A kettes számú aknába $(-)50\,m^{3}/h$ betáplálást vegyen figyelembe!
+
+$D=0.4\,m$, $L=941\,m$, $z_e=102\,m$, $z_v=101\,m$, $n=0.013$, $y_0=0.01\,m$.
+
+Használja az \texttt{option,dt\_save,1.0} parancsot a .tpr fájl elsõ sorában az 1 másodpercenként történõ adatmentéshez. (A kimenetei fájlban láthatóan nem pontosan a megadott idõközönként történik a mintavétel, ez a vizsgált szakasz hosszától --felosztásának finomságától-- függ.)
+
+Ábrázolja a csatorna $Q-t$ diagramját, valamint az ,,1.'' számú akna vízszint változását az idõ függvényében.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat7qt.eps}
+    \caption{\label{7mo_abra1} A 7. feladat megoldása. $Q-t$ diagram.}
+  \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat7yt.eps}
+    \caption{\label{7mo_abra2} A 7. feladat megoldása. $y-t$ diagram.}
+  \end{center}
+\end{figure}
+\vfill
+\clearpage
+%-------------------------------
+
+\section{8.\,feladat (Átemelõszivattyús csatornarendszer)}
+Adott az alábbi kapcsolási vázlaton látható csatornahálózat. Az $ak01$ jelû aknából a $cs1000$ kör keresztmetszetû csatornán keresztül jut el a szennyvíz
+az $at01$ jelû átemelõ aknába. Két szivattyú ($szat01$ és $szat01s$) az átemelõbõl egy $ny1$ jelû nyomóvezetéken keresztül szállítja 
+a szennyvizet az $szt$ aknába. Ez utóbbi akna a szennyvíztisztító telepet hivatott modellezni, ezért nagy keresztmetszettel rendelkezik.
+Az átemelõ aknák modellezéséhez a korábban már használt akna típusú elemet egy vagy több szivattyúval kötjük össze.
+Ezek egy úgynevezett nyomóvezetéken keresztül szállítják el a szennyvizet az átemelõbõl. A szivattyúk mûködését szintkapcsolók
+vezérlik, melyek bekapcsolási vízmagasságaik eltérõek. Amennyiben tehát a fõszivattyú nem képes elegendõ szennyvizet szállítani --$at01$-be érkezõ túl nagy térfogatáram miatt-- a segédszivattyú is mûködni kezd.
+
+Ábrázolja az $at01$ akna szintváltozását és a szivattyúk fordulatszámát az idõ függvényében azt alábbi adatok alapján:
+
+\textbf{Akna:}\\
+$A_{szt}=5000\,m^2$, $h_{szt,min}=108\,m$, $h_{szt,max}=116\,m$, $h_{szt,0}=0.2\,m$\\
+$A_{at01}=1.5\,m^2$, $h_{at01,min}=98.43\,m$, $h_{at01,max}=105.22\,m$, $h_{at01,0}=1.5\,m$\\
+$A_{ak02}=28.3\,m^2$, $h_{ak02,min}=104.6\,m$, $h_{ak02,max}=106.07\,m$, $h_{ak02,0}=0.4\,m$
+
+\textbf{Csatorna:}\\
+$D_{cs}=0.4\,m$, $L_{cs}=941\,m$, $z_{cs,e}=104.81\,m$, $z_{cs,v}=101.11\,m$, $n=0.013$, $y_{cs,0}=0.05\,m$
+
+\textbf{Nyomóvezeték:}\\
+$D_{ny}=0.3\,m$, $L_{ny}=1402\,m$, $\lambda=0.015$, $z_{ny,e}=98.6\,m$, $z_{ny,v}=110.52\,m$.
+
+\textbf{Szivattyú:}\\
+$D_{szat01,s}=0.3\,m$, $D_{szat01,n}=0.3\,m$, tranziens\ =\ 5, $n_{szat01}=1440~ 1/perc$, $h_{szat01,ki}=100.23\,m$, $h_{szat01,be}=99.03\,m$.
+\begin{center}
+\begin{tabular}{|c||c|c|c|}\hline
+Ssz. & $Q\,[m^3/s]$ & $H\,[m]$  & $P_{be}\,[kW]$\\ \hline \hline
+1    &  0.0000     	& 44.4  & 1\\ \hline
+2    &  0.0280      & 38.1  & 1\\ \hline
+3    &  0.0520      & 31.3  & 1\\ \hline
+4    &  0.0750      & 24.4  & 1\\ \hline
+5    &  0.0870      & 20.5  & 1\\ \hline
+6    &  0.1030      & 13.9  & 1\\ \hline
+7    &  0.1150      & 6.9   & 1\\ \hline
+\end{tabular}
+\end{center}
+
+$D_{szat01s,s}=0.3\,m$, $D_{szat01s,n}=0.3\,m$, tranziens\ =\ 5, $n_{szat01s}=1440~ 1/perc$, $h_{szat01s,ki}=100.63\,m$, $h_{szat01s,be}=99.03\,m$.
+\begin{center}
+\begin{tabular}{|c||c|c|c|}\hline
+Ssz. & $Q\,[m^3/s]$ & $H\,[m]$  & $P_{be}\,[kW]$\\ \hline \hline
+1    &  0.0000     	& 44.4  & 1\\ \hline
+2    &  0.0280      & 38.1  & 1\\ \hline
+3    &  0.0520      & 31.3  & 1\\ \hline
+4    &  0.0750      & 24.4  & 1\\ \hline
+5    &  0.0870      & 20.5  & 1\\ \hline
+6    &  0.1030      & 13.9  & 1\\ \hline
+7    &  0.1150      & 6.9   & 1\\ \hline
+\end{tabular}  
+\end{center}
+
+A teljesítmény és fordulatszám értékei a számítás szempontjából közömbösek, de $n,P\neq 0.$
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat8at01.eps}
+    \caption{\label{8mo_abra1} A 8. feladat megoldása. \textit{at01} akna vízszintváltozása}
+  \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat8szat01.eps}
+    \caption{\label{8mo_abra2} A 8. feladat megoldása. \textit{szat01} szivattyú fordulatszáma}
+  \end{center}
+\end{figure}
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat8szat01s.eps}
+    \caption{\label{8mo_abra3} A 8. feladat megoldása. \textit{szat01} szivattyú fordulatszáma}
+  \end{center}
+\end{figure}
+\vfill
+\clearpage
+%-----------------------------------
+\section{9.\,feladat (Véráramlás)}
+\subsection{,,A'' rész}
+Az alábbi modell egy véráramlási modellt hivatott reprezentálni, melynek megvalósításához sok, eddig nem használt építõelemekkel kell dolgoznunk. A szív (mint változó tömegáram) hivatott a $\rho=1000\,kg/m^3$ sûrûségû közeget az érrendszer (viszkoelasztikus csõ) felé pumpálni, a következõ táblázatban foglaltak szerint.
+
+\begin{center}
+\begin{tabular}{|c||c|c|}\hline
+Ssz.  & $t\,[s]$ & $Q\,[m^3/h]$\\ \hline \hline
+1     &  0.00  		   & 0\\ \hline
+2     &  0.01        & 5.11875E-02\\ \hline
+3     &  0.02        & 0.099750\\ \hline
+4     &  0.03        & 0.145688\\ \hline
+5     &  0.04        & 0.189000\\ \hline
+6     &  0.05        & 0.229688\\ \hline
+7     &  0.06        & 0.267750\\  \hline
+8     &  0.07     	 & 0.303188\\ \hline
+9     &  0.08        & 0.336000\\ \hline
+10    &  0.09        & 0.366188\\ \hline
+11    &  0.10        & 0.393750\\ \hline
+12    &  0.11        & 0.418688\\ \hline
+13    &  0.12        & 0.441000\\ \hline
+14    &  0.13        & 0.460688\\  \hline
+15    &  0.14        & 0.477750\\ \hline
+16    &  0.15        & 0.492188\\ \hline
+17    &  0.16        & 0.504000\\ \hline
+18    &  0.17        & 0.513188\\ \hline
+19    &  0.18        & 0.519750\\ \hline
+20    &  0.19        & 0.523688\\  \hline
+21    &  0.20     	 & 0.525000\\ \hline
+22    &  0.21        & 0.523688\\ \hline
+23    &  0.22        & 0.519750\\ \hline
+24    &  0.23        & 0.513188\\ \hline
+25    &  0.24        & 0.504000\\ \hline
+26    &  0.25        & 0.492188\\ \hline
+27    &  0.26        & 0.477750\\  \hline
+28    &  0.27     	 & 0.460688\\ \hline
+29    &  0.28        & 0.441000\\ \hline
+30    &  0.29        & 0.418688\\ \hline
+31    &  0.30        & 0.393750\\ \hline
+32    &  0.31        & 0.366188\\ \hline
+33    &  0.32        & 0.336000\\ \hline
+34    &  0.33        & 0.303188\\  \hline
+35    &  0.34        & 0.267750\\ \hline
+36    &  0.35        & 0.229688\\ \hline
+37    &  0.36        & 0.189000\\ \hline
+38    &  0.37        & 0.145688\\ \hline
+
+\end{tabular}  
+\end{center}
+\begin{center}
+\begin{tabular}{|c||c|c|}\hline
+Ssz.  & $t\,[s]$ & $Q\,[m^3/h]$\\ \hline \hline
+
+39    &  0.38        & 9.975E-02\\  \hline
+40    &  0.39        & 5.11875E-02\\ \hline
+41    &  0.40        & 0\\ \hline
+42    &  0.41        & -2.55938E-02\\ \hline
+43    &  0.42        & -2.55938E-02\\ \hline
+44    &  0.43        & 0\\  \hline
+45    &  2.00        & 0\\  \hline
+\end{tabular}  
+\end{center}
+
+Tételezzük fel, hogy a viszkoelasztikus csõ vége a ,,szabadba'' nyílik, tehát nyomása állandó, légköri nyomás.
+
+Használja az \texttt{option,dt\_save,auto} parancsot az automatikus idõközönkénti mentéshez!
+
+\textbf{Viszkoelasztikus csõ:}\\
+$D=0.01\,m$, $\nu=1.1\times10^{-6}\,m^{2}/s$, $\delta=0.005\,m$, $L=5\,m$, $p_{0}=1.1\times10^5\,Pa$, osztáspontok száma=20, $e_1=9\times10^6$, $e_2=4\times10^5$, $\eta_2=100000$
+
+\subsection{,,B'' rész}
+Az elõzõ feladatban található táblázat adatai beolvashatóak közvetlenül a .tpr fájlba való begépelés nélkül is. Ez nagyban lerövidítheti a rendszer definiálásának idejét abban az esetben, ha az adatokról .xls kiterjesztésû vektorokkal rendelkezünk.\\
+Megvalósítása a \texttt{valtozo\_tomegaram} mint építõelem definiálásánál a kezdeti tömegáram értéke után ugyancsak felsorolásként, vesszõvel elválasztva a \texttt{file,fajlnev.xls} parancsok kiadásával lehetséges, példakánt:\\
+\vdots\\
+\texttt{valtozo\_tomegaram,sziv01,csp1,1000,0,file,tomegaramok.xls}\\
+\vdots
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=10cm]{abrak/feladat9.eps}
+    \caption{\label{9mo_abra} A 9. feladat megoldása}
+  \end{center}
+\end{figure}
+\vfill
+%-----------------------------------
+\pagebreak
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,92 @@
+\chapter{Szimuláció}
+
+\section{Adat elõkészítés}
+
+A tranziens hálózatszámítás elsõ lépése - hasonlóan az állandósult állapotbeli vizsgálathoz - a vizsgált rendszer hidraulikai modelljének elkészítése. Ezután elkészítjük a merev alrendszerek kapcsolási rajzát, amely tartalmaz minden olyan elemet, mely a rendszer viselkedését érdemlegesen befolyásolja. Ez a kapcsolási rajz nem feltétlenül egyezik a stacioner hálózatszámítás kapcsolási rajzával, ugyanis pl. egy visszacsapó szelep vagy egy vezérelt/szabályozott elem a stacioner mûködés szempontjából ugyan közömbös, de tranziens folyamatok esetén igen fontos szerepe lehet. Az egyes elemek csomópontokban kapcsolódnak egymáshoz. Az ágelemeket és a csomópontokat egyedi névvel látjuk el. A vizsgált rendszerben (az összes merev alrendszert és az összes rugalmas csövet beleértve) {\bf minden csomópontnak és ágelemnek különbözõ neve legyen}! Végül összegyûjtjük az ágelemek jellemzõit és megírjuk az adatfájlt (a késõbbiekben taglalt szintaktika szerint). Az adatokat egyetlen adatfájlban foglaljuk össze, amelynek .tpr (tranziens projekt) nevet javasoljuk (de ez nem kötelezõ).
+
+\section{Régi és új adatstruktúrák és fájlok}
+
+2010 januárjában a leíró adatállományokat egyszerûsítettük. Ez a dokumentáció már csak az új adatstruktúrákat leírását tartalmazza.
+
+A régi adatstruktúrákat a következõ függvények támogatják: 
+\begin{itemize}
+\item {\tt trsz\_old.m (olvas\_merev\_old.m, olvas\_rugalmas\_old.m)}
+\item {\tt trsz\_rajz\_old.m}
+\end{itemize}
+
+\clearpage
+
+\section{A program használata}
+
+\subsection{Számítás}
+
+A számítás maga {\tt Matlab} környezetben a
+%
+\begin{verbatim}
+>> trsz(<adatfajl>,<tmax>)
+\end{verbatim}
+%
+parancs meghívásával történik. Az elsõ paraméter az adatfájl neve kiterjesztéssel (pl.{\tt 'feladat.tpr'}), a második paraméter a szimuláció idõtartama másodpercben (pl. {\tt 60}).
+
+Ajánlott minden futtatást külön könyvtárban végezni az adat-, ill. az eredményfájlok keveredésének elkerülése végett. A szimuláció során az alábbi fájlok keletkeznek: 
+\begin{itemize}
+\item Minden merev alrendszerhez egy-egy {\tt <nev>.out} és {\tt <nev>.res} állomány. Az elõbbi közvetlenül olvasható szöveges állomány, az utóbbi csak a számítás numerikus eredményeit tartalmazza, értelmezéséhez a {\tt trsz\_rajz.m} eredménymegjelenítõ program szükséges. Az {\tt .out} fájl részletességét a {\tt mar\_debug\_level} opcióval lehet beállítani az adatfájlban \fbox{TODO}.
+\item A rugalmas csövekben lezajló folyamatokat (csövenként) egy-egy {\tt <nev>.res} állomány tartalmazza, melyet ugyancsak az eredménymegjelenítõ program olvas.
+\end{itemize}
+
+A megoldó hívásakor lehetõség van további opciók megadására:
+%
+\begin{verbatim}
+>> trsz(<adatfajl>,<tmax>,<option1>,<ertek1>,<option2>,<ertek2>,...),
+\end{verbatim}
+%
+melyek lehetséges értékei:
+
+\begin{center}
+\begin{tabular}{l|c|p{12cm}}
+option      & típus   & érték \\ \hline \hline 
+{\tt debug} & integer & 0,1,2,3,4,5: debug szint, az emelkedõ értékekhez egyre részletesebb kimenet tartozik\\\hline 
+{\tt t0}    & double  & kezdeti idõpont megadása\\\hline 
+{\tt dtmin} & double  & minimális idõlépés (a merev alrendszerek frissítésére)\\\hline 
+\end{tabular}
+\end{center}
+
+\subsection{Eredmények megjelenítése}
+
+A számítások eredményeit a {\tt trsz\_rajz} programmal tekinthetjük meg, ennek szintaktikája többféle lehet.
+
+\subsection{Egyszerû rajz}
+
+\begin{verbatim}
+>> trsz_rajz('fnev','hol1','hol2','mit')
+\end{verbatim}
+
+Az elsõ argumentum a feladatot tartalmazó adatfájl neve kiterjesztéssel. A {\tt hol1} adat lehet merev alrendszer vagy rugalmas csõ. 
+
+{\bf Merev alrendszer} esetén a {\tt hol2} lehet ágelem vagy csomópont. Csomópont esetén csak nyomást lehet rajzolni, ekkor {\tt mit=p}. Minden ágelem esetén lehetséges térfogatáram, sebesség, tömegáram rajzolása, ekkor {\tt mit=Q,m,v}. Néhány elem esetén további lehetõségek is vannak:
+%
+\begin{itemize}
+\item szivattyú: fordulatszám: {\tt mit=n}
+\item vezérelt fojtás: jelleggörbék: {\tt mit=jg}
+\item akna: vízszint: {\tt mit=y}
+\end{itemize}
+
+Például a {\tt trsz\_rajz('f1','f1','kohid','edh','Q')} parancs a {\tt kohid} merev alrendszer {\tt edh} ágelemében térfogatáramot rajzol, a {\tt trsz\_rajz('f1','f1','kohid','edh','n')} parancs pedig ugyanitt a fordulatszámot.
+
+{\bf Rugalmas csõ} esetén {\tt hol2} lehet 'eleje' {\tt hol2=e}, 'vége' {\tt hol2=v} és 'eleje és vége'{\tt hol2=ev}. A {\tt mit} argumentum ekkor lehet {\tt mit=p,v,Q,m}, értelemszerûen. Például a {\tt trsz\_rajz('f1','f1','cso1','ev','p')} parancs a {\tt cso1} rugalmas csõ elején és végén nyomáslefutást rajzol.
+
+\subsection{Számítási és mérési eredmények ábrázolása}
+
+{\tt >> trsz\_rajz('merevdata','rugdata','hol1','hol2','mit','adatfájl',y\_oszlop)\\
+>> trsz\_rajz('merevdata','rugdata','hol1','hol2','mit','adatfájl',y\_oszlop,\\
+   t\_eltol,y\_eltol,y\_szoroz)}
+
+
+\subsection{Animációk készítése}
+
+A csatornában lezajló közegáramlási folyamatok szemléltetésére az alábbi parancs le\-fut\-ta\-tá\-sá\-val nyílik lehetõség;\\
+{\tt >> csatorna\_rajz('fajlnev.tpr',1,animacios\_ido,idokoz,'--bol','csatorna\_nev','--ba')}.
+
+\vfill
+
+%%%%%%%%%%%%%%%

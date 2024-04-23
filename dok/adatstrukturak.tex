@@ -1,0 +1,634 @@
+
+
+\chapter{Adatstruktúrák}
+
+\section{Az adatfájl felépítése}
+
+Az adatfájlok szöveges állományok, melyek a rendszer minden adatát felsorolják. Az adatelválasztó vesszõ vagy soremelés, a tizedespont (.) pont (nem vesszõ). Az egyes struktúrákat kulcsszavak választják el egymástól, ezek lehetnek:
+%
+\begin{itemize}
+\item {\tt mar}: Merev alrendszer
+\item {\tt rugalmas\_cso}: Nyomottvizes rugalmas csõ
+\item {\tt csatorna}: Nyíltfelszínû csatorna
+\item {\tt viszkcso}: Viszkoelasztikus csõ
+\item {\tt amoba}: Amõba csomópont (nem tartozik merev alrendszerhez)
+\item {\tt gorbe}: Görbe
+\item {\tt option}: Opció
+\item {\tt /*}: Komment, nem tartalmazhat vesszõt
+\end{itemize}
+
+Ezek tetszõleges sorrendben követhetik egymást, az üres sorok jelenléte megengedett.
+
+\section{Merev alrendszerek ({\tt mar})}
+
+Egy merev alrendszert definiáló blokk a következõ részekbõl épül fel:
+\begin{itemize}
+\item	{\tt mar} (Kulcsszó)
+\item	A merev alrendszerneve
+\item	Ágelemek definíciója: 1. ágelem, 2. ágelem, stb.
+\item	Csomópontok definíciója: 1. csp, 2. csp, stb.
+\end{itemize}
+
+\subsection{Csomópontok}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt csp}        & <Kulcsszó>                &        $-$      &   $-$   \\ \hline
+2   & {\tt nev}        & Csomópont neve.           & $-$          & {\tt csp1} \\ \hline
+3   & {\tt magassag}   & Magasság a közös alapszinttõl. & $m$     & {\tt 123.4}\\ \hline
+4   & {\tt fogyasztas} & Koncentrált névleges fogyasztás a csomópontban & $kg/h$     & {\tt -23.4}\\ \hline
+5   & {\tt gorbe}      & A névleges fogyasztás szorzófüggvényének neve  & $-$     & {\tt eso1, const}\\ \hline
+\end{tabular}
+\end{center}
+
+{\bf Fontos:} amennyiben nem kívánunk görbét hozzárendelni a csomóponti fogyasztáshoz, a {\tt const} kulcsszót kell megadnunk a görbe nevének helyén.
+
+
+\subsection{Nyomottvizes hálózatok elemei}
+
+Az következõkben felsoroljuk az ágelemek, ill. a csomópontok részletes paramétereit. Közös jellemzõjük az ágelemnek az elsõ 5 vagy hat adattag: típus, név, cspe azonosító, cspv vége azonosító (ha van), sûrûség, kezdeti tömegáram.
+
+\subsubsection{Csõ}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel              & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1   & {\tt konc\_cso}  & <Kulcsszó>            & $-$          & $-$         \\ \hline
+2   & {\tt nev}        & ágelem neve              & $-$          & {\tt cso1}\\ \hline
+3   & {\tt csp1}       & csomópont az elem elején & $-$          & {\tt csp1}\\ \hline
+4   & {\tt csp2}       & csomópont az elem végén  & $-$          & {\tt csp2}\\ \hline
+5   & {\tt ro   }      & folyadék sûrûsége az ágelemben  & $kg/m^3$ & {\tt 1000}\\ \hline
+6   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+7   & {\tt D   }       & belsõ átmérõ             & $m$          & {\tt 0.3}\\ \hline
+8   & {\tt L   }       & csõhossz                 & $m$          & {\tt 15}\\ \hline
+9   & {\tt lambda}     & csõsúrlódási tényezõ (a nyomásesést a $\Delta p = \lambda \frac{L}{D} \frac{\rho}{2} v^2$ képlettel számítjuk) &  $-$ & \tt{0.02}\\  \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Fojtás}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1   & {\tt fojtas}     & <Kulcsszó>            & $-$          & $-$         \\ \hline
+2   & {\tt nev}        & ágelem neve              & $-$          & {\tt fojt1}\\ \hline
+3   & {\tt csp1}       & csomópont az elem elején & $-$          & {\tt csp1}\\ \hline
+4   & {\tt csp2}       & csomópont az elem végén  & $-$          & {\tt csp2}\\ \hline
+5   & {\tt ro   }      & folyadék sûrûsége az ágelemben  & $kg/m^3$ & {\tt 1000}\\ \hline
+6   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+7   & {\tt K     }     & fojtási tényezõ (a nyomásesést a $\Delta p = K \dot m\, |\dot m|/\rho$ képlettel számítjuk) &  $1/m^4$ & \tt{1.23e5}\\  \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Vezérelt fojtás}
+
+Ennél az elemnél a felhasználónak lehetõsége van a fojtás ellenállás tényezõjét idõben változtatni. Ehhez egyrészrõl a $K$ fojtási tényezõre van szükség egy dimenziótlan elmozdulás $e$ függvényében, valamint ezen dimenziótlan függvény idõbeli változására. $K$ pontos definíciója az \fbox{XXX} pontban található. Mindkét függvénykapcsolatot pontonként kell megadni két-két vektor segítségével, a program számítás közben a közbensõ értékeket lineáris interpolációval határozza meg.
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel           & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1 &{\tt vez\_fojtas} & <Kulcsszó>            & $-$          & $-$         \\ \hline
+2 &{\tt nev}         & ágelem neve              & $-$          & {\tt fojt1}\\ \hline
+3 &{\tt csp1}        & csomópont az elem elején & $-$          & {\tt csp1}\\ \hline
+4 &{\tt csp2}        & csomópont az elem végén  & $-$          & {\tt csp2}\\ \hline
+5 &{\tt ro   }       & folyadék sûrûsége az ágelemben  & $kg/m^3$ & {\tt 1000}\\ \hline
+6 &{\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+7 &{\tt A    }       & névleges keresztmetszet  & $m^2$        & {\tt 0.01}\\ \hline
+8 &{\tt jgpsz1}      & $K(e)$ jelleggörbe pontszám & $-$       & {\tt 3}\\ \hline
+9 &{\tt jgpsz2}      & $e(t)$ jelleggörbe pontszám & $-$       & {\tt 4}\\ \hline
+\end{tabular}
+\end{center}
+
+Ezután következik a jelleggörbék megadása (a fejléc cellái csak az egyértelmûség miatt vannak feltüntetve, az adatfájlban nem szerepelnek).
+
+\begin{center}
+\begin{tabular}{|c||c|c|}\hline
+Ssz. & e & K\\ \hline \hline
+1    &  0.0     & 0.0\\ \hline
+2    &  0.5     & 0.7\\ \hline
+3    &  1.0     & 1.0\\ \hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{|c||c|c|}\hline
+Ssz. & t[s] & e\\ \hline \hline
+1    &  0.0     & 1.0\\ \hline
+2    &  1.0     & 0.7\\ \hline
+3    &  3.0     & 0.1\\ \hline
+4    &  1e5     & 0.1\\ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Szivattyú}
+
+A szivattyú jelleggörbével rendelkezõ ágelem, melynek egy adott $Q$ térfogatáram értékéhez mind a szállítómagasságot, mind a teljesítményigényt meg kell adni. Amennyiben a szivattyú állandó fordulatszámon jár, az ehhez a fordulatszámhoz tartozó jelleggörbét kell megadni, és -- bár ilyenkor a számítás nem használja ezen értékeket -- a teljesítmény helyére bármilyen számokat írhatunk, de valaminek mindenképpen kerülnie kell ezekbe a mezõkbe is. A {\tt tranziens} nevû mezõ irányítja a szivattyú mûködését, ennek lehetséges értékei:
+\begin{description}
+\item[0]: állandó fordulatszám
+\item[1]: szivattyú kiesés $t_{ki}$ idõpontban
+\item[2]: 'direkt' szivattyú indítás, motor jelleggörbe nem ismert pontosan, csak a billenõnyomaték $M_b$, az ehhez tartozó $n_b$ billenõ fordulatszám és $n_{sz}$ szinkron fordulatszám
+\item[3]: 'direkt' szivattyú indítás, motor jelleggörbe $M_m(n_m)$ ismert
+\item[4]: frekvenciaváltós szivattyú indítás, motor jelleggörbe nem ismert pontosan, csak a billenõnyomaték $M_b$, az ehhez tartozó $n_b$ billenõ fordulatszám és $n_{sz}$ szinkron fordulatszám, az indítás $t_{be}$ ideig tart
+\item[5]: szintkapcsolós szivattyú, állandó fordulatszám
+\item[6]: frekvenciaváltós szivattyú nyomásszabályzóval
+\end{description}
+
+A tehetetlenségi nyomaték $\Theta\,[kg\,m^2]$ jellemzésére régebben a $G\,D^2$ értéket alkalmaztuk, $\Theta=\frac{G\, D^2}{4g}$.
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel           & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1 &{\tt szivattyu}   & <Kulcsszó>            & $-$          & $-$         \\ \hline
+2 &{\tt nev}         & ágelem neve              & $-$          & {\tt sz1}\\ \hline
+3 &{\tt csp1}        & csomópont az elem elején & $-$          & {\tt csp1}\\ \hline
+4 &{\tt csp2}        & csomópont az elem végén  & $-$          & {\tt csp2}\\ \hline
+5 &{\tt ro   }       & folyadék sûrûsége az ágelemben  & $kg/m^3$ & {\tt 1000}\\ \hline
+6 &{\tt m0  }        & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+7 &{\tt Ds   }       & szívócsonk átmérõ        & $m$          & {\tt 0.3}\\ \hline
+8 &{\tt Dn   }       & nyomócsonk átmérõ        & $m$          & {\tt 0.3}\\ \hline
+9 &{\tt tranziens}   & tranziens típus          & $-$          & {\tt 2}\\ \hline
+10&{\tt jgpsz }      & $H(Q)$ és $P_{be}(Q)$ jelleggörbe pontszám & $-$       & {\tt 5}\\ \hline
+\end{tabular}
+\end{center}
+
+Ezután következik a jelleggörbék megadása (a megdöntött cellák csak az egyértelmûség miatt vannak feltüntetve, az adatfájlban nem szerepelnek).
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|}\hline
+{Ssz.} & $Q\,[m^3/s]$ & $H\,[m]$  & $P_{be}[kW]$\\ \hline \hline
+1    &  0.000     & 210 & 100\\ \hline
+2    &  0.135     & 205 & 339\\ \hline
+3    &  0.270     & 196 & 649\\ \hline
+4    &  0.378     & 150 & 698\\ \hline
+5    &  0.486     & 51  & 304\\ \hline
+\end{tabular}
+\end{center}
+
+A {\tt tranziens} változó értékétõl függenek a további adatok.
+
+\noindent {\bf {\tt tranziens=0}: Állandó fordulatszámú szivattyú}
+
+Nem szükséges további adat
+
+{\tt tranziens=1: \bf Szivattyú kiesés}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel     & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1 &{\tt n}     & Szivattyú fordulatszáma a kiesés elõtt & $1/min$ & \tt 1470         \\ \hline
+2 &{\tt teta}  & Szivattyú, tengelykapcsoló és motor együttes tehetetlenségi nyomatéka   & $kg\,m^2$ & {\tt 0.23}\\ \hline
+3 &{\tt tki}   & A kiesés idõpontja & $s$          & {\tt 10}\\ \hline
+\end{tabular}
+\end{center}
+
+\pagebreak
+\noindent {\bf {\tt tranziens=2}: Direkt szivattyú indítás, közelítõ motor jelleggörbe}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel     & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1 &{\tt n}     & A szivattyú jelleggörbéhez tartozó fordulatszám & $1/min$ & \tt 1470         \\ \hline
+2 &{\tt teta}  & Szivattyú, tengelykapcsoló és motor együttes tehetetlenségi nyomatéka   & $kg\,m^2$ & {\tt 0.23}\\ \hline
+3 &{\tt Mb}    & Billenõ nyomaték & $Nm$          & {\tt 200}\\ \hline
+4 &{\tt nb}    & Billenõ fordulatszám & $1/min$ & {\tt 1200}\\ \hline
+5 &{\tt nsz}   & Szinkron fordulatszám & $1/min$ & {\tt 1500}\\ \hline
+\end{tabular}
+\end{center}
+
+
+\noindent {\bf {\tt tranziens=3}: Direkt szivattyú indítás, motor jelleggörbe ismert}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel     & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1 &{\tt n}     & A szivattyú jelleggörbéhez tartozó fordulatszám & $1/min$ & \tt 1470         \\ \hline
+2 &{\tt teta}  & Szivattyú, tengelykapcsoló és motor együttes tehetetlenségi nyomatéka   & $kg\,m^2$ & {\tt 0.23}\\ \hline
+3 &{\tt mjgpsz} & Motor jelleggörbe pontszám & $-$          & {\tt 6}\\ \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c||c|c|}\hline
+Ssz. & $n_m\,[1/min]$ & $M_m\,[Nm]$\\ \hline \hline
+1    &  0.000    & 145\\ \hline
+2    &  500      & 150\\ \hline
+3    &  900      & 160\\ \hline
+4    &  1200     & 200\\ \hline
+5    &  1470     & 34\\ \hline
+6    &  1500     & 0\\ \hline
+\end{tabular}
+\end{center}
+
+\noindent {\bf {\tt tranziens=4}: Frekvenciaváltós szivattyú indítás, közelítõ motor jelleggörbe}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel     & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1 &{\tt n}     & A szivattyú jelleggörbéhez tartozó fordulatszám & $1/min$ & \tt 1470         \\ \hline
+2 &{\tt teta}  & Szivattyú, tengelykapcsoló és motor együttes tehetetlenségi nyomatéka   & $kg\,m^2$ & {\tt 0.23}\\ \hline
+3 &{\tt Mb}    & Motor billenõ nyomaték & $Nm$          & {\tt 200}\\ \hline
+4 &{\tt nb}    & Motor billenõ fordulatszám & $1/min$ & {\tt 1200}\\ \hline
+4 &{\tt Mi}    & Motor indító nyomaték & $Nm$          & {\tt 100}\\ \hline
+5 &{\tt nsz}   & Szinkron fordulatszám & $1/min$ & {\tt 1500}\\ \hline
+6 &{\tt tbe}   & Indítás idõpontja  & $s$ & {\tt 10}\\ \hline
+7 &{\tt tind}  & Felfutási idõ  & $s$ & {\tt 10}\\ \hline
+\end{tabular}
+\end{center}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent {\bf {\tt tranziens=5}: Szintkapcsolós szivattyú}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel     & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1 &{\tt n}     & A szivattyú jelleggörbéhez tartozó fordulatszám. & $1/min$ & \tt 1470         \\ \hline
+2 &{\tt hbe}   & Kikapcsolási szint & $m$ & {\tt 0.23}\\ \hline
+2 &{\tt hki}   & Bekapcsolási szint & $m$ & {\tt 0.53}\\ \hline
+3 &{\tt uzem}  & Ha 0, a szivattyú nem mûködik, ha igen $\rightarrow 1$ & $-$          & {\tt 0}\\ \hline
+\end{tabular}
+\end{center}
+
+\noindent{\bf {\tt tranziens=6}: Frekvenciaváltós szivattyú nyomásszabályzóval}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel     & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1 &{\tt n}     & A jelleggörbéhez tartozó, maximális fordulatszám. & $1/min$ & 1470         \\ \hline
+2 &{\tt pcsp}  & A szabályzott csomópont azonosítója   &  & {\tt mar3.csp3}\\ \hline
+3 &{\tt pp}    & Kívánt (abszolút) nyomás & $Pa$          & {\tt 2e5}\\ \hline
+4 &{\tt parP}  & Szabályzó arányos tag   & $-$ & {\tt 0.5}\\ \hline
+5 &{\tt parI}  & Szabályzó integráló tag & $-$ & {\tt 25}\\ \hline
+6 &{\tt nkezd} & Induló fordulatszám. & $1/min$ & 1470         \\ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Visszacsapó szelep}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1   & {\tt visszacsapo\_szelep}     & ágelem típusa            & $-$          & -         \\ \hline
+2   & {\tt nev}        & ágelem neve              & $-$          & {\tt vcssz}\\ \hline
+3   & {\tt csp1}       & csomópont az elem elején & $-$          & {\tt csp1}\\ \hline
+4   & {\tt csp2}       & csomópont az elem végén  & $-$          & {\tt csp2}\\ \hline
+5   & {\tt ro   }      & folyadék sûrûsége az ágelemben  & $kg/m^3$ & {\tt 1000}\\ \hline
+6   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+\end{tabular}
+\end{center}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Állandó nyomású pont}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt nyomas}     & ágelem típusa             & $-$          & -         \\ \hline
+2   & {\tt nev}        & ágelem neve               & $-$          & {\tt nyomas1}\\ \hline
+3   & {\tt csp1}       & csomópont (csak egy van!) & $-$          & {\tt csp1}\\ \hline
+4   & {\tt ro}         & folyadék sûrûsége az ágelemben & $kg/m^3$         & {\tt 1000}\\ \hline
+5   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+6   & {\tt p}          & nyomás a csomópontban     & $Pa$         & {\tt 1.2e5}\\ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Változó nyomású pont}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt valtozo\_nyomas}     & ágelem típusa             & $-$          & -         \\ \hline
+2   & {\tt nev}        & ágelem neve               & $-$          & {\tt nyomas1}\\ \hline
+3   & {\tt csp1}       & csomópont (csak egy van!) & $-$          & {\tt csp1}\\ \hline
+4   & {\tt ro}         & folyadék sûrûsége az ágelemben & $kg/m^3$         & {\tt 1000}\\ \hline
+5   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+6   & {\tt kapcsolo}       	& kapcsoló      			& $-$          & {\tt file} vagy {\tt JGPSZ}\\ \hline
+\end{tabular}
+\end{center}
+
+{\tt file} opció választása után a jelleggörbét tartalmazó \textit{Excel} adatfájl nevének megadása következik kiterjesztéssel együtt (pl. {\tt file,pontok.xls})\\
+A kapcsoló lehetõvé teszik a jelleggörbe pontok megadását a bemeneti fájlban, külsõ adatfájl beolvasása nélkül. Ebben az esetben {\tt JGPSZ} egész szám, az alább felsorolandó pontpárok számossága. Példaként:
+
+\begin{center}
+\begin{tabular}{|c||c|c|}\hline
+Ssz. & $t[s]$ & $p[Pa]$\\ \hline \hline
+1    &  0.0   & 0  \\ \hline
+2    &  1.2   & 23e10 \\ \hline
+3    &  2.4   & 72e10 \\ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Változó tömegáramú pont}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt valtozo\_tomegaram}     & ágelem típusa             & $-$          & -         \\ \hline
+2   & {\tt nev}        & ágelem neve               & $-$          & {\tt nyomas1}\\ \hline
+3   & {\tt csp1}       & csomópont (csak egy van!) & $-$          & {\tt csp1}\\ \hline
+4   & {\tt ro}         & folyadék sûrûsége az ágelemben & $kg/m^3$         & {\tt 1000}\\ \hline
+5   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+6   & {\tt kapcsolo}       & kapcsoló      & $-$          & {\tt file} vagy {\tt JGPSZ}\\ \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c||c|c|}\hline
+Ssz. & $t[s]$ & $\dot{m}[kg/s]$\\ \hline \hline
+1    &  0.0   & 0  \\ \hline
+2    &  1.2   & 3  \\ \hline
+3    &  2.4   & 1  \\ \hline
+\end{tabular}
+\end{center}
+
+Megadása analóg az elõzõ pontban leírtakkal.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Nyomásszabályozó}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt nyomasszabalyzo}     & <Kulcsszó>             & $-$          & -         \\ \hline
+2   & {\tt nev}        & ágelem neve               & $-$          & {\tt nysz1}\\ \hline
+3   & {\tt csp1}       & csomópont az elem elején  & $-$          & {\tt csp1}\\ \hline
+4   & {\tt csp2}       & csomópont az elem végén   & $-$          & {\tt csp2}\\ \hline
+5   & {\tt ro   }      & folyadék sûrûsége az ágelemben  & $kg/m^3$ & {\tt 1000}\\ \hline
+6   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+7   &{\tt jgpsz}       & $K(e)$ jelleggörbe pontszám, hasonóan, mint az egyszerû vezérelt fojtásnál. & $-$          & {\tt 3}\\ \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c||c|c|}\hline
+{Ssz.} & $n_m\,[1/min]$ & $M_m\,[Nm]$\\ \hline \hline
+1    &  0.0    & 1e-10\\ \hline
+2    &  0.5    & 0.6\\ \hline
+3    &  0.0    & 0.9\\ \hline
+\end{tabular}
+\end{center}
+
+Ezután a {\tt szab} mezõ jelzi, hogy egy csomópontbeli nyomást ({\tt szab=p}) vagy két csomópont közti nyomáskülönbséget ({\tt szab=dp}) szabályoz-e az elem, ennek megfelelõen a következõ adat egy vagy két csomópont azonosítója.
+
+{\bf \tt szab=p}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt szab}       & a szabályozás típusa      & $-$          & {\tt p} \\ \hline
+2   & {\tt csp}        & A szabályozni kívánt csomópont neve (azonos merev alrendszerben kell lennie).  & $-$          & {\tt csp1}\\ \hline
+\end{tabular}
+\end{center}
+
+{\bf \tt szab=dp}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt szab}       & a szabályozás típusa      & $-$          & {\tt p} \\ \hline
+2   & {\tt csp1}       & A szabályozni kívánt egyik csomópont neve (azonos merev alrendszerben kell lennie).  & $-$     & {\tt csp1}\\ \hline
+3   & {\tt csp2}       & A szabályozni kívánt másik csomópont neve (azonos merev alrendszerben kell lennie).  & $-$     & {\tt csp2}\\ \hline
+\end{tabular}
+\end{center}
+
+A második esetben a szabályozni kívánt nyomáskülönbség alatt $p_{csp1}-p_{csp2}$ nyomáskülönbséget értjük. Végül meg kell adni a szabályzó peremétereit.
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt ajel}       & Alapjel                   & $Pa$         & {\tt 2.3e5} \\ \hline
+2   & {\tt pmax}       & Maximális nyomás          & $Pa$         & {\tt 20e5}\\ \hline
+3   & {\tt szabP}      & Arányos tag               & $-$          & {\tt 120}\\ \hline
+4   & {\tt szabI}      & Integráló tag             & $-$          & {\tt 1}\\ \hline
+5   & {\tt szabD}      & Differenciáló tag         & $-$          & {\tt 1}\\ \hline
+6   & {\tt e0}         & Szabályozó kezdeti nyitás & $-$          & {\tt 0.5}\\ \hline
+7   & {\tt vmax}       & Maximális mozgatási sebesség (dimenziótlan $e$ elmozdulás idõegység alatt) & $1/s$& {\tt 0.01}\\ \hline
+8   & {\tt tbe}        & A szabályzó bekapcsolásának idõpontja  & $s$ & {\tt 10}\\ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Légüst}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt legust}     & <Kulcsszó>                & $-$          & -         \\ \hline
+2   & {\tt nev}        & ágelem neve               & $-$          & {\tt legust}\\ \hline
+3   & {\tt csp1}       & csomópont (csak egy van!) & $-$          & {\tt csp1}\\ \hline
+4   & {\tt ro   }      & folyadék sûrûsége az ágelemben  & $kg/m^3$ & {\tt 1000}\\ \hline
+5   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+6   & {\tt n}          & politropikus kitevõ       & $-$          & {\tt 1.4}\\ \hline
+7   & {\tt V0}         & kezdeti gáztérfogat       & $m^3$        & {\tt 0.5}\\ \hline
+8   & {\tt p0}         & kezdeti gáznyomás         & $Pa$         & {\tt 3.22e5}\\ \hline
+9   & {\tt A}          & légüst felület            & $m^2$        & {\tt 0.8}\\ \hline
+10  & {\tt l}          & bekötõ vezeték hossza     & $m$          & {\tt 0.2}\\ \hline
+11  & {\tt H}          & összmagasság              & $m$          & {\tt 2}\\ \hline
+
+
+\end{tabular}
+\end{center}
+
+
+%----------------------------------------------------------------
+\subsection{Csatornahálózatok elemei}
+
+\subsubsection{Akna}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt akna}       & <Kulcsszó>                & $-$          & - \\ \hline
+2   & {\tt nev}        & ágelem neve               & $-$          & {\tt akna1} \\ \hline
+3   & {\tt csp1}       & csomópont (csak egy van!) & $-$          & {\tt csp1}\\ \hline
+4   & {\tt ro}         & sûrûség                   & $kg/m^3$     & {\tt 1000}\\ \hline
+5   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline
+6   & {\tt A}          & alapterület               & $m^2$        & {\tt 1.4}\\ \hline
+7   & {\tt hmmin}      & fenékszint                & $m$          & {\tt 213.5}\\ \hline
+8   & {\tt hmax}       & fedlapszint               & $m$          & {\tt 3.4}\\ \hline
+9   & {\tt h0}         & kezdeti vízszint          & $m$          & {\tt 1.2}\\ \hline
+10  & {\tt rajz}       & String változó, {\tt rajz} érték esetén a szimuláció során folyamatosan megjeleníti az aknaszintet, bármi más érték esetén nem. & $-$     & {\tt rajz} vagy pl. {\tt nincsrajz}\\ \hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Bukógát}
+
+Átfolyási egyenlet: $\dot m [kg/s] = C_d \rho \sqrt{2g} B \left(h-h_b\right)^n$.
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt buko}       & <Kulcsszó>                & $-$          & - \\ \hline
+2   & {\tt nev}        & ágelem neve               & $-$          & {\tt akna1} \\ \hline
+3   & {\tt csp1}       & eleje csomópont           & $-$          & {\tt csp1}\\ \hline
+3   & {\tt csp2}       & vége csomópont            & $-$          & {\tt csp2}\\ \hline
+4   & {\tt hb}         & bukószint (abszolút)      & $m$          & {\tt 213.4}\\ \hline
+5   & {\tt Cd}         & átfolyási tényezõ         & $-$          & {\tt 0.34}\\ \hline
+6   & {\tt B}          & jellemzõ méret            & $m$          & {\tt 0.5}\\ \hline
+7   & {\tt n}          & vízszint kitevõ           & $-$          & {\tt 1.2}\\ \hline
+8   & {\tt ro}         & sûrûség                   & $kg/m^3$     & {\tt 1000}\\ \hline
+9   & {\tt mp0}        & tömegáram a szimuláció kezdetekor & $kg/s$     & {\tt 0.0}\\ \hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Nyomóvezeték}
+
+Ha az elején vagy a végén a szint $z_e$ ill. $z_v$ alatt van, lenullázza az áramlást.
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz. & Jel              & Megnevezés               & Mértékegység & Példa\\ \hline \hline
+1   & {\tt nyomovezetek}  & <Kulcsszó>            & $-$          & -         \\ \hline
+2   & {\tt nev}        & ágelem neve              & $-$          & {\tt cso1}\\ \hline
+3   & {\tt csp1}       & csomópont az elem elején & $-$          & {\tt csp1}\\ \hline
+4   & {\tt csp2}       & csomópont az elem végén  & $-$          & {\tt csp2}\\ \hline
+5   & {\tt ro   }      & folyadék sûrûsége az ágelemben  & $kg/m^3$ & {\tt 1000}\\ \hline
+6   & {\tt m0  }       & tömegáram a szimuláció kezdõ idõpontjában  & $kg/s$ & {\tt 120}\\ \hline\hline
+7   & {\tt D   }       & belsõ átmérõ             & $m$          & {\tt 0.3}\\ \hline
+8   & {\tt L   }       & csõhossz                 & $m$          & {\tt 15}\\ \hline
+9   & {\tt lambda}     & csõsúrlódási tényezõ (a nyomásesést a $\Delta p = \lambda \frac{L}{D} \frac{\rho}{2} v^2$ képlettel számítjuk) &  $-$ & 0.02\\  \hline
+10   & {\tt ze  }       & csõ eleje szint          & $m$          & {\tt 114}\\ \hline
+11   & {\tt zv  }       & csõ vége szint           & $m$          & {\tt 120}\\ \hline
+\end{tabular}
+\end{center}
+
+\subsection{Görbék ({\tt gorbe})}
+
+Az összes merev alrendszer definíció után jöhetnek a görbék.
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                               & Mértékegység & Példa\\ \hline \hline
+1   & {\tt gorbe}      & <Kulcsszó>                               & $-$          &  \\ \hline
+2   & {\tt nev}        & Görbe neve                               & $-$          & {\tt eso1} \\ \hline
+3   & {\tt psz}        & Adatpárok száma                          & $-$          & {\tt 10}\\ \hline
+\end{tabular}
+\end{center}
+
+Ezután jöhetnek az $(x,y)$ pontpárok párosával. Amennyiben egy adott görbét csomóponthoz rendeljük hozzá, az $x$ érték idõ $s$-ban, az $y$ érték pedig egy szorzó. Az aktuális idõponthoz tartozó értéket a program lineáris interpolációval számítja.
+\vfill
+\newpage
+
+\section{Rugalmas alrendszerek}
+\subsection{Nyomottvizes rugalmas csõ ({\tt cso})}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz  & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+0    & {\tt rugalmas\_cso} &   Azonosító.            & $-$          &  \\ \hline
+1    & {\tt cso}        & A rugalmas csõ neve.      & $-$          & {\tt rugcso1} \\ \hline
+2    & {\tt csp1}       & Csomópont a csõ elején.   & $-$          & {\tt mar9.csp23}\\ \hline
+3    & {\tt csp2}       & Csomópont a csõ végén.    & $-$          & {\tt mar5.csp34}\\ \hline
+4    & {\tt ro   }      & Folyadék sûrûsége a csõben.  & $kg/m^3$ & {\tt 1000}\\ \hline
+5    & {\tt m0  }       & Tömegáram a szimuláció kezdõ idõpontjában.  & $kg/s$ & {\tt 120}\\ \hline
+6    & {\tt pe  }       & Nyomás a csõ elején a szimuláció kezdõ idõpontjában.  & $Pa$ & {\tt 1.23e5}\\ \hline
+7    & {\tt D   }       & Belsõ átmérõ              & $m$          & {\tt 0.3}\\ \hline
+8    & {\tt lambda}     & Csõsúrlódási tényezõ (a nyomásesést a $\Delta p = \lambda \frac{L}{D} \frac{\rho}{2} v^2$ képlettel számítjuk) &  $-$ & 0.02\\  \hline
+9    & {\tt delta   }   & Falvastagság.             & $m$          & {\tt 5e-3}\\ \hline
+10   & {\tt L   }       & Csõhossz                  & $m$          & {\tt 1500}\\ \hline
+11   & {\tt Ec   }      & Csõ anyagának rugalmassági modulusa. & $Pa$ & {\tt 2e11}\\ \hline
+12   & {\tt Ef   }      & Folyadék rugalmassági modulusa. & $Pa$ & {\tt 2e9}\\ \hline
+13   & {\tt opsz   }    & Osztáspontok száma.       & $-$          & {\tt 5}\\ \hline
+14   & {\tt op\_h   }    & Osztáspontok magasságának megadása       & $-$          & {\tt user} vagy {\tt auto}\\ \hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+\item Ha {\tt op\_h} $=$ {\tt auto}, következik $z_e[m]$ és $z_v[m]$ eleje és vége fenékmagasság.
+\item Amennyiben {\tt op\_h} $\neq$ {\tt auto}, következnek az osztáspontok magasság adatai {\tt opsz} darab):
+
+\begin{center}
+\begin{tabular}{|c||c|}\hline
+Ssz. & $h[m]$\\ \hline \hline
+1    &  0.0\\ \hline
+2    &  12.3\\ \hline
+3    &  34.5\\ \hline
+4    &  49.1\\ \hline
+5    &  50.0\\ \hline
+\end{tabular}
+\end{center}
+\vfill
+
+\end{itemize}
+
+\subsection{Csatorna ({\tt csatorna})}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|p{3cm}|}\hline
+Ssz  & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1    & {\tt csatorna  } &   Azonosító             & $-$          &  \\ \hline
+2    & {\tt cso}        & A csatorna neve      & $-$          & {\tt rugcso1} \\ \hline
+3    & {\tt csp1}       & Csomópont a csatorna elején   & $-$          & {\tt mar9.csp23}\\ \hline
+4    & {\tt csp2}       & Csomópont a csatorna végén    & $-$          & {\tt mar5.csp34}\\ \hline
+5    & {\tt ro   }      & Folyadék sûrûsége a csatornában  & $kg/m^3$ & {\tt 1000}\\ \hline
+6    & {\tt m0  }       & Tömegáram a szimuláció kezdõ idõpontjában.  & $kg/s$ & {\tt 120}\\ \hline
+7    & {\tt tipus}      & Keresztmetszet típusa     & $-$          & {\tt kor} vagy {\tt teglalap}\\ \hline
+8    & {\tt D $\vee$ B} & Átmérõ vagy szélesség, {\tt típus}-sal összhangban & $m$          & {\tt 0.3}\\ \hline
+9    & {\tt L   }       & Csõhossz                  & $m$          & {\tt 1500}\\ \hline
+10   & {\tt ze   }      & Eleje fenékmagasság & $m$ & {\tt 123.4}\\ \hline
+11   & {\tt zv   }      & Vége fenékmagasság  & $m$ & {\tt 122.2}\\ \hline
+12   & {\tt n}          & Manning-féle érdességi tényezõ  & - & {\tt 0.01} \\ \hline
+13   & {\tt y0}         & Kezdeti vízszint a fenékhez képest & $m$ & {\tt 0.5}\\ \hline
+14   & {\tt opsz   }    & Osztáspontok száma       & $-$          & {\tt 5}\\ \hline
+15   & {\tt op\_h   }   & Osztáspontok magasságának megadása       & $-$          & {\tt user} vagy {\tt auto}\\ \hline
+16   & {\tt rajz   }    & Számítás közbeni rajzolás       & $-$          & {\tt rajz} vagy bármi más\\ \hline
+17   & {\tt dt\_type  } & Idõlépés beállítása: {\tt auto} esetén automatikus, szám megadása esetén az idõlépés nagysága. & $s$ & {\tt auto} vagy pl. {0.5}\\ \hline
+\end{tabular}
+\end{center}
+
+Amennyiben {\tt op\_h} $\neq$ {\tt auto}, következnek az osztáspontok magasság adatai.
+
+\subsection{Viszkoelasztikus csõ ({\tt viszkcso})}
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|p{3cm}|}\hline
+Ssz. & Jel              & Megnevezés                     			 				& Mértékegység & Példa\\ \hline \hline
+1    & {\tt viszkcso}   &   Azonosító                     						& $-$          &  \\ \hline
+2    & {\tt vcs1}       & A viszkoelasztikus csõ neve     						& $-$          & {\tt viszkcso1} \\ \hline
+3    & {\tt csp1}       & Csomópont a csõ elején          						& $-$          & {\tt mar9.csp23}\\ \hline
+4    & {\tt csp2}       & Csomópont a csõ végén    										& $-$          & {\tt mar5.csp34}\\ \hline
+5    & {\tt D   }       & Belsõ átmérõ 																& $m$ 				 & {\tt 0.02}\\ \hline
+6    & {\tt nu  }       & Folyadék kinematikai viszkozitása  					& $m^{2}/s$    & {\tt 10e-6}\\ \hline
+7    & {\tt delta}      & Falvastagság    									 					& $m$          & {\tt 5e-3}\\ \hline
+8    & {\tt L}          & Csõhossz 																		& $m$       	 & {\tt 12}\\ \hline
+9    & {\tt m0   }      & Tömegáram a szimuláció kezdõ idõpontjában   & $kg/s$     	 & {\tt 2e-2}\\ \hline
+10   & {\tt p0   }      & Kezdeti nyomás 															& $Pa$ 				 & {\tt 5e9}\\ \hline
+11   & {\tt ro   }      & Folyadék sûrûsége  													& $kg/m^{3}$   & {\tt 1000}\\ \hline
+12   & {\tt opsz   }    & Osztáspontok száma       										& $-$          & {\tt 5}\\ \hline
+13   & {\tt op\_h   }   & Osztáspontok magasságának megadása       		& $-$          & {\tt user} vagy {\tt auto}\\ \hline
+14   & {\tt E1}         & Rugalmassági modulus												& $Pa$         & {\tt 9e6} \\ \hline
+15   & {\tt E2}         & Rugalmassági modulus												& $Pa$         & {\tt 4e5}\\ \hline
+16   & {\tt eta2   }    & Csillapítási tényezõ												& $Pa\,s$      & {\tt 100000}\\ \hline
+\end{tabular}
+\end{center}
+Amennyiben {\tt op\_h} $\neq$ {\tt auto}, következnek az osztáspontok magasság adatai.
+
+\subsection{Amõba csomópontok ({\tt amoba})}
+
+Végül az amõba csomópontok adatai a merev alrenszerhez hasonlóan:
+
+\begin{center}
+\begin{tabular}{|c|c|p{7cm}|c|c|}\hline
+Ssz & Jel              & Megnevezés                & Mértékegység & Példa\\ \hline \hline
+1   & {\tt amoba}      & <Kulcsszó>                &            &  \\ \hline
+1   & {\tt nev}        & Csomópont neve.           & $-$          & {\tt csp1} \\ \hline
+2   & {\tt magassag}   & Magasság a közös alapszinttõl. & $m$     & {\tt 123.4}\\ \hline
+3   & {\tt fogyasztas} & Koncentrált fogyasztás a csomópotban & $kg/h$     & {\tt -23.4}\\ \hline
+5   & {\tt gorbe}      & A névleges fogyasztás szorzófüggvényének neve ({\tt const}, ha konstans)  & $-$     & {\tt eso1, const}\\ \hline
+\end{tabular}
+\end{center}
+
+\subsection{Opciók ({\tt option})}
+Az opciók megadására az alrendszerek definiálása elõtt, azaz a bemeneti fájlok elsõ soraiban nyílik lehetõség.
+
+\texttt{option,dt\_save,auto}, az automatikus idõközû mintavételhez,\\ vagy\\
+\texttt{option,dt\_save,N}, ahol $N$ a felhasználó által beállított tetszõleges mintavételezési idõköz-érték.
+
+\vfill

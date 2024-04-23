@@ -1,0 +1,28 @@
+Tranziens szimulator
+------------------------------------
+ A szamitas vege: 2010.7.9  12:57
+ Adatfile: feladat3.tpr
+
+ Az utolso lepes eredmenyei:
+
+  => merev alrendszer: also
+         medenceki (  1): p=+1.000 [bar]
+         nyomocsp (  2): p=+1.016 [bar]
+         szelepki (  3): p=+7.327 [bar]
+         medencealso (  1): Q=+0.000 [m3/s]	 m=+0.06 [kg/s]	 dp=+0.000 [bar]	 dH= +0.00 [m]
+         szivattyu (  2): Q=-0.000 [m3/s]	 m=-0.06 [kg/s]	 dp=-0.016 [bar]	 dH= -0.16 [m]
+          vszelep (  3): Q=-0.000 [m3/s]	 m=-0.06 [kg/s]	 dp=-6.311 [bar]	 dH=-64.33 [m]
+
+  => merev alrendszer: felso
+         medencebe (  1): p=+1.000 [bar]
+         medencefelso (  1): Q=-0.012 [m3/s]	 m=-11.96 [kg/s]	 dp=+0.000 [bar]	 dH= +0.00 [m]
+
+ => rugalmas csovek:
+
+    Nev      |        eleje         |        vege          |          
+             |   p[bar]    Q[m3/s]  |   p[bar]    Q[m3/s]  |  m[kg/s] 
+-------------+----------------------+----------------------+-----------
+       cso  |     7.33    -0.0001  |     1.00    -0.0120  |  -11.96 
+
+szamitasi ido:   0h  0min  55.5313s
+

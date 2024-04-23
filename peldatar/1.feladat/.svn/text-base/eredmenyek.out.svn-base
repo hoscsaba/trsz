@@ -1,0 +1,20 @@
+Tranziens szimulator
+------------------------------------
+ A szamitas vege: 2010.7.19  13:5
+ Adatfile: feladat1.tpr
+
+ Az utolso lepes eredmenyei:
+
+  => merev alrendszer: medence
+         medencecsp (  1): p=+3.000 [bar]
+          medence (  1): Q=-0.004 [m3/s]	 m=-3.99 [kg/s]	 dp=+0.000 [bar]	 dH= +0.00 [m]
+
+ => rugalmas csovek:
+
+    Nev      |        eleje         |        vege          |          
+             |   p[bar]    Q[m3/s]  |   p[bar]    Q[m3/s]  |  m[kg/s] 
+-------------+----------------------+----------------------+-----------
+       cso  |     3.00    +0.0040  |     3.63    +0.0000  |   +0.00 
+
+szamitasi ido:   0h  0min  43.3281s
+

@@ -1,0 +1,37 @@
+function csatorna = csatorna(varargin)
+
+csatorna.nev = varargin{1};
+csatorna.tipus = varargin{4};
+csatorna.dvB = varargin{5};
+csatorna.L  = varargin{6};
+csatorna.ze = varargin{7};
+csatorna.zv = varargin{8};
+csatorna.n  = varargin{9};
+ro          = varargin{10};
+csatorna.y  = varargin{11};
+csatorna.v  = varargin{12};
+csatorna.rajz  = varargin{13};
+csatorna.dttype=varargin{14};
+csatorna.N  = length(csatorna.v)-1;
+csatorna.p0 = 1e5;
+
+trag2 = tranziens_agelem_2csp(varargin{1},varargin{2},varargin{3},0);
+
+csatorna.t = 0;
+csatorna.dt = 0;
+csatorna.dtki = 0.0;
+csatorna.kiir = 1;
+
+csatorna.A = 0;
+csatorna.p1 = csatorna.y(1)*ro*9.81;
+csatorna.pN = csatorna.y(csatorna.N+1)*ro*9.81;
+csatorna.warnings = 0;
+csatorna.pf_eleje_tipus = 'vizszint_&_konti';
+csatorna.pf_vege_tipus = 'vizszint_&_konti';
+
+csatorna = class(csatorna,'csatorna',trag2);
+
+csatorna.tranziens_agelem_2csp.ro = ro;
+csatorna.tranziens_agelem_2csp.p =[csatorna.p1 csatorna.pN];
+
+csatorna.dt=update_dt(csatorna);

@@ -1,0 +1,617 @@
+function trsz_uj(mdat,rdat,tmax,varargin)
+
+global dtmin
+
+clc
+fprintf('\nTranziens szimulator');
+fprintf('\n------------------------------\n\n');
+
+% Elokeszuletek
+lepesmax=10; cput=cputime; t=0; lepes=0; tt=0;
+debug=0; op='windows'; dtmin_set='auto';
+options=varargin;
+
+while length(options)>1
+    mit=options{1};
+    mire=options{2};
+    options=options(3:end);
+    switch mit
+        case 'debug', debug=mire;
+        case 'op', op=mire;
+        case 'dtmin'
+            dtmin=mire;
+            dtmin_set='user';
+        case 't0', t=mire;
+        otherwise,      fprintf('\n\n HIBA: Ismeretlen opcio. Lehetseges ertekek: debug(0|1|2|3), rajz(0|1), op(windows|linux)\n');
+    end
+end
+
+dtout=(tmax-t)/lepesmax;
+
+% Esetleges maradanyfajlok torlese. 
+% Az elso parancs Linux alatt mukodik, a masodik Windows alatt.
+fprintf('Konyvtar tisztatasa');
+switch op
+    case 'linux'
+        system('rm *.res *.out');
+    case 'windows'
+        system('del *.res *.out');
+end
+fprintf('\t\t\t\tOK\n');
+
+% Rendszer epitese
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Merev alrendszer
+%-------------------------------------
+fprintf('\nMerev alrendszerek epitese');
+mar=olvas7m(mdat,debug);
+
+if debug>2
+    fprintf('\n\n\n***********************************************');
+    fprintf('\n*     Merev alrendszer csomopont Biblia       *');
+    fprintf('\n***********************************************\n');
+    fprintf('\n  mar.nev    mar.ssz.    csp.nev     csp.szam     h[m]     fogy.[kg/s]');
+    fprintf('\n---------------------------------------------------------------------------');
+end
+
+k=1;
+for i=1:length(mar)
+    for j=1:length(mar{i}.csp)
+        csp=mar{i}.csp;
+        if debug>2
+            fprintf('\n%9s      %2d      %9s       %2d      %7.2f   %7.2f',mar{i}.nev,i,csp{j}{6},j,csp{j}{2},csp{j}{5});
+        end
+        cspb{k}{1}=i;
+        cspb{k}{2}=j;
+        cspb{k}{3}=csp{j}{6};
+        k=k+1;
+    end
+    if debug>2
+        fprintf('\n---------------------------------------------------------------------------');
+    end
+end
+if debug>2
+    pause;
+end
+if debug<1, fprintf('\t\t\t\tOK'); end
+
+% Rugalmas csövek
+%-------------------------------------
+if debug<1, fprintf('\nRugalmas csovek epitese\t'); end
+rug_struct = olvas7r(rdat,debug);
+csovek     = rug_struct.csovek;
+csp_nevsor = rug_struct.cpnevsor;
+csom       = rug_struct.csom;
+if rug_struct.amoba_exists
+    amoba  = rug_struct.amoba;
+end
+if debug<1, fprintf('\t\t\t\tOK'); end
+
+% dtmin beallatasa
+%-------------------------------------
+% Ha ennal kisebbet lepne ket cso, egyszerre
+% leptetjuk oket.
+switch dtmin_set
+    case 'auto'
+        dtmin=1e5;
+        for i=1:length(csovek) dtmin=min(dtmin,csovek{i}.dt); end
+        dtmin=dtmin/1000;
+end
+
+
+% Tejcsarda (tjcs) matrix asszeallatasa, azaza a
+% rugalmas as a merev alrendszerek csatlakozasa, az utolsa
+% sor amaba csomapont esetan a fogyasztas
+%----------------------------------------------------
+n_cso=length(csovek); n_mar=length(mar);
+tjcs=zeros(length(csp_nevsor),n_cso+n_mar+1);
+
+if debug>1
+    fprintf('\n\n****************************************************');
+    fprintf('\n*   RUGALMAS aS MEREV ALRENDSZEREK CSATLAKOZaSA    *');
+    fprintf('\n****************************************************\n');
+end
+if debug<1, fprintf('\nRugalmas csovek es merev alrendszerek csatlakozasa\t'); end
+
+% vegigmegyunk a csoveken....
+for i=1:length(csovek)
+    temp=csovek{i}.csp;
+    cspe_szam=temp(1); cspv_szam=temp(2);
+    cspe=csp_nevsor{cspe_szam}; cspv=csp_nevsor{cspv_szam};
+    
+    % vegigmegyunk a csomopont Biblian,
+    % es megkeressuk az elejen es vegen levo
+    % csomapontot a neve alapjan.
+    emegvan=0; vmegvan=0;
+    for j=1:length(cspb)
+        if strcmp(cspe,cspb{j}{3})
+            if debug>2
+                fprintf('\ncso:%5s  %8s -> %8s | %8s | ',csovek{i}.nev,cspe,cspv,cspb{j}{3});
+                fprintf(' eleje megvan: %d.mar %d.csp',cspb{j}{1},cspb{j}{2});
+            end
+            k=1;
+            while k<=length(csp_nevsor) && ~strcmp(cspe,csp_nevsor{k}), k=k+1; end
+            tjcs(k,i)=-1; tjcs(k,n_cso+cspb{j}{1})=cspb{j}{2};
+            gcsp_tipus(k) =1;
+            emegvan=1;
+        end
+        
+        if strcmp(cspv,cspb{j}{3})
+            if debug>2
+                fprintf('\ncso:%5s  %8s -> %8s | %8s | ',csovek{i}.nev,cspe,cspv,cspb{j}{3});
+                fprintf(' vege  megvan: %d.mar %d.csp',cspb{j}{1},cspb{j}{2});
+            end
+            k=1;
+            while k<=length(csp_nevsor) && ~strcmp(cspv,csp_nevsor{k}), k=k+1; end
+            tjcs(k,i)=1; tjcs(k,n_cso+cspb{j}{1})=cspb{j}{2};
+            gcsp_tipus(k) =1;
+            vmegvan=1;
+        end
+    end
+    
+    % Ha nincs meg a csomapont, amobarol van szo...
+    if emegvan==0
+        if debug>2
+            fprintf('\ncso:%5s  %8s -> %8s | %8s | ',csovek{i}.nev,cspe,cspv,cspb{j}{3});
+            fprintf(' eleje nincs meg -> amoba');
+        end
+        k=1;
+        while k<=length(csp_nevsor) && ~strcmp(cspe,csp_nevsor{k}), k=k+1; end
+        tjcs(k,i)=-1; gcsp_tipus(k) =2;
+        iii=1;
+        while (iii<=length(amoba) && ~strcmp(cspe,amoba{iii}{1})), iii=iii+1; end
+        tjcs(k,n_cso+n_mar+1)=amoba{iii}{2};
+    end
+    if vmegvan==0
+        if debug>2
+            fprintf('\ncso:%5s  %8s -> %8s | %8s | ',csovek{i}.nev,cspe,cspv,cspb{j}{3});
+            fprintf(' vege nincs meg -> amoba');
+        end
+        k=1;
+        while ((k<=length(csp_nevsor)) && (~strcmp(cspv,csp_nevsor{k}))), k=k+1; end
+        tjcs(k,i)=1;  gcsp_tipus(k) =2;
+        iii=1;
+        while (iii<=length(amoba) && (~strcmp(cspv,amoba{iii}{1}))), iii=iii+1; end
+        tjcs(k,n_cso+n_mar+1)=amoba{iii}{2};
+    end
+    
+    if debug>2
+        fprintf('\n---------------------------------------------------');
+    end
+end
+
+if debug<1
+    fprintf('OK');
+end
+
+if debug>1
+    fprintf('\n\nA tjcs matrix:\n\n');
+    fprintf('   csp.nav   tipus    |');
+    for i=1:length(csovek), fprintf(' cso%2d',i); end
+    fprintf(' | '); for i=1:length(mar), fprintf(' mar%2d ',i); end
+    fprintf('| amoba fogy.|');
+    fprintf('\n----------------------+');
+    for i=1:length(csovek), fprintf('------'); end
+    fprintf('-+-'); for i=1:length(mar), fprintf('-------'); end
+    fprintf('+------------+');
+    for i=1:length(csp_nevsor)
+        fprintf('\n%9s ',csp_nevsor{i});
+        if gcsp_tipus(i)==1, fprintf('  rug<->mar |'); end
+        if gcsp_tipus(i)==2, fprintf('    amoba   |'); end
+        for j=1:n_cso
+            if ~tjcs(i,j)==0, fprintf('  %+2d  ',tjcs(i,j));
+            else  fprintf('      '); end
+        end
+        fprintf(' | ');
+        for j=1:n_mar
+            if ~tjcs(i,n_cso+j)==0, fprintf('   %2d  ',tjcs(i,n_cso+j));
+            else  fprintf('       '); end
+        end
+        fprintf('|');
+        if gcsp_tipus(i)==2, fprintf(' %5.3e  |',tjcs(i,n_cso+n_mar+1));
+        else fprintf('            |'); end
+    end
+    fprintf('\n----------------------+');
+    for i=1:length(csovek), fprintf('------'); end
+    fprintf('-+-'); for i=1:length(mar), fprintf('-------',i); end
+    fprintf('+------------+');
+end
+
+for i=1:length(csovek), info(csovek{i},3); end
+for i=1:length(mar),    info(mar{i},3,t);  end
+
+% A cso_mar matrix j-edik sora megmondja, hogy ahhoz, hogy a j-edik
+% rugalmas csovel lepjek, melyik merev alrendszerektol
+% kell info. Az elso ket szam mar es csp, a 3. az
+% esetleges amoba csp sorszama.
+for i=1:n_cso
+    cso_mar{i}{1}=[0,0,0]; cso_mar{i}{2}=[0,0,0];
+end
+
+for i=1:n_cso
+    for j=1:length(gcsp_tipus)
+        if ~(tjcs(j,i)==0)
+            for k=1:n_mar
+                if ~(tjcs(j,n_cso+k)==0)
+                    if tjcs(j,i)<0, cso_mar{i}{1}=[k, tjcs(j,n_cso+k)];
+                    else, cso_mar{i}{2}=[k, tjcs(j,n_cso+k)]; end
+                end
+            end
+        end
+    end
+end
+
+% A mar_cso matrix j-edik sora megmondja, hogy ahhoz, hogy a j-edik
+% merev alrendszerrel lepjek, honnan kell info.
+mar_cso=[];
+for i=1:n_mar
+    l=1;
+    for j=1:length(gcsp_tipus)
+        if ~(tjcs(j,n_cso+i)==0)
+            mar_cso{i}{l}{1}=tjcs(j,n_cso+i);
+            melyikcso=[];
+            for k=1:n_cso
+                if ~(tjcs(j,k)==0), melyikcso=[melyikcso, k*tjcs(j,k)]; end
+            end
+            mar_cso{i}{l}{2}=melyikcso;
+            l=l+1;
+        end
+    end
+end
+
+if debug>1;
+    %        disp(tjcs);
+    fprintf('\n\nA rendszer a rugalmas csovek szemszogebol:');
+    for i=1:n_cso
+        fprintf('\n cso:%d,   kapcsolodo mar.ek:',i);
+        if ~cso_mar{i}{1}(1)==0,  fprintf('  eleje:  %d/%d  ',cso_mar{i}{1}(1),cso_mar{i}{1}(2));
+        else fprintf('  eleje: amoba '); end
+        if ~cso_mar{i}{2}(1)==0,  fprintf(' vege:   %d/%d',cso_mar{i}{2}(1),cso_mar{i}{2}(2));
+        else fprintf(' age:  amoba'); end
+    end
+    
+    fprintf('\n\nA rendszer a merev alrendszerek szemszogebol:');
+    for i=1:length(mar_cso)
+        fprintf('\n mar:%d,  kapcsolodo csomopontok szama: %d',i,length(mar_cso{i}))
+        for j=1:length(mar_cso{i})
+            fprintf('\n\t   csp: %d    csovek:',mar_cso{i}{j}{1});
+            for k=1:length(mar_cso{i}{j}{2}), fprintf(' %d,', mar_cso{i}{j}{2}(k));end
+        end
+    end
+end
+
+% Inicializalas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Szamitas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if debug>1
+    fprintf('\n\n****************************************************');
+    fprintf('\n*                      SZAMITAS                    *');
+    fprintf('\n****************************************************\n');
+end
+if debug<1, fprintf('\n\nSzamitas\n'); end
+
+while t<tmax
+    [dt,icso]=dtuj(csovek,t);
+    
+    if debug>1
+        fprintf('\n\n\n     *****************************************************');
+        fprintf('\n     *   %6d.lepes: t=%7.4e dt=%7.4e         *',lepes,t,dt);
+        fprintf('\n     *****************************************************\n');
+        fprintf('\nEzekkel a csovekkel kell lepnunk: '); disp(icso);
+    end
+    
+    mars_updated={};
+    for i=1:length(icso)
+        acso=icso(i);
+        temp=csovek{acso}.csp;
+        
+        if debug>1, fprintf('\n\nrugalmas elem: %d\n-----------------\n',acso); end
+        
+        % Csatlakozo merev alrendszerek frissitese:
+        %-------------------------------------------------
+        if debug>1, fprintf('\n  A kapcsolodo merev alrendszerek frisitese:\n'); end
+        
+        % cso eleje:
+        amare = cso_mar{acso}{1}(1);
+        acspe = cso_mar{acso}{1}(2);
+        
+        if ~(amare==0)
+            % csak ha meg nem leptunk ezzel a merev alrendszerrel:
+            if sum(strcmp(mars_updated,num2str(amare)))==0
+                mar = update_mar(amare,mar_cso,mar,csovek,'e',t,dt,dtmin,debug);
+                mars_updated{end+1}=num2str(amare);
+            else
+                if debug>1, fprintf('\n\tEbben a korben mar leptem a(z) %s merev alrendszerrel.\n',mar{amare}.nev); end
+            end
+        else
+            if debug>1, fprintf('\n\tAmoba csomopont a rugalmas cso elejen, nem kell frissiteni.\n'); end
+        end
+        
+        % cso vege:
+        amarv = cso_mar{acso}{2}(1);
+        acspv = cso_mar{acso}{2}(2);
+        
+        if ~(amarv==0)
+            % csak ha meg nem leptunk ezzel a merev alrendszerrel:
+            if sum(strcmp(mars_updated,num2str(amarv)))==0
+                mar = update_mar(amarv,mar_cso,mar,csovek,'v',t,dt,dtmin,debug);
+                mars_updated{end+1}=num2str(amarv);
+            else
+                if debug>1, fprintf('\n\tEbben a korben mar leptem a(z) %s. merev alrendszerrel.\n',mar{amarv}.nev); end
+            end
+        else
+            if debug>1, fprintf('\n\tAmoba csomopont a rugalmas cso vegen, nem kell frissiteni.\n'); end
+        end
+        
+        % Rugalmas elem leptetese:
+        %-------------------------------------------------
+        
+        if debug>1, fprintf('\n Es most johet a %s (%d.) cso frissitese:',csovek{acso}.nev,acso);end
+        temp=csovek{acso}.csp;
+        
+        pf{1} = update_rug_elem('eleje',gcsp_tipus(temp(1)),mar,amare,acspe,cspb,csovek,csp_nevsor,acso,tjcs,t,dt,dtmin,debug);        
+        pf{2} = update_rug_elem('vege',gcsp_tipus(temp(2)), mar,amarv,acspv,cspb,csovek,csp_nevsor,acso,tjcs,t,dt,dtmin,debug);
+        
+        csovek{acso} =solve(csovek{acso},pf);
+        info(csovek{acso},3);        
+    end
+    
+    if t>tt
+        fprintf('\n%6d.lepes: t=%7.3e / %7.3e  dt=%5.3e',lepes,t,tmax,dt);
+        tt=tt+dtout;
+    end
+    
+    t=t+dt; lepes=lepes+1;
+    if debug>1, pause; end
+    fclose('all');
+end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+fprintf('\n\nAz utolso lepes eredmenyei:');
+for i=1:length(mar)
+    fprintf('\n\n  => merev alrendszer: %s',mar{i}.nev);
+    for j=1:length(mar{i}.csp)
+        temp=mar{i}.csp;
+        pp=get(mar{i},'p',temp{j}{1});
+        fprintf('\n         %8s (%3d): p=%+6.3f [bar]',temp{j}{6},j,pp/1e5);
+    end
+    fprintf('\n');
+    for j=1:length(mar{i}.elemek)
+        temp=mar{i}.elemek;
+        Q=get(mar{i},'Q',j);
+        m=get(mar{i},'m',j);
+        dp=get(mar{i},'dp',j);
+        fprintf('\n         %8s (%3d): Q=%+5.3f[m3/s]   m=%+5.2f[kg/s]   dp=%+5.3f[bar]  dH=%+6.2f[m]',temp{j}.nev,j,Q,m,dp/1e5,dp/9.81/1000);
+    end
+end
+
+
+fprintf('\n\n => rugalmas csovek:\n');
+fprintf('\n    Nev      |        eleje         |        vege          |          ');
+fprintf('\n             |   p[bar]    Q[m3/s]  |   p[bar]    Q[m3/s]  |  m[kg/s] ');
+fprintf('\n-------------+----------------------+----------------------+-----------');
+
+for i=1:length(csovek)
+    ppp=csovek{i}.p;
+    qqq=(csovek{i}.v).*(csovek{i}.A);
+    nnn=csovek{i}.N;
+    mmm=csovek{i}.ro*qqq;
+    fprintf('\n   %7s  |   %6.2f    %+6.4f  |   %6.2f    %+6.4f  |  %+6.2f ',csovek{i}.nev,ppp(1)/1e5,qqq(1),ppp(nnn+1)/1e5,qqq(nnn+1),mmm(nnn+1));
+end
+% CPU ido
+cput=cputime-cput; th=floor(cput/3600); cput=cput-3600*th; tm=floor(cput/60); cput=cput-60*tm;
+fprintf('\n\nszamitasi ido:   %gh  %gmin  %gs\n\n',th,tm,cput);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fp=fopen('eredmenyek.out','w');
+c = clock;
+fprintf(fp,'Tranziens szimulator\n------------------------------------');
+
+fprintf(fp,'\n A szamitas vege: %d.%d.%d  %d:%d',c(1),c(2),c(3),c(4),c(5));
+fprintf(fp,'\n Merev alrendszer adatok: %s.mdt',mdat);
+fprintf(fp,'\n Rugalmas csovek adatai : %s.rdat',rdat);
+fprintf(fp,'\n\n Az utolso lepes eredmenyei:');
+for i=1:length(mar)
+    fprintf(fp,'\n\n  => merev alrendszer: %s',mar{i}.nev);
+    for j=1:length(mar{i}.csp)
+        temp=mar{i}.csp;
+        pp=get(mar{i},'p',temp{j}{1});
+        fprintf(fp,'\n         %8s (%3d): p=%+6.3f [bar]',temp{j}{6},j,pp/1e5);
+    end
+    fprintf('\n');
+    for j=1:length(mar{i}.elemek)
+        temp=mar{i}.elemek;
+        Q=get(mar{i},'Q',j);
+        m=get(mar{i},'m',j);
+        dp=get(mar{i},'dp',j);
+        fprintf(fp,'\n         %8s (%3d): Q=%+5.3f [m3/s]\t m=%+5.2f [kg/s]\t dp=%+5.3f [bar]\t dH=%+6.2f [m]',temp{j}.nev,j,Q,m,dp/1e5,dp/9.81/1000);
+    end
+end
+
+fprintf(fp,'\n\n => rugalmas csovek:\n');
+fprintf(fp,'\n    Nev      |        eleje         |        vege          |          ');
+fprintf(fp,'\n             |   p[bar]    Q[m3/s]  |   p[bar]    Q[m3/s]  |  m[kg/s] ');
+fprintf(fp,'\n-------------+----------------------+----------------------+-----------');
+for i=1:length(csovek)
+    ppp=csovek{i}.p;
+    qqq=csovek{i}.v*csovek{i}.A;
+    nnn=csovek{i}.N;
+    mmm=csovek{i}.ro*qqq;
+    fprintf(fp,'\n   %7s  |   %6.2f    %+6.4f  |   %6.2f    %+6.4f  |  %+6.2f ',csovek{i}.nev,ppp(1)/1e5,qqq(1),ppp(nnn+1)/1e5,qqq(nnn+1),mmm(nnn+1));
+end
+fprintf(fp,'\n\nszamitasi ido:   %gh  %gmin  %gs\n\n',th,tm,cput);
+fclose(fp);
+
+%----------------------------------------------------------------------
+
+function [dt,icso]=dtuj(csovek,t)
+
+global dtmin
+
+dt=1e5;
+
+for i=1:length(csovek)
+    dtt=csovek{i}.t+csovek{i}.dt-t;
+    if dtt<dt, dt=dtt; icso=i; end
+end
+
+% Ha valamelyik cso ehhez nagyon kozel van, azzal is lepunk
+for i=[1:icso-1,icso+1:length(csovek)]
+    dtt=csovek{i}.t+csovek{i}.dt-t;
+    if abs(dtt-dt)<dtmin, icso=[icso,i]; end
+end
+
+%fprintf('\nt=%7.5e  dt1=%7.5e  dt2=%7.5e  t1=%7.5e  t2=%7.5e',t,csovek{1}.t+csovek{1}.dt-t,csovek{2}.t+csovek{2}.dt-t,csovek{1}.t,csovek{2}.t);
+%fprintf(' -> dt=%7.5e, csovek: %d ==>',dt,length(icso));
+%for i=1:length(icso), fprintf('  %g  ',icso(i)); end
+
+%----------------------------------------------------------------------
+
+function out = update_mar(amar,mar_cso,mar,csovek,eleje_v_vege,t,dt,dtmin,debug)
+
+% amar : a merev alrendszer szama, amit frissiteni akarunk
+
+if ~(amar==0) % ha van egyaltalan merev alr.
+    
+    % Elso lepeskent be kell kerni a amar-hoz kapcsolodo rugalmas elemek
+    % peremfelteteleit: pf-be gyujtjuk
+    l=1; pf={};
+    for j=1:length(mar_cso{amar})
+        for k=1:length(mar_cso{amar}{j}{2})
+            ezacso=mar_cso{amar}{j}{2}(k);
+            temp=csovek{abs(ezacso)}.csp;
+            
+            if eleje_v_vege=='e'
+                pf_tipus=csovek{abs(ezacso)}.pf_eleje_tipus;
+            else
+                pf_tipus=csovek{abs(ezacso)}.pf_vege_tipus;
+            end
+            
+            switch pf_tipus
+                case 'karakterisztika'
+                    if ezacso<0
+                        % a rugalmas cso ELEJEn van a mar
+                        ezacso=abs(ezacso);
+                        pf_tipus = csovek{ezacso}.pf_eleje_tipus;
+                        if isa(csovek{ezacso}, 'viszkcso')
+                            pf{l}={mar_cso{amar}{j}{1},'viszkcso',karm(csovek{ezacso},t+dt-csovek{ezacso}.t,dtmin)};
+                        elseif isa(csovek{ezacso}, 'rug_cso')
+                            pf{l}={mar_cso{amar}{j}{1},'rug_cso',karm(csovek{ezacso},t+dt-csovek{ezacso}.t,dtmin)};
+                        end
+                        kar_jel='-';
+                    else
+                        % a rugalmas cso VEGEn van a mar
+                        pf_tipus = csovek{ezacso}.pf_vege_tipus;
+                        if isa(csovek{ezacso}, 'viszkcso')
+                            pf{l}={mar_cso{amar}{j}{1},'viszkcso',karp(csovek{ezacso},t+dt-csovek{ezacso}.t,dtmin)};
+                        elseif isa(csovek{ezacso}, 'rug_cso')
+                            pf{l}={mar_cso{amar}{j}{1},'rug_cso',karp(csovek{ezacso},t+dt-csovek{ezacso}.t,dtmin)};
+                        end
+                        kar_jel='+';
+                    end
+                    if debug>1
+                        fprintf('\n\t %d. pf -> csp:%d  cso: %s (%g.) C%s kar., dt=%+5.3e',...
+                            l,mar_cso{amar}{j}{1},csovek{ezacso}.nev,ezacso,kar_jel,t+dt-csovek{ezacso}.t);
+                    end
+                    
+                case 'vizszint_&_konti'
+                    if ezacso<0
+                        % a csatorna ELEJEn van a mar
+                        ezacso=abs(ezacso);
+                        pf_tipus = csovek{ezacso}.pf_eleje_tipus;
+                        pf{l}={mar_cso{amar}{j}{1},'vizszint_&_konti',karm(csovek{ezacso},t+dt-csovek{ezacso}.t,dtmin)};
+
+                    else
+                        % a csatorna VEGEn van a mar
+                        pf_tipus = csovek{ezacso}.pf_vege_tipus;
+                        pf{l}={mar_cso{amar}{j}{1},'vizszint_&_konti',karp(csovek{ezacso},t+dt-csovek{ezacso}.t,dtmin)};
+                    end
+                    
+                otherwise
+                    error('Hibas peremfeltetel: %s',pf_tipus);
+            end
+            
+            % pf{.} leptetese
+            l=l+1;
+        end
+    end
+    
+    % Frissites:
+    if debug>1
+        fprintf('\n -->Lepek egyet a %d. merev alrendszerrel: %5.3e [s] -> ',...
+            amar,mar{amar}.t);
+    end
+    %mar{amar}.elemek{1}.y
+    %pause
+    mar{amar} = solve(mar{amar},pf,t+dt);
+    out = mar;
+
+    if debug>1, fprintf(' %5.3e [s]\n',mar{amar}.t); end
+    
+end
+
+%----------------------------------------------------------------------
+
+function pf = update_rug_elem(flag,gcsp_tipus,mar,amar,acsp,cspb,csovek,csp_nevsor,acso,tjcs,t,dt,dtmin,debug)
+
+n_cso=length(csovek);
+n_mar=length(mar);
+
+if strcmp(flag,'eleje')
+    ev_string = 'Eleje';
+else
+    ev_string = 'Vege';
+end
+
+switch gcsp_tipus
+    case 1 % Merev alrendszer kapcsolodik
+        pf={'p',get(mar{amar},'p',acsp)};
+        if debug>2
+            fprintf('\n\t %s: %s (%d.) merev alrendszer %s (%d.) csomopontja',ev_string,mar{amar}.nev,amar,cspb{acsp}{3},acsp);
+        end
+        
+    case 2 % Csak rugalmas csovek talalkoznak
+        if debug>1, fprintf('\n\n\t A cso %sn amoba csomopont van',lower(ev_string)); end
+        temp=csovek{acso}.csp;
+        acsp=temp(1);
+        if debug>2, fprintf('\n\t\t\t ezek a rugalmas csovek talalkoznak a %s (%d) csomopontban:',csp_nevsor{acsp},acsp); end
+        
+        % csovek kivalogatasa
+        gcso=[];
+        for j=1:n_cso
+            if ~(tjcs(acsp,j)==0), gcso=[gcso,j*tjcs(acsp,j)]; end
+        end
+        if debug>1, disp(gcso); end
+        % Csomoponti konti+kar. egyenletek megoldasa
+        if debug>2, fprintf('\t Amoba egyenletek megoldasa:'); end
+        szum1=0; szum2=0;
+        for j=1:length(gcso)
+            if gcso(j)>0
+                ezacso=gcso(j);
+                out=karp(csovek{ezacso},t+dt-csovek{ezacso}.t,dtmin);
+                if debug>2, fprintf('\n\t\t   %d. rugalmas elem interpolaljon C+ menten ide: %7.5f[s]  innen: %7.5f[s]  azaz dt: %7.5f[s], val=%7.5f, p=%7.5f, v=%7.5f',ezacso,t+dt,csovek{ezacso}.t,t+dt-csovek{ezacso}.t,out(5)/1e5,out(6)/1e5,out(7)); end
+            else
+                ezacso=abs(gcso(j));
+                out=karm(csovek{ezacso},t+dt-csovek{ezacso}.t,dtmin);
+                if debug>2, fprintf('\n\t\t   %d. rugalmas elem interpolaljon C- menten ide: %7.5f[s]  innen: %7.5f[s]  azaz dt: %7.5f[s], val=%7.5f, p=%7.5f, v=%7.5f',ezacso,t+dt,csovek{ezacso}.t,t+dt-csovek{ezacso}.t,out(5)/1e5,out(6)/1e5,out(7)); end
+            end
+            szum1=szum1+out(4)*out(3)/out(2); szum2=szum2+out(4)/out(2);
+        end
+        
+        Qbe = tjcs(acsp,n_mar+n_cso+1);
+        p = (szum1-Qbe)/szum2;
+        if debug>1, fprintf('\n\t\tAmoba csomoponti nyomas:  %g [bar],  Qbe: %g [m^3/s]',p/1e5,Qbe); end
+        pf={'p',p};
+        
+    case 3 % Adott nyomasa pont
+        pf={'p',gcsp_p(temp(1))};
+     
+    otherwise
+        error('Megszivtad:  gcsp_tipus=%s', gcsp_tipus);
+end

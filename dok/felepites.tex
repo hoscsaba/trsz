@@ -1,0 +1,365 @@
+\chapter{Fejlesztõknek}
+
+\section{Elemek}
+
+Az osztályhierarchia:
+
+\begin{description}
+\item [tranziens\_agelem:] minden merev ágelemet ebbõl kell származtatni
+	\begin{description}
+	\item [tranziens\_agelem\_1csp:] 1 csomópontos tranziens ágelemek
+		\begin{description}
+			\item [medence:] egyszer medence, egyenlõre még a szintemelkedés sincs benne...
+		\end{description}
+	\item [tranziens\_agelem\_2csp:] 2 csomópontos tranziens ágelemek
+		\begin{description}
+			\item [konc\_cso] súrlódásos teltszelvényû csõ
+			\item [szivattyu] jelleggörbés szivattyú
+			\item [fojtas] parabolikus jelleggörbéjû fojtás   
+			\item [vez\_fojtas] vezérelt fojtás
+		\end{description}
+	\end{description}
+\item [cso:] telteszelvényû, elosztott paraméterû, súrlódásos csõ (karakterisztikák módszere)
+\item [merev\_alrendszer:] merev elemekbõl összeépített rendszer
+\end{description}
+
+\noindent Van néhány olyan eljárás, amit mindig definiálni kell
+
+\begin{center}
+\begin{tabular}{|l|p{7cm}|}\hline
+név                                 & magyarázat \\ \hline \hline
+{\tt <konstruktor>}                 & az elemet létrehozó eljárás, neve az elem neve \\
+{\tt out=subsref(trag,index)}       & hozzáférés a mezõkhöz, pl. {\tt p1=medence1.p}\\ \hline
+{\tt trag=subsasgn(trag,index,val)} & értékadás mezõknek, pl. {\tt medence1.p=1e5}\\ \hline
+{\tt subsasgn(elem,flag,varargin)}  & információ kérés\\ \hline
+\end{tabular}
+\end{center}
+
+Az {\tt info} eljárás {\tt flag} változója mondja meg, milyen típuú információt kérünk:
+
+\begin{center}
+\begin{tabular}{|l|l|p{8cm}|}\hline
+{\tt info} & {\tt varargin}  & magyarázat \\ \hline \hline
+1          &                 & képernyõre (parancsablakba) általános info ( cso\-mó\-pon\-tok, változók, paraméterek, stb... ) \\ \hline
+2          & \tt{1}: fájlnév & ugyanaz, mint az elõzõ, csak fájlba írja.\\ \hline
+3          &                 & futás közbeni info fájlba\\ \hline
+4          &                 & ????? \\ \hline
+5          &                 & jelleggörbe kirajzolás, ha van ilyen\\ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\subsection{Rugalmas csövek}
+
+A $\mathcal{C}^+$ és $\mathcal{C}^-$ karakterisztika mentén
+
+\begin{equation}
+\frac{d}{dt}\left( p \pm \rho a v\right) = \mp \rho g a \frac{dz}{dx} \mp \frac{\lambda}{2D} \rho a v |v| = \mathcal{K}^{\pm}.
+\end{equation}
+
+A $dy/dt \approx (y^{j+1}-y^j)/\Delta t$ közelítését alkalmazva az $i=2 \dots N$ belsõ pontokra:
+
+\begin{equation}
+\begin{array}{lll}
+\mathcal{C}^+&: \quad \left( p + \rho a v\right)_i^{j+1} &= \left( p + \rho a v\right)_{i-1}^{j} + \Delta t \mathcal{K}^+ \quad \text{és}\\
+\mathcal{C}^-&: \quad \left( p - \rho a v\right)_i^{j+1} &= \left( p - \rho a v\right)_{i+1}^{j} + \Delta t \mathcal{K}^-.
+\end{array}
+\end{equation}
+
+A peremeken pedig
+
+\begin{equation}
+\begin{array}{lll}
+i=N+1:& \quad \left( p - \rho a v\right)_{N+1}^{j+1} &= \left( p - \rho a v\right)_{N}^{j} + \Delta t \mathcal{K}^- \quad \text{és}\\
+i=1:  & \quad \left( p + \rho a v\right)_{1}^{j+1}   &= \left( p + \rho a v\right)_{2}^{j} + \Delta t \mathcal{K}^+.
+\end{array}
+\end{equation}
+
+A peremeken általában interpolálni kell valamilyen $0< \delta t \leq \Delta t$ idõszintre és az ágegyenlet együtthatóit kell megadni:
+
+\begin{equation}
+\begin{array}{lll}
+i=1:&     \quad \left( p - \rho a v\right)_{1}^{j+1} &= \left( p - \rho a v\right)_{\delta x}^{j} + \Delta t \mathcal{K}^-_{\delta x} \quad \text{és}\\
+i=N+1:  & \quad \left( p + \rho a v\right)_{N+1}^{j+1}   &= \left( p + \rho a v\right)_{\delta x}^{j} + \Delta t \mathcal{K}^+_{\delta x},
+\end{array}
+\end{equation}
+
+ahol a $*_{\delta t}$ jelölés azt jelenti, hogy interpolálni kell a megfelelõ $x$ helyre a $*$ változó (nyomás és sebesség) értékét. Így az ágegyenletek együtthatót a
+
+\begin{equation}
+\begin{array}{lll}
+\text{a csõ elején:}& \quad 0=p - \frac{\rho a}{A} Q - \left( p - \rho a v\right)_{\delta x} - \Delta t \mathcal{K}^-_{\delta x} \quad \text{és}\\
+\text{a csõ végén:} & \quad 0=p + \frac{\rho a}{A} Q - \left( p + \rho a v\right)_{\delta x} - \Delta t \mathcal{K}^+_{\delta x}
+\end{array}
+\end{equation}
+
+egyenletekbõl tudjuk kiolvasni.
+%Rugalmas csõ konstruktora kétféle lehet; vagy megadunk egy dõlést ($i=dz/dx$), kezdeti nyomást és sebességet, vagy csomópontonként magasság- nyomás- és sebességértékeket. A 10. változó hossza dönti el, melyik konstrukctort választottuk.
+
+%\begin{center}\begin{tabular}{|c||c|c|c|c|c|c|c|c|c||c|c|c|}\hline
+%          &  1  &  2   &  3   &    4   &   5    &   6    &     7     &     8   &  9  & 10    &      11   &  12 \\ \hline \hline
+%{\tt cso} & név & csp1 & csp2 & $D[m]$ & $s[m]$ & $L[m]$ & $\lambda$ & folynev & $N$ & $dz/dx$   & $p_{0,e}$ & $v_0$  \\ \hline
+%{\tt cso} & név & csp1 & csp2 & $D[m]$ & $s[m]$ & $L[m]$ & $\lambda$ & folynev & $N$ & $h_i$ & $p_i$     & $v_i$  \\ \hline
+%\end{tabular}\end{center}
+
+
+\vfill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\subsection{Virtuális elemek}
+
+Ezeket az elemeket sosem alkalmazzuk a valóságban, csupán arra valók, hogy származtassuk belõlük a valós elemeket és így egy csomó változót és eljárást nem kell újra meg újra definiálni.
+
+\subsubsection{{\tt tranziens\_agelem}}
+
+Kapcsolódó mezõk és eljárások:
+
+\begin{center}
+\begin{tabular}{|l|c|l|}\hline
+név            & default érték & magyarázat \\ \hline \hline
+{\tt nev}      &   -           & név\\
+{\tt Q}        &   -           & térfogatáram, $m^3/s$\\
+{\tt Qr}       &   -           & ,,régi'' térfogatáram, $m^3/s$\\
+{\tt folynev}  & {\tt viz}     & folyadék neve\\
+{\tt ro     }  & {\tt 1e3}     & sûrûség, $kg/m^3$\\
+{\tt nu     }  & {\tt 1e-6}    & kinematikai viszkozitás, $m^2/s$\\
+{\tt mu     }  & {\tt 1e-3}    & dinamikai viszkozitás,$Pas$\\
+{\tt B      }  & {\tt 1e9}     & rugalmassági modulus, $Pa$\\   
+{\tt resfile}  & {\tt 0}       & legyen-e kimeneti file\\ \hline
+{\tt subsref}  &               & hozzáférés a mezõkhöz (mind)\\
+{\tt subsasgn} &               & értékadás mezõknek (mind)\\ \hline
+\end{tabular}
+\end{center}
+
+\subsubsection{\tt tranziens\_agelem\_1csp}
+
+1 csomópontos merev ágelemek. Kapcsolódó mezõk és eljárások:
+\begin{center}
+\begin{tabular}{|l|c|p{6cm}|}\hline
+név            & default érték & magyarázat \\ \hline \hline
+{\tt csp}      &      -        & kapcsolódási csomópont száma\\
+{\tt p }       & {\tt 0}       & nyomás a kapcsolódási pontban\\ \hline
+{\tt subsref}  &      -        & hozzáférés a mezõkhöz (mind)\\
+{\tt subsasgn} &      -        & értékadás mezõknek (mind)\\
+{\tt info(elem,flag,varargin)}     &               & info a mezõkrõl\\ \hline
+\end{tabular}
+\end{center}
+
+\subsubsection{\tt tranziens\_agelem\_2csp}
+
+2 csomópontos tranziens ágelemek. Kapcsolódó mezõk és eljárások:
+\begin{center}
+\begin{tabular}{|l|c|p{6cm}|}\hline
+név            & default érték & magyarázat \\ \hline \hline
+{\tt csp}      &     -         & kapcsolódási csomópontok száma, vektor\\
+{\tt p }       & {\tt [0,0]}   & nyomás a kapcsolódási csomópontokban, vektor\\ \hline
+{\tt subsref}  &               & hozzáférés a mezõkhöz (mind)\\
+{\tt subsasgn} &               & értékadás mezõknek (mind)\\
+{\tt info(elem,flag,varargin)}     &               & info a mezõkrõl\\ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\subsection{Agelemek}
+
+\subsubsection{\tt konc\_cso}
+
+Konstruktor hívása:
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|c|c|}\hline
+                &  1  &  2   &  3   &    4   &  5     &   6    &    7      & 8  \\ \hline \hline
+{\tt konc\_cso} & név & csp1 & csp2 & $D[m]$ & $s[m]$ & $L[m]$ &  \{0.02\} & \{víz\} \\ \hline
+{\tt konc\_cso} &    &       &      &        &        &        & $\lambda$ & folynév \\ \hline
+\end{tabular}
+\end{center}
+
+
+%--------------------------------
+\subsubsection{\tt fojtas}
+
+A fojtási egyenlet alakja: $\Delta p [Pa] = K_0\, + \, K_1 \rho\, Q \left| Q \right|$, $Q[m^3/s]$. Konstruktor hívása:
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|}\hline
+                &  1  &  2   &  3   &       4     &     5     &   6  \\ \hline \hline
+{\tt konc\_cso} & név & csp1 & csp2 & $K_0[1/m^2]$ & $K_1[m^2]$ & folynév \\ \hline
+\end{tabular}
+\end{center}
+
+%--------------------------------
+\subsubsection{\tt vez\_fojtas}
+
+A fojtási egyenlet alakja: $\Delta p [Pa] = K_0\, + \, K_1(t) \rho\, Q \left| Q \right|$, $Q[m^3/s]$. Meg kell adni egyrészrõl a $K_{\zeta}$ fojtási tényezõt valamilyen $\varepsilon=e/D$ dimenziótlan geometriai paraméter függvényében, pl. tolózár helyzet a csõátmérõre vonatkoztatva, ill. meg kell adni ezen geometriai paraméter idõbeli változását. Tehát adott: $t=(t_1,t_2,\dots,t_N)$ idõpontokban $\varepsilon_t=(\varepsilon_1,\varepsilon_2,\dots,\varepsilon_N)$ és $\varepsilon_K=(\varepsilon_{t,1},\varepsilon_{t,2},\dots,\varepsilon_{t,N})$ pontokban $K_{\zeta}=(K_{\zeta,1},K_{\zeta,2} \dots K_{\zeta,N})$. A számítás menete:
+%
+\begin{center}
+\begin{equation*}
+t\quad \Rightarrow \quad \varepsilon \quad \Rightarrow \quad K_\zeta \quad \Rightarrow \quad \zeta= \left( \frac{K}{K-1}\right)^2 \quad \Rightarrow \quad K_1=\frac{\zeta}{2\,A^2}.
+\end{equation*}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|c|c|c|}\hline
+                &  1  &  2   &  3   &   4     &     5    &       6         &       7     &   8  &       9  \\ \hline \hline
+{\tt konc\_cso} & név & csp1 & csp2 & fojt.név & $A[m^2]$ & $(\varepsilon_K)$ & $(K_1)$  &  $(t)$ & $(\varepsilon_K)$\\ \hline
+\end{tabular}
+\end{center}
+
+%--------------------------------
+\subsubsection{\tt szivattyu}
+
+A szivattyú jellegörbével rendelkezik, a konstruktor végén a {\tt tranziens} kapcsoló azt mutatja, hogy milyen tranziens állapot fog bekövetkezni. {\tt 0} értéknél nincsen semmilyen tranziens, {\tt 1} a szivattyú kiesés, {\tt 2} és {\tt 3} a szivattyú indítás attól függõen, hogy rendelkezése áll-e a motor $M_m(n)$ jelleggörbéje vagy csak az $M_b$ billenõnyomatékot, az ahhoz tartozó $n_b$ fordulatszámot és az $n_{sz}$ szinkron fordulatszámot tudjuk.
+
+\begin{center}\begin{tabular}{|c||c|c|c|c|c|c|c|c|}\hline
+                &  1  &  2   &  3   &  4    &  5    &  6    &    7     & 8\\ \hline \hline
+{\tt szivattyu} & név & csp1 & csp2 & $(Q[m^3/s])$ & $(H[m])$ & $D_s[m]$ & $D_n[m]$ & tranziens\\ \hline
+\end{tabular}\end{center}
+
+Tranziens beállítások:
+
+\begin{center}\begin{tabular}{|c||c|c|c|c|c|c|c|c|}\hline
+                  &      9    &     10     &     11          &     12      &     13         &    14  \\ \hline \hline
+{\tt tranziens=0} &           &            &                 &             &                &        \\ \hline
+{\tt tranziens=1} & $(P[kW])$ & $n[1/min]$ & $\theta[kgm^2]$ & $t_{ki}[s]$ &                &        \\ \hline
+{\tt tranziens=2} & $(P[kW])$ & $n[1/min]$ & $\theta[kgm^2]$ & $M_b[Nm]$   & $n_b[1/min]$   & $n_{sz}[1/min]$\\ \hline
+{\tt tranziens=3} & $(P[kW])$ & $n[1/min]$ & $\theta[kgm^2]$ & $(M_m[Nm])$   & $(n_m[1/min])$ &       \\ \hline
+\end{tabular}\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\subsection{Merev alrendszer}
+
+Merev alrendszert kétféleképpen lehet létrehozni:
+\begin{enumerate}
+\item Egy {\tt fnev.dat} kiterjesztésû adatfájlban fel kell sorolni az elemeket ill. a csomópontokat, és a konstruktor megkapja a fájlnevet kiterjesztés nélkül. A fájl elsõ sorában egy szám áll, ami ez elemek számát jelenti, aztán minden soronként definiálni kell az elemeket, majd a csomópontokat: név, $h[m]$, $Q_{be}[m^3/s]$. pl. {\tt mar1=merev\_elrendszer('fnev')}
+\item A merev alrendszer konstruktora megkapja az elemeket és a csomópontokat készen:\\ {\tt mar1=merev\_elrendszer('nev',elemek,csp)}.
+\end{enumerate}
+
+Az objektum adatmezõi:
+
+\begin{center}
+\begin{tabular}{|l|c|p{8cm}|}\hline
+mezõ                   &       & magyarázat \\ \hline \hline
+{\tt n\_elem}           &       & elemek száma\\ \hline
+{\tt n\_csp}            &       & csomópontok száma\\ \hline
+{\tt elemek\{i\}}      &       & merev alrendszer elemei\\ \hline
+{\tt csp\{i\} }        & \{1\} & csomópont neve\\
+{\tt csp\{i\} }        & \{2\} & csomópont magassága $[m]$\\
+{\tt csp\{i\} }        & \{3\} & csomópontba befutó ágak azonosító száma elõjelesen (vektor)\\
+{\tt csp\{i\} }        & \{4\} & csomóponti nyomás $[Pa]$\\
+{\tt csp\{i\} }        & \{5\} & elvétel/betáp $[m^3/s]$\\ \hline
+{\tt csp\{i\} }        & \{6\} & csomópont neve\\ \hline
+\end{tabular}
+\end{center}
+
+A kimenetet szabályzó mezõk:
+\begin{center}
+\begin{tabular}{|l|c|p{9cm}|}\hline
+mezõ                   &       & magyarázat \\ \hline \hline
+{\tt plot\_iter}       &       & a számítás befejezése után rajzoljuk-e ki a Newton-Raphson lépések konvergenciatörténetét (default:0)\\ \hline
+{\tt save\_level}      &       & információ a számítás közben (default:3)\\
+                       &   0   & semmi\\
+                       &   1   & topológia $\rightarrow$ {\tt fnev.out}\\
+                       &   2   & topológia + elemek $\rightarrow$ {\tt fnev.out}\\
+                       &   3   & topológia + elemek + eredmények $\rightarrow$ {\tt fnev.out}\\
+                       &   4   & topológia + elemek + eredmények + iterációk $\rightarrow$ {\tt fnev.out}\\
+                       &   5   & topológia + elemek + eredmények + iterációk + mátrixok struktúrája $\rightarrow$ {\tt fnev.out}\\
+                       &   6   & topológia + elemek + eredmények + iterációk + mátrixok struktúrája $\rightarrow$ {\tt fnev.out} és mátrixok értékei $\rightarrow$ {\tt fnev\_ABCD.res}\\ \hline
+
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\section{A fõprogram: {\tt eon\_driver.m}}
+
+Az {\tt eon\_driver} eljárás a fõprogram. Kötelezõ paraméterek a merev és rugalmas adatfájl és a számítás idõtartama, az opcionális paramétereket késõbb elsoroljuk. A szintaktika:
+
+\begin{center}
+\tt{eon\_driver(}<merev adatfájl>,<rugalmas adatfájl>,<idõtartam>,\{<opció>,<érték>\}\tt{)},
+\end{center}
+
+ahol az utolsó blokk \{...\} többször is ismétlõdhet. A lehetséges opciók:
+
+\begin{center} 
+\begin{tabular}{|l|c|p{9cm}|}
+\emph{Opció} & \emph{Értékek} & \emph{Magyarázat} \\ \hline \hline
+{\tt debug} & 0|1|2|3 & A képernyõn futás közben megjelenõ információ mennyisége. Alapbeállításban 0, innen folyamatosan nõ az info mennyisége. \\ \hline
+{\tt rajz}  & 0|1     & Ha 1, a program futása után a rugalmas csövek végpontjain megjeleníti a nyomás- és térfogatáram lefutásokat. Alapbeállítás: 0. \\ \hline
+{\tt dtmin}  & <szám> & A megengedhetõ minimális idõlépés, ami alatt összevonja a csövek idõlépését. Alapbeállítása a legkisebb csõ-idõlépés ezrede.\\ \hline
+{\tt op}    & windows | linux & Az operációs rendszert definiálja, erre a futás eleji könyvtártisztítás miatt van szükség. Alapbeállítás: windows.\\ \hline
+\end{tabular}
+\end{center}
+
+Példák futtatásra {\tt Matlab} környezetben:
+
+\begin{description}
+\item[{\tt eon\_driver('f0','f0',20)}]  $\Rightarrow$ merev adatfájl: {\tt f0.mdt}, rugalmas adatfájl: {\tt f0.dat}, idõtartam: $20s$.
+\item[{\tt eon\_driver('f0','f0',20,'debug',2)}] $\Rightarrow$ több információ a képernyõre.
+\item[{\tt eon\_driver('f0','f0',20,'debug',2,'op','linux')}] $\Rightarrow$ futtatás Linux op. rendszer alatt.
+\end{description}
+
+A program fõ részei: (1) merev alrendszerek felépítés: {\tt olvas5m.m} hívása, (2) rugalmas alrendszerek építése: {\tt olvas5r.m} hívása, (3) rugalmas és merev alrendszerek csatlakozásának felépítése, (4) számítás és (5) eredmények listázása. A fájl végén külön eljárás az idõlépés választását elvégzõ {\tt dtuj} eljárás.
+
+A futás közben használt belsõ adatstruktúrák, melyek a topológiát írják le:
+
+\begin{itemize}
+\item {\tt mar\{i\}, i=1..n\_mar} A merev alrendszereket tartalmazó vektor. Az {\tt olvas5m.m} eljárás kimenete.
+\item {\tt csovek\{i\}, i=1..n\_cso} A rugalmas csöveket tartalmaz vektor. Az {\tt olvas5r.m} eljárás kimenete.
+\end{itemize}
+
+{\bf Csomópont Biblia:} {\tt cspb} objektum
+
+Ez a struktúra tartalmazza az összes merev alrendszer összes csomópontját. Minden eleme ({\tt cspb\{i\}}) egy csomópontnak felel meg:
+
+\begin{center}
+\begin{tabular}{|l|c|p{8cm}|}
+\emph{Mezõ}             &       & \emph{Magyarázat} \\ \hline \hline
+{\tt cspb\{i\} }        & \{1\} & Merev alrendszer száma.\\ \hline
+{\tt cspb\{i\} }        & \{2\} & Merev alrendszerben a csomópont száma. \\ \hline
+{\tt cspb\{i\} }        & \{3\} & A csomópont neve. \\ \hline
+\end{tabular}
+\end{center}
+
+{\bf Topológia nyilvántartása}
+
+A {\tt tjcs } mátrix minden egyes sora megfelel egy 'globális' csomópontnak, azaz egy olyan csomópontnak, ahol merev-rugalmas vagy rugalmas-rugalmas kapcsolódás van. Az elsõ {\tt n\_cso} számú oszlop a rugalmas csöveket reprezentálja. Ha az i-edik csomópontból indul a j-edik rugalmas csõ, {\tt t(i,j)=-1}, ha onnan indul {\tt t(i,j)=1}. Az elsõ {\tt n\_cso} számú oszlop után következõ {n\_mar} oszlop a merev alrendszerekkel való kapcsolódást mutatja. Ha az i-edik globális csomópont a j-edik merev alrendszer \emph{belsõ} számozásában k, akkor {\tt tjcs(i,n\_cso+j)=k}. Ha egy globális csomópont amõba, azaz rugalmas-rugalmas kapcsolódásról van szó, a merev alrendszerek oszlopaiban csupa zérus elem áll.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=12cm]{abrak/top_pelda.pdf}
+%    \includegraphics[width=12cm]{abrak/top_pelda.eps}
+    \caption{\label{top_pelda} Példa topolóigára, a megfelelõ {\tt tjcs} mátrix a \ref{top_pelda_tablazat}. táblázatban látható.}
+  \end{center}
+\end{figure}
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{c||ccc|cc|}
+             & rcso1 & rcso2 & rcso3 & mar1 & mar2\\ \hline \hline
+      g\_csp1 & -1    & 0     & 0     & 17   & 0 \\ \hline
+      g\_csp2 & 1     & -1    & 0     & 0    & 0 \\ \hline
+      g\_csp3 & 0     &  1    & -1    & 0    & 29 \\ \hline
+      g\_csp4 & 0     &  0    & 1     & 8    & 0 \\ \hline
+    \end{tabular}
+    \caption{\label{top_pelda_tablazat} Topológia példa.}
+  \end{center}
+\end{table}
+
+A {\tt tjcs} építése közben feltöltõdik egy {\tt gcsp\_tipus} (globális csomópont típus) vektor is, aminek i-edik eleme 1, ha az i-edik globális csomópont merev-rugalmas csatlakozás és 2, ha amõba (rugalmas-rugalmas)\footnote{Az adatfájlokon keresztül még nem elérhetõ ugyan, de van egy 3. lehetõség, amikor adott nyomású amõba csomópontról van szó, ekkor a megfelelõ elem 3.}.
+
+Ezeken kívül a hálózat felépítése után létrehozunk egy {\tt cso\_mar} és egy {\tt mar\_cso} nevû objektumot, ezek a futtatás közben hasznosak. A {\tt cso\_mar{i}} struktúra két mezõbõl áll, mind a két mezõ egy-egy vektort tartalmaz. Az elsõ elem a csõ elejére, a második a csõ végére vonatkozik, a vektorok pedig a kapcsolódó merev alrendszer számát és a csomópontszámot tartalmazzák. A fenti példában {\tt mar\_cso{1}{1}=[1,17]}, {\tt mar\_cso{1}{2}=[0,0]}, {\tt mar\_cso{2}{1}=[0,0]}, {\tt mar\_cso{2}{2}=[2,29]}, {\tt mar\_cso{3}{1}=[2,29]}, {\tt mar\_cso{3}{2}=[1,17]}. A másik struktúra a merev alrendszerek frissítésekor megmutatja, hogy honnan van szükség peremfeltételekre, ennek merev alrendszerenként annyi mezõje van, ahány rugalmas csõhöz kapcsolódó csomópontja van a merev alrendszernek. Az utolsó két mezõ pedig megadja a kapcsolódó csomópont belsõ számát ill. a hozzá kapcsolódó rugalmas csövek számát elõjelesen (az induló rugalmas csövek negatív elõjelûek, az érkezõk pozitívak). A fenti példában {\tt mar\_cso{1}{1}{1}=17}, {\tt mar\_cso{1}{1}{2}=[-1]}, {\tt mar\_cso{1}{2}{1}=8}, {\tt mar\_cso{1}{2}{2}=[3]}, {\tt mar\_cso{2}{1}{1}=29} és {\tt mar\_cso{2}{1}{2}=[2,-3]}.
+
+
+
+
+
+
+
+
+
+
+

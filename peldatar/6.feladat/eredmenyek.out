@@ -1,0 +1,24 @@
+Tranziens szimulator
+------------------------------------
+ A szamitas vege: 2010.8.29  11:23
+ Adatfile: feladat6.tpr
+
+ Az utolso lepes eredmenyei:
+
+  => merev alrendszer: legust1
+             csp1 (  1): p=+1.592 [bar]
+          legust1 (  1): Q=-0.003 [m3/s]	 m=-2.96 [kg/s]	 dp=+0.000 [bar]	 dH= +0.00 [m]
+
+  => merev alrendszer: legust2
+             csp2 (  1): p=+1.528 [bar]
+          legust2 (  1): Q=+0.004 [m3/s]	 m=+3.89 [kg/s]	 dp=+0.000 [bar]	 dH= +0.00 [m]
+
+ => rugalmas csovek:
+
+    Nev      |        eleje         |        vege          |          
+             |   p[bar]    Q[m3/s]  |   p[bar]    Q[m3/s]  |  m[kg/s] 
+-------------+----------------------+----------------------+-----------
+       cso  |     1.59    +0.0030  |     1.53    +0.0039  |   +3.89 
+
+szamitasi ido:   0h  2min  16.4063s
+

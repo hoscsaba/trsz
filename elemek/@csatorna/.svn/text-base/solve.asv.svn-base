@@ -1,0 +1,327 @@
+function csatorna = solve(csatorna,pf)
+
+%% Peremfeltetelek atadasa
+bct1 = pf{1}{1}; bcv1 = pf{1}{2};
+bct2 = pf{2}{1}; bcv2 = pf{2}{2};
+
+ro = csatorna.tranziens_agelem_2csp.ro;
+nev = csatorna.tranziens_agelem_2csp.nev;
+show_csat='csat22';
+
+if strcmp(bct1,'p')
+    y_akna_beg = (bcv1 - csatorna.p0)/(ro*9.81) - csatorna.ze;
+else
+    error('Rossz peremfeltetel az elejen!')
+end
+
+if strcmp(bct2,'p')
+    y_akna_end = (bcv2 - csatorna.p0)/(ro*9.81) - csatorna.zv;
+else
+    error('Rossz peremfeltetel a vegen!')
+end
+
+%% Csatorna adatok, halogeneralas
+type = csatorna.tipus;
+%type 1-Vegtelen magas teglalap keresztmetszetu csatorna.
+%     2-Kor keresztmetszetu csatorna. (1% Hasitek)
+X = csatorna.dvB; % atmero v. szelesseg
+He = csatorna.ze; % csatorna elje folyasi szint
+Hv = csatorna.zv; % csatorna vege folyasi szint
+n = csatorna.n;   % manning allando
+L = csatorna.L;   % csatorna hosz
+s = (He-Hv)/L;    % lejtes
+g = 9.81;         % gravitacios gyorsulas
+N = csatorna.N+1; % osztaspontok szama
+h_min=0.015;
+
+Xmesh=linspace(0,L,N);
+%% Tranziens futtatas
+
+t = csatorna.t;
+Ytr = zeros(1,N); Vtr = zeros(1,N);
+Ytr(1:N) = csatorna.y; Vtr(1:N) = csatorna.v;
+
+if Ytr(1) < X*h_min
+    Ytr(1) = X*h_min;
+end
+
+% keresztmetszet jellemzoinek kiszamolasa
+Y_temp=Ytr(1,:); Y_temp( Y_temp>X )=X;
+r=X/2; theta=acos(1-Y_temp/r);
+AA=r^2*(theta-sin(2*theta)/2);
+BB=2*r*sin(pi-theta); BB( BB<0.01 )=0.01;
+KK=2*r*theta; Rhh=AA./KK;
+sp=sqrt(g*AA./BB);
+%% Inner points
+
+tP=zeros(1,N); xP=zeros(1,N);
+yP=zeros(1,N); vP=zeros(1,N);
+
+% Vectorized solver----------------------------------------------------
+yR=Ytr(1,3:N); vR=Vtr(1,3:N); yL=Ytr(1,1:N-2); vL=Vtr(1,1:N-2);
+aR=sp(3:N);      XR=Xmesh(3:N);   aL=sp(1:N-2);      XL=Xmesh(1:N-2);
+JR=n^2*abs(vR).*vR./Rhh(3:N).^(4/3); JL=n^2*abs(vL).*vL./Rhh(1:N-2).^(4/3);
+mR=1./(vR-aR); mL=1./(vL+aL);
+
+tP(2:N-1)=(-mR*t+ mL*t+mL.*mR.*(XL-XR))./(mL-mR);
+dt=tP(2:N-1)-t;
+xP(2:N-1)=(mL.*XL-mR.*XR)./(mL-mR);
+
+yP(2:N-1)=(aR*g.*yL + aL.*(aR.*(dt*g.*(-JL+JR)+vL-vR)+g*yR))./((aL+aR)*g);
+vP(2:N-1)=(aL.*(dt*g.*(-JL+s)+vL)+aR.*(dt*g.*(-JR+s)+vR)+g*(yL-yR))./(aL+aR);
+
+%% Interpolation
+t_int=zeros(1,N); yPint=zeros(1,N); vPint=zeros(1,N);
+for k=2:N-1
+    if Xmesh(k)<xP(k)
+        t_int(k)=(Xmesh(k)-Xmesh(k-1))*(tP(k)-t)/(xP(k)-Xmesh(k-1))+t;
+        yPint(k)=(yP(k)-yL(k-1))*(t_int(k)-t)/(tP(k)-t)+yL(k-1);
+        vPint(k)=(vP(k)-vL(k-1))*(t_int(k)-t)/(tP(k)-t)+vL(k-1);
+    else
+        t_int(k)=(Xmesh(k)-Xmesh(k+1))*(tP(k)-t)/(xP(k)-Xmesh(k+1))+t;
+        yPint(k)=(yP(k)-yR(k-1))*(t_int(k)-t)/(tP(k)-t)+yR(k-1);
+        vPint(k)=(vP(k)-vR(k-1))*(t_int(k)-t)/(tP(k)-t)+vR(k-1);
+    end
+end
+yPint(N)=yP(N-1); vPint(N)=vP(N-1); t_int(N)=tP(N-1);
+yPint(1)=yP(2);   vPint(1)=vP(2);   t_int(1)=tP(2);
+%--------------------------------------------------------------------------
+tmin=min(t_int(1:end)); T=tmin; dt=T-t;
+for k=1:N
+    Ytr(k)=(yPint(k)-Ytr(k))*(tmin-t)/(t_int(k)-t)+Ytr(k);
+    if Ytr(k)<X*h_min, Ytr(k)=X*h_min; end
+    Vtr(k)=(vPint(k)-Vtr(k))*(tmin-t)/(t_int(k)-t)+Vtr(k);
+end
+
+% %% First boundary condition
+% Q_beg=abs(Vtr(1)*AA(1)); yc_beg=crit(csatorna,type,X,max([Q_beg 1e-6]));
+%
+% Ytr(1)=max([y_akna_beg   Ytr(1)-g*dt^2/2   -sign(Vtr(1))*yc_beg   X*h_min]);
+% Vtr(1)=Vtr(2);
+% %% End boundary condition
+% Q_end=abs(Vtr(end)*AA(end));
+% yc_end=crit(csatorna,type,X,max([Q_end 1e-6]));
+% yn_end=normal(csatorna,max([Q_end 1e-6]),s,n); if length(yn_end)==0, yn_end=2*yc_end; else yn_end=yn_end(1); end
+%
+% Ytr(end)=max([y_akna_end   Ytr(end)-g*dt^2/2   min([yc_end yn_end])   X*h_min]);
+% Vtr(end)=Vtr(end-1);
+
+%% First boundary condition
+yc_beg=crit_new(X,csatorna.v(1));
+%     y_akna_beg=1*TS6(T(j),1*Yinit(1),0,20*Yinit(1),1)-...
+%                1*TS6(T(j),0*Yinit(1),20,19*Yinit(1),1);
+Ytr(1)=max([y_akna_beg   csatorna.y(1)-g*dt^2/2   -csatorna.v(1)*yc_beg/max(abs(csatorna.v(1)),1e-5)   X*h_min]);
+Vtr(1)=Vtr(2);
+%% Recheck the end boundary water level
+yc_end=crit_new(X,csatorna.v(end)); yn_end=norm_new(X,csatorna.v(end),n,s);
+%     y_akna_end=1*TS6(T(j),Yinit(N),0,1*Yinit(N),10)+...
+%                0*TS1(T(j),3*Yinit(N));
+Ytr(end)=max([y_akna_end   csatorna.y(end)-g*dt^2/2   min([yc_end yn_end])   X*h_min]);
+
+if T < csatorna.t
+    csatorna.nev
+    error('negativ idolepes!')
+end
+
+if Ytr(1) <= X*h_min
+    Ytr(1) = 0;
+end
+csatorna.t = T;
+csatorna.y = Ytr;
+csatorna.v = Vtr;
+
+% Check if the channel is filled up
+
+max(
+
+if csatorna.t >= csatorna.tki
+    csatorna.tki = csatorna.tki + csatorna.dtout;
+    csatorna.kiir = 1;
+else
+    csatorna.kiir = 0;
+end
+
+if strcmp(csatorna.rajz,'rajz')
+    
+    V = trapz(Xmesh,AA);
+    Q_beg = Vtr(1)*AA(1);
+    Q_end = Vtr(end)*AA(end);
+    
+    figure(csatorna.tranziens_agelem_2csp.fignum)
+    
+    subplot(3,1,1)
+    plot([0 L],[He Hv],'k',[0 L],[He+X Hv+X],'k',Xmesh,(Ytr+He)-s*Xmesh,'b-');
+    %plot(Xmesh,Ytr,'b-+');
+    title([csatorna.tranziens_agelem_2csp.nev,...
+        ', t = ',num2str(round(10*csatorna.t/60)/10),...
+        ' min., Q_e = ',num2str(round(10*Q_beg*3600)/10),...
+        ' m^3/h, Q_v = ',num2str(round(10*Q_end*3600)/10),...
+        ' m^3/h, V = ',num2str(round(10*V)/10),...
+        ' m3, he = ',num2str(round(10*(Ytr(1)+He))/10),...
+        ' m, hv = ',num2str(round(10*(Ytr(end)+Hv))/10),' m']);
+    axis tight
+    
+    subplot(3,1,2)
+    plot(Xmesh,vP.*AA*3600,'b-'), ylabel('Q [m3/h]')
+    
+    subplot(3,1,3)
+    plot(Xmesh,Vtr,'b-'), ylabel('v [m/s]')
+    
+    %subplot(4,1,4)
+    %plot(Xmesh,A,'b+-'), ylabel('A [m2]')
+end
+
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+% Függvények
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+
+%% kritikus
+function fy=crit(csatorna,type,X,Q)
+
+x = X;
+
+switch type
+    case 'teglalap'
+        type_old=1;
+    case 'kor'
+        type_old=2;
+end
+
+switch type_old
+    case 1
+        g=9.81;
+        fy=(Q^2/g/x^2)^(1/3);
+    case 2
+        % Vezerlo parameterek
+        eps=1e-6;
+        
+        % kiindulasi pozitiv ertek beallitasa
+        plusz=x;
+        t=1; p=Fkrit(csatorna,x,x,type,Q);
+        % kiindulasi negativ ertek meghatarozasa
+        while p>0
+            t=t+1;
+            p=Fkrit(csatorna,x/t,x,type,Q);
+        end
+        minusz=x/t;
+        
+        % iteracio
+        while abs(plusz-minusz)>eps
+            half=(plusz+minusz)/2;
+            if Fkrit(csatorna,half,x,type,Q)>0
+                plusz=half;
+            else
+                minusz=half;
+            end
+        end
+        fy=(plusz+minusz)/2;
+end
+
+%% kritikus function
+function fy=crit_new(X,v)
+
+r=X/2; eps=0.01;
+AK_end=v^2/r/9.81;
+
+theta=0:eps:pi-eps;
+AK=(theta-sin(2*theta)/2)./sin(pi-theta)/2;
+theta(end)=pi; AK(end)=1000;
+
+m1=find( AK<=AK_end ); m2=find( AK>AK_end );
+theta_crit = (theta(m2(1))-theta(m1(end)))*(AK_end-AK(m1(end)))/(AK(m2(1))-AK(m1(end)))+theta(m1(end));
+
+% theta_crit = interp1(AK,theta,AK_end);
+fy=r*(1-cos(theta_crit));
+function fy = Fkrit(csatorna,y,x,type,Q)
+g=9.81;
+fy = 1-Q^2*get_B(csatorna,y)/get_A(csatorna,y)^3/g;
+
+%% normal
+function fy=normal(csatorna,Q,s,n)
+type=csatorna.tipus;
+x=csatorna.dvB;
+relax=0.8; eps=1e-6;
+
+switch type
+    case 'teglalap'
+        type_old=1;
+    case 'kor'
+        type_old=2;
+end
+
+minusz=x*0.5;
+while (Fnorm(csatorna,minusz,x,type,Q,s,n)>0) || (dFnorm(csatorna,minusz,x,type,Q,s,n)<0)
+    minusz=minusz/2;
+end
+
+old=minusz; hiba=1;
+while abs(hiba)>eps
+    new=old-relax*Fnorm(csatorna,old,x,type,Q,s,n)/dFnorm(csatorna,old,x,type,Q,s,n);
+    hiba=(new-old); hiba=Fnorm(csatorna,old,x,type,Q,s,n);
+    old=new;
+    if ((old>x) || (dFnorm(csatorna,old,x,type,Q,s,n)<0)) && (type_old==2)
+        fy=[];
+        break
+    end
+    fy(1)=new;
+end
+
+if ((~isempty(fy)) && (Fnorm(csatorna,x,x,type,Q,s,n)<0)) && (type_old==2)
+    plusz=new; minusz=x;
+    while abs(plusz-minusz)>eps
+        half=(plusz+minusz)/2;
+        if Fnorm(csatorna,half,x,type,Q,s,n)>0
+            plusz=half;
+        else
+            minusz=half;
+        end
+    end
+    fy(2)=(plusz+minusz)/2;
+end
+%% normal function
+function fy=norm_new(X,v,n,s)
+
+r=X/2; eps=0.01;
+Rh_r_norm_end=(( v^2*n^2/s )^(3/4))/r;
+
+theta=eps:eps:2.247;
+Rh_r=(theta-sin(2*theta)/2)./theta/2; theta(1)=0; Rh_r(1)=0; Rh_r_max=0.6086;
+if Rh_r_norm_end>=Rh_r_max
+    fy=2*X;
+else
+    m1=find( Rh_r<=Rh_r_norm_end ); m2=find( Rh_r>Rh_r_norm_end );
+    theta_norm = (theta(m2(1))-theta(m1(end)))*(Rh_r_norm_end-Rh_r(m1(end)))/(Rh_r(m2(1))-Rh_r(m1(end)))+theta(m1(end));
+    
+    %     theta_norm = interp1(Rh_r,theta,Rh_r_norm_end);
+    fy=r*(1-cos(theta_norm));
+end
+function fy = Fnorm(csatorna,y,x,type,Q,s,n)
+
+C  =get_Rh(csatorna,y)^(1/6)/n;
+fy = s - Q^2/get_A(csatorna,y)^2/C^2/get_Rh(csatorna,y);
+
+%% normal function der
+function fy = dFnorm(csatorna,y,x,type,Q,s,n)
+
+switch type
+    case 'teglalap'
+        dA=x; dK=2;
+    case 'kor'
+        r = x/2; theta=acos(1-y/r);
+        dtheta=1/( r*(sqrt(1-(1-y/r)^2)) );
+        dA=r^2*(dtheta-cos(2*theta)*dtheta);
+        dK=2*r*dtheta;
+end
+
+dRh=dA/get_K(csatorna,y) - get_A(csatorna,y)*dK/get_K(csatorna,y)^2;
+dC=dRh/(get_Rh(csatorna,y)^(5/6))/6/n;
+
+C=get_Rh(csatorna,y)^(1/6)/n;
+
+fy = 2*Q^2*dA/get_A(csatorna,y)^3/C^2/get_Rh(csatorna,y) + ...
+    2*Q^2*dC/get_A(csatorna,y)^2/C^3/get_Rh(csatorna,y) + ...
+    Q^2*dRh/get_A(csatorna,y)^2/C^2/get_Rh(csatorna,y)^2;
+
+%%

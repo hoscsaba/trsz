@@ -1,0 +1,146 @@
+\chapter{A számítási módszer}
+
+\section{Elõzmények}
+
+\section{Rugalmas csövek}
+
+\begin{eqnarray}
+\text{A $\mathcal{C}^+$ karakterisztika mentén:} & \frac{d}{dt} \left( p+\rho a v\right) &= \mathcal{S}^+=-\rho g a \frac{dz}{dx} - \frac{\lambda}{2 D} \rho a v \left| v \right| \label{eq:karp}\\
+\text{A $\mathcal{C}^-$ karakterisztika mentén:} & \frac{d}{dt} \left( p-\rho a v\right) &= \mathcal{S}^-=\rho g a \frac{dz}{dx} + \frac{\lambda}{2 D} \rho a v \left| v \right| \label{eq:karm}
+\end{eqnarray}
+
+\section{Merev alrendszerek}
+
+A merev alrendszer tetszõleges bonyolultságú - csomópontokat és ú.n. ágakat tartalmazó, hurkolt - hálózat rész, amelynek néhány ága csatlakozik egy-egy rugalmas csõhöz. Az ilyen hálózat részeket - amelyekben a távolságok a rugalmas csövek hosszához képest kicsik, ezért a tranziens változások a hálózat rész minden pontján gyakorlatilag egyidejûleg következnek be - merev alrendszereknek nevezzük.
+
+A merev alrendszerek modellje a csomóponti kontinuitás és az ágegyenletek. Ha $j$-edik csomópontba $K$ darab ág fut be, az ágak ${\dot m}_k$ tömegáramainak elõjeles összege megegyezik a csomóponti fogyasztással (ágak esetén a csomópontba érkezõ tömegáramot tekintjük pozitívnak, míg fogyasztások esetén az elvételt):
+%
+\begin{equation}
+\sum_{k=1}^K {\dot m}_k = f_j.
+\label{eq:konti}
+\end{equation}
+%
+Az ágat áramlástanilag az ágegyenlet jellemzi, amely az ág tömegáramának legfeljebb másodfokú polinomja idõben állandó, illetve változó együtthatókkal:
+%
+\begin{equation}
+\alpha\, \dot m + \beta\, {\dot m}^2 + \gamma \dot m\,\left| \dot m \right| + \delta + p_e-p_v=0,
+\label{eq:egyenlet}
+\end{equation}
+%
+ahol az ág elejét - tetszõlegesen rögzített áramlási iránnyal definiálva - $e$, végét $v$ jelöli, $p$ pedig a nyomás a megfelelõ pontokban.
+
+Külön megemlítjük a rugalmas csövekhez való csatlakozási pontokat. Az \eqref{eq:karp} és \eqref{eq:karm} karakterisztika egyenletek segítségével írhatjuk, hogy 
+%
+\begin{equation}
+p \pm \frac{a }{A} {\dot m}_r - \left( \tilde p \pm \rho a \tilde v \right)-\Delta t \,\mathcal{S}^\pm=0,
+\end{equation}
+%
+ahol $p$ a merev alrendszerhez tartozó (csatlakozó) csomópont nyomását jelöli, ${\dot m}_r$ a rugalmas csõbeli tömegáramot, $\tilde p$ és $\tilde v$ a csõbeli \emph{szomszédos} osztáspontbeli nyomást és sebességet jelöli.
+
+Egy adott merev alrendszerben ismeretlen mennyiségek az ágáramok ($n_{ag}$ darab) és a csomóponti nyomások ($n_{csp}$ db), ezen kívül az egyes kapcsolódó rugalmas csövek tömegáramai a csatlakozó pontban ($n_{rug}$ darab). E mennyiségek meghatározásához rendelkezésünkre állnak az \eqref{eq:egyenlet} alakú ágegyenletek, minden csomópontban a \eqref{eq:konti} kontinuitási egyenlet és minden kapcsolódó rugalmas csõ esetén egy-egy karakterisztika egyenlet; \ref{eq:karp} $\mathcal{C}^+$ mentén (a csõ vége csatlakozik a merev alrendszerhez) vagy \eqref{eq:karm} $\mathcal{C}^-$ mentén (a csõ eleje csatlakozik a merev alrendszerhez), azaz pontosan annyi egyenlet áll rendelkezésünkre, mint ahány ismeretlen mennyiség.
+
+A hagyományos számítási módszer (ld. például Halász és szerzõtársai, 2002) ún. bázisáram kiválasztással indul, mely a merev alrendszer gráfjában független hurkokat állít elõ és kiküszöböli az ismeretlen nyomásokat. A bázisáramok meghatározhatók, majd egyszerû visszahelyettesítéssel a többi ágáram és a nyomások is számíthatók. Mivel általában a bázisáramok száma sokkal kevesebb, mint az ágáramok száma, a feladat mérete jelentõsen csökken, ami gyorsítja a megoldást. Bár a bázisáram kiválasztáson alapuló módszer hatékony (gyors) és az elmúlt évtizedek tapasztalata szerint stabil és mentes a numerikus oszcillációktól, hátránya, hogy programozása bonyolult. Az alábbiakban e kifinomult módszerrel szemben egy általános célú megoldót mutatunk be, mely ugyan kevésbé hatékony, de igen könnyen programozható és a kereskedelmi forgalomban kapható PC-k sebességét figyelembe véve nem okoz elviselhetetlenül nagyobb megterhelést a számítógépnek.
+
+Elsõ lépésként foglaljuk össze a merev alrendszer ismeretlen mennyiségeit egy vektorba:
+%
+\begin{equation}
+\mathbf{x}=\left({\dot m}_1,{\dot m}_2,\dots,{\dot m}_i,\dots,{\dot m}_{n_{ag}},\, p_1,p_2,\dots,p_j,\dots,p_{n_{csp}},r_1,r_2,\dots,r_k,\dots,r_{n_{rug}} \right)^T,
+\end{equation}
+%
+ahol $r_i$ a rugalmas csövek tömegáramát jelöli.
+
+\emph{ide még duma...}
+
+A megoldandó egyenletrendszer tehát
+%
+\begin{equation}
+\mathbf{f(x)}=
+\begin{pmatrix} [\alpha_i] & \mathbf{\Pi} & \mathbf{0}\\ \mathbf{K} & \mathbf{0} & \mathbf{P} \\ \mathbf{0} & \mathbf{E} & [\alpha_k] \end{pmatrix}\, \mathbf{x} \,+\,
+\begin{pmatrix} [\beta_i] & \mathbf{0} & \mathbf{0}\\ \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} \end{pmatrix}\, \mathbf{x}^2 \,+\,
+\begin{pmatrix} [\gamma_i] & \mathbf{0} & \mathbf{0}\\ \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} \end{pmatrix}\, \mathbf{x} \left|\mathbf{x} \right|  \,+\,
+\begin{pmatrix} \delta_i \\ f_j \\ -\Delta t\, \mathcal{S}_k^\pm \end{pmatrix} \,= \, \mathbf{0},
+\end{equation}
+%
+ahol a $[\dots]$ jelölés diagonál mátrixot jelöl. A vastagon szedett mátrixok csak $\pm1$-et vagy $0$ elemeket tartalmaznak, pl. a $\mathbf{\Pi}$ mátrix $i$-edik sorának $j$-edik eleme $1$, ha az $i$-edik ágelem a $j$-edik csomópontba fut be, $-1$, ha onnan indul, egyébként 0. Hasonlóan, a $\mathbf{K}$ mátrix j-edik sorának $i$-edik oszlopa $1$, ha az $i$-edik ágelem belefut a $j$-edik csomópontba, $-1$ ha onnan indul, egyébként zérus. A $\mathbf{P}$ mátrix $j$-edik sorának $k$-adik eleme $1$, ha ebbe a $j$-edik csomópontba a $k$-adik rugalmas csõ befut, $-1$, ha onnan indul és egyébként zérus. Végül, az $\mathbf{E}$ mátrix $k$-adik sorának $j$-edik elem $1$, ha a $k$-adik rugalmas csõ a $j$-edik csomópontba csatlakozik, egyébként zérus.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\section{Ágegyenletek}
+
+\subsection{Csõ}
+
+A legtipikusabb ág a csõ, melynek keresztmetszete $A$, átmérõje $d$, hossza $L$, $h_e$ és $h_v$ az elejének és végének magassága, míg $p_e$ és $p_v$ a nyomást jelöli a csõ elején és végén. A csõben folyó tömegáram $\dot m$. Kiindulásként írjuk fel az instacioner Bernoulli egyenletet:
+%
+\begin{equation}
+p_e + \frac{\rho}{2}v_e^2 + \rho\,g\,h_e =p_v + \frac{\rho}{2}v_v^2 + \rho\,g\,h_v + \lambda \frac{L}{D}\frac{\rho}{2}\,v\,\left| v \right| + \rho\,L \frac{dv}{dt}.
+\label{eq:cso_agegyenlet}
+\end{equation}
+%
+Mivel a keresztmetszet állandó, $v_e=v_v=v=\dot m/(\rho A)$. A sebesség deriváltját írjuk
+%
+\begin{equation}
+\frac{dv}{dt}=\frac{1}{\rho A}\frac{\dot m - {\dot m}_r}{\Delta t}
+\end{equation}
+%
+alakban, ahol $v_r$ az elõzõ idõszinten vett sebesség. Így \eqref{eq:cso_agegyenlet} az alábbi alakot ölti.
+%
+\begin{equation}
+0=p_v-p_e + \rho\,g\,\left(h_v-h_e \right) + \lambda \frac{L}{\rho 2 D A^2}\,\dot m\,\left| \dot m \right| + \frac{L}{A \Delta t} \left( \dot m - {\dot m}_r \right),
+\end{equation}
+%
+amelybõl kiolvashatjuk az ágegyenlet együtthatóit:
+%
+\begin{equation}
+\alpha=\frac{L}{A \Delta t}, \quad \beta=0, \quad \gamma=\lambda \frac{L}{\rho 2 D A^2}\quad \text{és} \quad \delta=  \rho\,g\,\left(h_v-h_e \right) - \frac{L}{A \Delta t}{\dot m}_r.
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Légüst}
+
+A politropikus állapotváltozást végzõ légüst modellje a \ref{legust}. ábrán látható. \fbox{Ide még egy csomó szöveg jön.} A légüst keresztmetszete $A$, magassága $H$, a folyadékfelszín felett elhelyezkedõ légpárna nyomása $p$, térfogata $V$. A légüstöt agy $l$ hosszúságú függõleges csõ köti a rendszerhez. A légüst talppontjában a nyomás $p_t$ és $Q$ térfogatáram áramlik a légüst\emph{be}. 
+%
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=15cm]{abrak/feladat1abra.eps}
+    \caption{\label{legust}Légüst modell}
+  \end{center}
+\end{figure}
+
+A talpponti nyomás a légpárna nyomásának és a folyadékoszlop hidrosztatikus nyomásának összege:
+%
+\begin{equation}
+p_t = p+\rho\,g\,\left( l+H-\frac{V}{A}\right).
+\label{eq:legust1}
+\end{equation}
+% 
+Mivel a légpárna állapotváltozása politropikus, így $p\,V^n=konst.$, ezért
+%
+\begin{equation}
+0=\frac{d\,\left( p\,V^n \right)}{dt}=V^n \frac{dp}{dt}+nV^{n-1}p \frac{dV}{dt} \quad \rightarrow \quad \frac{dp}{dt} = -n\frac{p}{V}\frac{dV}{dt}=n\frac{p}{V}Q,
+\end{equation}
+%
+melyet $\Delta t$ lépésre integrálva kapjuk, hogy ($p^i=p(t)$, $p^{i+1}=p(t+\Delta t)$)
+%
+\begin{equation}
+p^{i+1}-p^i=\Delta t\, Q\, n \left( \frac{\overline{p}}{\overline{V}}\right),
+\end{equation}
+%
+ahol a felülvonásos értékek az interálási tartományon vett átlagértéket jelentik. Ezt pl. extrapolációval számíthatjuk ki az elõzõ két értékbõl. Írjuk fel az \eqref{eq:legust1} hidrosztatikai egyenletet a számítandó és az elõzõ idõlépésre:
+%
+\begin{eqnarray}
+p_t^{i+1} &= p^{i+1} + \rho\,g\,\left( l+H-\frac{V^{i+1}}{A}\right),
+p_t^{i}   &= p^{i  } + \rho\,g\,\left( l+H-\frac{V^{i}}{A}\right),
+\end{eqnarray}
+%
+és vegyük a kettõ különbségét:
+%
+\begin{equation}
+p_t^{i+1} - p_t^{i} = p^{i+1} -p^{i} - \rho\,g\,\left( \frac{V^{i+1}-V^i}{A}\right) \approx p^{i+1} -p^{i} - \frac{\rho\,g}{A}\,\Delta t\,Q =
+\Delta t\, Q\, \left[ n \left( \frac{\overline{p}}{\overline{V}}\right) - \frac{\rho\,g}{A} \right].
+\end{equation}
+%
+Tehát az ágegyenlet együtthatói:
+%
+\begin{equation}
+\alpha=\Delta t\, \left[ n \left( \frac{\overline{p}}{\overline{V}}\right) - \frac{\rho\,g}{A} \right], \quad \delta = -p_t^{i} \quad \text{és} \quad \beta=\gamma=0.
+\end{equation}

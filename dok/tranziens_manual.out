@@ -1,0 +1,82 @@
+\BOOKMARK [0][]{chapter*.2}{A sz\341m\355t\341si m\363dszer}{}% 1
+\BOOKMARK [1][]{section*.3}{Elozm\351nyek}{chapter*.2}% 2
+\BOOKMARK [1][]{section*.3}{Rugalmas cs\366vek}{chapter*.2}% 3
+\BOOKMARK [1][]{equation.1.2.1}{Merev alrendszerek}{chapter*.2}% 4
+\BOOKMARK [1][]{equation.1.2.1}{\301gegyenletek}{chapter*.2}% 5
+\BOOKMARK [2][]{section*.4}{Cso}{equation.1.2.1}% 6
+\BOOKMARK [2][]{section*.4}{L\351g\374st}{equation.1.2.1}% 7
+\BOOKMARK [0][]{equation.1.4.15}{Szimul\341ci\363}{}% 8
+\BOOKMARK [1][]{section*.5}{Adatelok\351sz\355t\351s}{equation.1.4.15}% 9
+\BOOKMARK [1][]{section*.5}{R\351gi \351s \372j adatstrukt\372r\341k \351s f\341jlok}{equation.1.4.15}% 10
+\BOOKMARK [1][]{section*.5}{A program haszn\341lata}{equation.1.4.15}% 11
+\BOOKMARK [2][]{section*.6}{Sz\341m\355t\341s}{section*.5}% 12
+\BOOKMARK [2][]{section*.6}{Eredm\351nyek megjelen\355t\351se}{section*.5}% 13
+\BOOKMARK [2][]{section*.6}{Egyszeru rajz}{section*.5}% 14
+\BOOKMARK [2][]{section*.6}{Sz\341m\355t\341si \351s m\351r\351si eredm\351nyek \341br\341zol\341sa}{section*.5}% 15
+\BOOKMARK [2][]{section*.6}{Anim\341ci\363k k\351sz\355t\351se}{section*.5}% 16
+\BOOKMARK [0][]{section*.6}{Adatstrukt\372r\341k}{}% 17
+\BOOKMARK [1][]{section*.7}{Az adatf\341jl fel\351p\355t\351se}{section*.6}% 18
+\BOOKMARK [1][]{section*.7}{Merev alrendszerek \(mar\)}{section*.6}% 19
+\BOOKMARK [2][]{section*.8}{Csom\363pontok}{section*.7}% 20
+\BOOKMARK [2][]{section*.8}{Nyomottvizes h\341l\363zatok elemei}{section*.7}% 21
+\BOOKMARK [3][]{section*.9}{Cso}{section*.8}% 22
+\BOOKMARK [3][]{section*.9}{Fojt\341s}{section*.8}% 23
+\BOOKMARK [3][]{section*.9}{Vez\351relt fojt\341s}{section*.8}% 24
+\BOOKMARK [3][]{section*.9}{Szivatty\372}{section*.8}% 25
+\BOOKMARK [3][]{section*.9}{Visszacsap\363 szelep}{section*.8}% 26
+\BOOKMARK [3][]{section*.9}{\301lland\363 nyom\341s\372 pont}{section*.8}% 27
+\BOOKMARK [3][]{section*.9}{V\341ltoz\363 nyom\341s\372 pont}{section*.8}% 28
+\BOOKMARK [3][]{section*.9}{V\341ltoz\363 t\366meg\341ram\372 pont}{section*.8}% 29
+\BOOKMARK [3][]{section*.9}{Nyom\341sszab\341lyoz\363}{section*.8}% 30
+\BOOKMARK [3][]{section*.9}{L\351g\374st}{section*.8}% 31
+\BOOKMARK [2][]{section*.9}{Csatornah\341l\363zatok elemei}{section*.7}% 32
+\BOOKMARK [3][]{section*.10}{Akna}{section*.9}% 33
+\BOOKMARK [3][]{section*.10}{Buk\363g\341t}{section*.9}% 34
+\BOOKMARK [3][]{section*.10}{Nyom\363vezet\351k}{section*.9}% 35
+\BOOKMARK [2][]{section*.10}{G\366rb\351k \(gorbe\)}{section*.7}% 36
+\BOOKMARK [1][]{section*.10}{Rugalmas alrendszerek}{section*.6}% 37
+\BOOKMARK [2][]{section*.11}{Nyomottvizes rugalmas cso \(cso\)}{section*.10}% 38
+\BOOKMARK [2][]{section*.11}{Csatorna \(csatorna\)}{section*.10}% 39
+\BOOKMARK [2][]{section*.11}{Viszkoelasztikus cso \(viszkcso\)}{section*.10}% 40
+\BOOKMARK [2][]{section*.11}{Amoba csom\363pontok \(amoba\)}{section*.10}% 41
+\BOOKMARK [2][]{section*.11}{Opci\363k \(option\)}{section*.10}% 42
+\BOOKMARK [0][]{section*.11}{Mintafeladatok}{}% 43
+\BOOKMARK [1][]{section*.12}{1.feladat \(V\355z\374t\351s\)}{section*.11}% 44
+\BOOKMARK [1][]{section*.12}{2.feladat \(V\355z\374t\351s s\372rl\363d\341sos csoben\)}{section*.11}% 45
+\BOOKMARK [1][]{section*.12}{3.feladat \(Szivatty\372 kies\351s\)}{section*.11}% 46
+\BOOKMARK [1][]{section*.12}{4.feladat \(Szivatty\372 kies\351s tol\363z\341rral\)}{section*.11}% 47
+\BOOKMARK [1][]{section*.12}{5.feladat \(L\351g\374st m\351retez\351s\)}{section*.11}% 48
+\BOOKMARK [1][]{section*.12}{6. feladat \(K\351t\374st\366s lengorendszer\)}{section*.11}% 49
+\BOOKMARK [1][]{section*.12}{7.feladat \(Ny\355ltfelsz\355nu \341raml\341s\)}{section*.11}% 50
+\BOOKMARK [1][]{section*.12}{8.feladat \(\301temeloszivatty\372s csatornarendszer\)}{section*.11}% 51
+\BOOKMARK [1][]{section*.12}{9.feladat \(V\351r\341raml\341s\)}{section*.11}% 52
+\BOOKMARK [2][]{section*.13}{,,A'' r\351sz}{section*.12}% 53
+\BOOKMARK [2][]{section*.13}{,,B'' r\351sz}{section*.12}% 54
+\BOOKMARK [0][]{section*.13}{A feladatok bemenetei, mint lehets\351ges megold\341sok}{}% 55
+\BOOKMARK [1][]{section*.14}{1.feladat}{section*.13}% 56
+\BOOKMARK [2][]{section*.14}{2.feladat}{section*.13}% 57
+\BOOKMARK [2][]{section*.14}{3.feladat}{section*.13}% 58
+\BOOKMARK [2][]{section*.14}{4.feladat}{section*.13}% 59
+\BOOKMARK [2][]{section*.14}{5.feladat}{section*.13}% 60
+\BOOKMARK [2][]{section*.14}{6.feladat}{section*.13}% 61
+\BOOKMARK [2][]{section*.14}{7.feladat}{section*.13}% 62
+\BOOKMARK [2][]{section*.14}{8.feladat}{section*.13}% 63
+\BOOKMARK [2][]{section*.14}{9.feladat}{section*.13}% 64
+\BOOKMARK [3][]{section*.15}{,,A'' r\351sz}{section*.14}% 65
+\BOOKMARK [3][]{section*.15}{,,B'' r\351sz}{section*.14}% 66
+\BOOKMARK [0][]{section*.15}{Fejlesztoknek}{}% 67
+\BOOKMARK [1][]{section*.16}{Elemek}{section*.15}% 68
+\BOOKMARK [2][]{section*.16}{Virtu\341lis elemek}{section*.15}% 69
+\BOOKMARK [3][]{section*.17}{tranziens\137agelem}{section*.16}% 70
+\BOOKMARK [3][]{section*.17}{tranziens\137agelem\1371csp}{section*.16}% 71
+\BOOKMARK [3][]{section*.17}{tranziens\137agelem\1372csp}{section*.16}% 72
+\BOOKMARK [2][]{section*.17}{Agelemek}{section*.15}% 73
+\BOOKMARK [3][]{section*.18}{konc\137cso}{section*.17}% 74
+\BOOKMARK [3][]{section*.18}{fojtas}{section*.17}% 75
+\BOOKMARK [3][]{section*.18}{vez\137fojtas}{section*.17}% 76
+\BOOKMARK [3][]{section*.18}{szivattyu}{section*.17}% 77
+\BOOKMARK [2][]{section*.18}{Merev alrendszer}{section*.15}% 78
+\BOOKMARK [2][]{section*.18}{Rugalmas cs\366vek}{section*.15}% 79
+\BOOKMARK [1][]{section*.18}{A foprogram: eon\137driver.m}{section*.15}% 80
+\BOOKMARK [0][]{section*.18}{Tennival\363k, hib\341k}{}% 81
+\BOOKMARK [1][]{section*.19}{Hib\341k}{section*.18}% 82

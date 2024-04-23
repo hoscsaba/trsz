@@ -1,0 +1,8 @@
+% Folyadék adatfile:
+% név, sûrûség: ro [kg/m3], kinematikai viszkozitás: nu [m2/s], rugalmassági modulusz: B [Pa]
+% Utolsó módosítás: 2004/10/12 Hõs Csaba
+
+viz,1000,1e-6,1e9
+melegviz,935,1e-6,1e9
+hidegviz,960,1e-6,1e9
+olaj,871,62e-6,1.5e9

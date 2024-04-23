@@ -1,0 +1,9 @@
+mar,legust1
+legust,legust1,csp1,1000,0,1.4,1,2e5,1,0,2
+csp,csp1,0,0,const
+
+mar,legust2
+legust,legust2,csp2,1000,0,1.4,1,1e5,1,0,2
+csp,csp2,0,0,const
+
+rugalmas_cso,cso,csp1,csp2,1000,0,0.0e5,0.3,0.1,13e-3,1000,2.1e11,2.1e9,5,auto,0,0

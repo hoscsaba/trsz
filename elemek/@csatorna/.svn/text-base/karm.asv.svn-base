@@ -1,0 +1,13 @@
+function out = karm(csatorna,dt,dtmin)
+
+A = csatorna.A;
+
+ro = csatorna.tranziens_agelem_2csp.ro;
+
+p1 = 1000*9.81*(csatorna.y(1)+csatorna.ze) + csatorna.p0 ;
+
+Q = csatorna.y(1)*csatorna.dvB*csatorna.v(1);
+m =
+%out = [p1,1/A^2/ro, -1];
+
+out = [p1, Q, 1];
