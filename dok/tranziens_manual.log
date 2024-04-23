@@ -1,80 +1,72 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=latex 2010.10.23)  10 JUL 2011 14:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.14)  23 APR 2024 13:11
 entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
 **tranziens_manual.tex
-(C:\Munkakönyvtár\TRSZ\uj_dok\tranziens_manual.tex
-LaTeX2e <2009/09/24>
-Babel <v3.8l> and hyphenation patterns for english, afrikaans, ancientgreek, ar
-abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
-croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
-lician, german, german-x-2009-06-19, greek, gujarati, hindi, hungarian, iceland
-ic, indonesian, interlingua, irish, italian, kannada, kurmanji, lao, latin, lat
-vian, lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerm
-an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese, 
-romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
-sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
-senglishmax, welsh, loaded.
-("C:\Programs\MiKTeX 2.9\tex\latex\base\book.cls"
-Document Class: book 2007/10/19 v1.4h Standard LaTeX document class
-("C:\Programs\MiKTeX 2.9\tex\latex\base\bk10.clo"
-File: bk10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+(./tranziens_manual.tex
+LaTeX2e <2018-12-01>
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2018/09/03 v1.4i Standard LaTeX document class
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/bk10.clo
+File: bk10.clo 2018/09/03 v1.4i Standard LaTeX file (size option)
 )
-\c@part=\count79
-\c@chapter=\count80
-\c@section=\count81
-\c@subsection=\count82
-\c@subsubsection=\count83
-\c@paragraph=\count84
-\c@subparagraph=\count85
-\c@figure=\count86
-\c@table=\count87
+\c@part=\count80
+\c@chapter=\count81
+\c@section=\count82
+\c@subsection=\count83
+\c@subsubsection=\count84
+\c@paragraph=\count85
+\c@subparagraph=\count86
+\c@figure=\count87
+\c@table=\count88
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-("C:\Programs\MiKTeX 2.9\tex\latex\ams\math\amsmath.sty"
-Package: amsmath 2000/07/18 v2.13 AMS math features
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2018/12/01 v2.17b AMS math features
 \@mathmargin=\skip43
 
 For additional information on amsmath, use the `?' option.
-("C:\Programs\MiKTeX 2.9\tex\latex\ams\math\amstext.sty"
-Package: amstext 2000/06/29 v2.01
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
 
-("C:\Programs\MiKTeX 2.9\tex\latex\ams\math\amsgen.sty"
-File: amsgen.sty 1999/11/30 v2.0
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks14
 \ex@=\dimen103
 ))
-("C:\Programs\MiKTeX 2.9\tex\latex\ams\math\amsbsy.sty"
-Package: amsbsy 1999/11/29 v1.2d
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen104
 )
-("C:\Programs\MiKTeX 2.9\tex\latex\ams\math\amsopn.sty"
-Package: amsopn 1999/12/14 v2.01 operator names
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
 )
-\inf@bad=\count88
-LaTeX Info: Redefining \frac on input line 211.
-\uproot@=\count89
-\leftroot@=\count90
-LaTeX Info: Redefining \overline on input line 307.
-\classnum@=\count91
-\DOTSCASE@=\count92
-LaTeX Info: Redefining \ldots on input line 379.
-LaTeX Info: Redefining \dots on input line 382.
-LaTeX Info: Redefining \cdots on input line 467.
-\Mathstrutbox@=\box26
-\strutbox@=\box27
+\inf@bad=\count89
+LaTeX Info: Redefining \frac on input line 223.
+\uproot@=\count90
+\leftroot@=\count91
+LaTeX Info: Redefining \overline on input line 385.
+\classnum@=\count92
+\DOTSCASE@=\count93
+LaTeX Info: Redefining \ldots on input line 482.
+LaTeX Info: Redefining \dots on input line 485.
+LaTeX Info: Redefining \cdots on input line 606.
+\Mathstrutbox@=\box27
+\strutbox@=\box28
 \big@size=\dimen105
-LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
-\macc@depth=\count93
-\c@MaxMatrixCols=\count94
+LaTeX Font Info:    Redeclaring font encoding OML on input line 729.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 730.
+\macc@depth=\count94
+\c@MaxMatrixCols=\count95
 \dotsspace@=\muskip10
-\c@parentequation=\count95
-\dspbrk@lvl=\count96
+\c@parentequation=\count96
+\dspbrk@lvl=\count97
 \tag@help=\toks15
-\row@=\count97
-\column@=\count98
-\maxfields@=\count99
+\row@=\count98
+\column@=\count99
+\maxfields@=\count100
 \andhelp@=\toks16
 \eqnshift@=\dimen106
 \alignsep@=\dimen107
@@ -86,86 +78,85 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 \multlinegap=\skip44
 \multlinetaggap=\skip45
 \mathdisplay@stack=\toks18
-LaTeX Info: Redefining \[ on input line 2666.
-LaTeX Info: Redefining \] on input line 2667.
+LaTeX Info: Redefining \[ on input line 2844.
+LaTeX Info: Redefining \] on input line 2845.
 )
-("C:\Programs\MiKTeX 2.9\tex\latex\base\inputenc.sty"
-Package: inputenc 2008/03/30 v1.1d Input encoding file
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/08/11 v1.3c Input encoding file
 \inpenc@prehook=\toks19
 \inpenc@posthook=\toks20
 
-("C:\Programs\MiKTeX 2.9\tex\latex\base\latin2.def"
-File: latin2.def 2008/03/30 v1.1d Input encoding file
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/latin2.def
+File: latin2.def 2018/08/11 v1.3c Input encoding file
 ))
-("C:\Programs\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
-Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 
-("C:\Programs\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
-Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks21
 )
-("C:\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
-Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
 
-("C:\Programs\MiKTeX 2.9\tex\latex\graphics\trig.sty"
-Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-("C:\Programs\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
-File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: dvips.def on input line 91.
+Package graphics Info: Driver file: pdftex.def on input line 99.
 
-("C:\Programs\MiKTeX 2.9\tex\latex\graphics\dvips.def"
-File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
-("C:\Programs\MiKTeX 2.9\tex\generic\babel\babel.sty"
-Package: babel 2008/07/06 v3.8l The Babel package
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2019/05/04 3.31 The Babel package
 
-*************************************
-* Local config file bblopts.cfg used
-*
-("C:\Programs\MiKTeX 2.9\tex\latex\00miktex\bblopts.cfg"
-File: bblopts.cfg 2006/07/31 v1.0 MiKTeX 'babel' configuration
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/switch.def
+File: switch.def 2019/05/04 3.31 Babel switching mechanism
 )
-("C:\Programs\MiKTeX 2.9\tex\generic\babel\magyar.ldf"
-Language: magyar 2005/03/30 v1.4j Magyar support from the babel system
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel-hungarian/magyar.ldf
+Language: magyar 2019/01/14 v1.5c Magyar (Hungarian) support for babel
 
-("C:\Programs\MiKTeX 2.9\tex\generic\babel\babel.def"
-File: babel.def 2008/07/06 v3.8l Babel common definitions
-\babel@savecnt=\count100
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2019/05/04 3.31 Babel common definitions
+\babel@savecnt=\count101
 \U@D=\dimen114
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@dirlevel=\count102
 )
-Package babel Info: Making ` an active character on input line 597.
+Package babel Info: Making ` an active character on input line 2819.
+\c@footnote@add=\count103
+\c@footnote@ch=\count104
 ))
-("C:\Programs\MiKTeX 2.9\tex\latex\base\t1enc.sty"
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/t1enc.sty
 Package: t1enc 1994/06/01 Standard LaTeX package
 )
-("C:\Programs\MiKTeX 2.9\tex\latex\graphics\color.sty"
-Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
 
-("C:\Programs\MiKTeX 2.9\tex\latex\00miktex\color.cfg"
-File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
-Package color Info: Driver file: dvips.def on input line 130.
-
-("C:\Programs\MiKTeX 2.9\tex\latex\graphics\dvipsnam.def"
-File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
-))
-(C:\Munkakönyvtár\TRSZ\uj_dok\floatflt.sty
+Package color Info: Driver file: pdftex.def on input line 147.
+)
+(./floatflt.sty
 Package: floatflt 1997/07/16 v. 1.31
-\c@OptionTest=\count101
-\figbox=\box28
-\tabbox=\box29
-\pagebox=\box30
-\ffigcount=\count102
-\ftabcount=\count103
-\fftest=\count104
-\hangcount=\count105
-\nosuccesstryfig=\count106
-\nosuccesstrytab=\count107
+\c@OptionTest=\count105
+\figbox=\box29
+\tabbox=\box30
+\pagebox=\box31
+\ffigcount=\count106
+\ftabcount=\count107
+\fftest=\count108
+\hangcount=\count109
+\nosuccesstryfig=\count110
+\nosuccesstrytab=\count111
 \figgutter=\dimen115
 \tabgutter=\dimen116
 \htdone=\dimen117
@@ -175,8 +166,7 @@ Package: floatflt 1997/07/16 v. 1.31
 \floatfltwidth=\dimen121
 \fltitemwidth=\dimen122
 \outputpretest=\toks22
-)
-("C:\Programs\MiKTeX 2.9\tex\latex\lm\lmodern.sty"
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/lmodern.sty
 Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
@@ -211,33 +201,38 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
 )
-("C:\Programs\MiKTeX 2.9\tex\latex\ulem\ulem.sty"
-\UL@box=\box31
-\UL@hyphenbox=\box32
+(/usr/local/texlive/2019/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box32
+\UL@hyphenbox=\box33
 \UL@skip=\skip46
 \UL@hook=\toks23
-\UL@pe=\count108
-\UL@pixel=\dimen123
-\ULC@box=\box33
-Package: ulem 2010/01/21
-\ULdepth=\dimen124
+\UL@height=\dimen123
+\UL@pe=\count112
+\UL@pixel=\dimen124
+\ULC@box=\box34
+Package: ulem 2012/05/18
+\ULdepth=\dimen125
 )
-("C:\Programs\MiKTeX 2.9\tex\latex\fancyhdr\fancyhdr.sty"
-\fancy@headwidth=\skip47
-\f@ncyO@elh=\skip48
-\f@ncyO@erh=\skip49
-\f@ncyO@olh=\skip50
-\f@ncyO@orh=\skip51
-\f@ncyO@elf=\skip52
-\f@ncyO@erf=\skip53
-\f@ncyO@olf=\skip54
-\f@ncyO@orf=\skip55
+(/usr/local/texlive/2019/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footer
+s
+\f@nch@headwidth=\skip47
+\f@nch@O@elh=\skip48
+\f@nch@O@erh=\skip49
+\f@nch@O@olh=\skip50
+\f@nch@O@orh=\skip51
+\f@nch@O@elf=\skip52
+\f@nch@O@erf=\skip53
+\f@nch@O@olf=\skip54
+\f@nch@O@orf=\skip55
 )
 
 LaTeX Warning: Unused global option(s):
     [9pt].
 
-(C:\Munkakönyvtár\TRSZ\uj_dok\tranziens_manual.aux)
+(./tranziens_manual.aux)
+\openout1 = `tranziens_manual.aux'.
+
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
 LaTeX Font Info:    ... okay on input line 35.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
@@ -252,31 +247,99 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
 LaTeX Font Info:    ... okay on input line 35.
 LaTeX Font Info:    Try loading font information for T1+lmr on input line 35.
 
-("C:\Programs\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
+(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+(/usr/local/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count113
+\scratchdimen=\dimen126
+\scratchbox=\box35
+\nofMPsegments=\count114
+\nofMParguments=\count115
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count116
+\MPscratchDim=\dimen127
+\MPnumerator=\count117
+\makeMPintoPDFobject=\count118
+\everyMPtoPDFconversion=\toks25
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+(/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+))))
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2018/09/10 v0.29 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/book.cls
+LaTeX Info: Redefining \cal on input line 582.
+LaTeX Info: Redefining \mit on input line 583.
 )
 
 LaTeX Warning: Citation `fuzy' undefined on input line 36.
 
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 39.
-("C:\Programs\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
+(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Try loading font information for OML+lmm on input line 39.
 
-("C:\Programs\MiKTeX 2.9\tex\latex\lm\omllmm.fd"
+(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 39.
 
 
-("C:\Programs\MiKTeX 2.9\tex\latex\lm\omslmsy.fd"
+(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Try loading font information for OMX+lmex on input line 39.
 
 
-("C:\Programs\MiKTeX 2.9\tex\latex\lm\omxlmex.fd"
+(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -287,7 +350,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <6> on input line 39.
 LaTeX Font Info:    Try loading font information for OMS+lmr on input line 39.
 
-("C:\Programs\MiKTeX 2.9\tex\latex\lm\omslmr.fd"
+(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/omslmr.fd
 File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <12> not available
@@ -295,20 +358,21 @@ LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <12> not available
  [1
 
 
-] [2
+
+{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2
 
 
 ]
-(C:\Munkakönyvtár\TRSZ\uj_dok\tranziens_manual.toc
+(./tranziens_manual.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 3.
+(Font)              <10> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 3.
+(Font)              <7> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 3.
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 20.
+(Font)              <5> on input line 2.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 19.
 
-("C:\Programs\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
+(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [3
 
@@ -318,29 +382,46 @@ Underfull \vbox (badness 5288) has occurred while \output is active []
  [4]
 [5])
 \tf@toc=\write3
- [6] (C:\Munkakönyvtár\TRSZ\uj_dok\tranziens_manual.lof)
+\openout3 = `tranziens_manual.toc'.
+
+ [6] (./tranziens_manual.lof)
 \tf@lof=\write4
+\openout4 = `tranziens_manual.lof'.
+
  [7
 
 ] [8
 
 
-]
-(C:\Munkakönyvtár\TRSZ\uj_dok\modszer.tex
+] (./modszer.tex
 1. fejezet.
 [9
 
 ]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 12.80502pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
+Make it at least 12.80502pt.
+We now make it that large for the rest of the document.
+This may cause the page layout to be inconsistent, however.
 
 [10]
-File: abrak/feladat1abra.eps Graphic file (type eps)
- <abrak/feladat1abra.eps> [11]) [12]
-(C:\Munkakönyvtár\TRSZ\uj_dok\szimulacio.tex
+Package epstopdf Info: Source file: <abrak/feladat1abra.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 4861 bytes
+(epstopdf)             Output file: <abrak/feladat1abra-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:12
+(epstopdf)                    size: 6236 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat1abra-eps-con
+verted-to.pdf abrak/feladat1abra.eps>
+(epstopdf)             \includegraphics on input line 104.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat1abra-eps-converted-to.pdf, id=51, 689.57625pt x 127.47626pt>
+File: abrak/feladat1abra-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat1abra-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat1abra-eps-converted-to.pdf  used on input
+ line 104.
+(pdftex.def)             Requested size: 426.79134pt x 78.89828pt.
+ [11 <./abrak/feladat1abra-eps-converted-to.pdf>]) [12] (./szimulacio.tex
 2. fejezet.
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 13.
@@ -353,19 +434,14 @@ LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10> not available
 ]) [15] [16
 
 
-] (C:\Munkakönyvtár\TRSZ\uj_dok\adatstrukturak.tex
+] (./adatstrukturak.tex
 3. fejezet.
-
-Underfull \hbox (badness 3724) in paragraph at lines 41--41
-[]\T1/lmr/m/n/10 A név-le-ges fo-gyasz-tás szor-zó-függ-vé-nyé-nek
- []
-
 [17
 
 ]
 Underfull \hbox (badness 2376) in paragraph at lines 81--81
-[]\T1/lmr/m/n/10 fojtási té-nyez® (a nyo-más-esést a $\OT1/lmr/m/n/10 \OML/lmm
-/m/it/10 p \OT1/lmr/m/n/10 =
+[]\T1/lmr/m/n/10 fojtási té-nye-z® (a nyo-más-esést a $\OT1/lmr/m/n/10 ^^A\OML/
+lmm/m/it/10 p \OT1/lmr/m/n/10 =
  []
 
 [18] [19] [20] [21]
@@ -373,92 +449,303 @@ Overfull \hbox (9.74886pt too wide) in paragraph at lines 304--313
  [] 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [22]
+[22]
 Overfull \hbox (25.49881pt too wide) in paragraph at lines 332--341
  [] 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [23]
+[23]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [24]
 [25] [26]
 Underfull \hbox (badness 4779) in paragraph at lines 581--581
-[]\T1/lmtt/m/n/10 rajz \T1/lmr/m/n/10 vagy bármi
+[]\T1/lmtt/m/n/10 rajz \T1/lmr/m/n/10 vagy bár-mi
  []
 
 [27]
 Underfull \vbox (badness 2486) has occurred while \output is active []
 
- [28]
-Underfull \hbox (badness 3724) in paragraph at lines 624--624
-[]\T1/lmr/m/n/10 A név-le-ges fo-gyasz-tás szor-zó-függ-vé-nyé-nek
- []
-
-) [29] [30
+ [28])
+[29] [30
 
 
-] (C:\Munkakönyvtár\TRSZ\uj_dok\mintafeladatok.tex
+] (./mintafeladatok.tex
 4. fejezet.
-File: abrak/feladat1abra.eps Graphic file (type eps)
-<abrak/feladat1abra.eps>
-File: abrak/feladat1.eps Graphic file (type eps)
- <abrak/feladat1.eps> [31
+Package epstopdf Info: Source file: <abrak/feladat1abra.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 4861 bytes
+(epstopdf)             Output file: <abrak/feladat1abra-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:12
+(epstopdf)                    size: 6236 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat1abra-eps-con
+verted-to.pdf abrak/feladat1abra.eps>
+(epstopdf)             \includegraphics on input line 9.
+Package epstopdf Info: Output file is already uptodate.
+File: abrak/feladat1abra-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat1abra-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat1abra-eps-converted-to.pdf  used on input
+ line 9.
+(pdftex.def)             Requested size: 398.33858pt x 73.63867pt.
+Package epstopdf Info: Source file: <abrak/feladat1.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 15836 bytes
+(epstopdf)             Output file: <abrak/feladat1-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:13
+(epstopdf)                    size: 7913 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat1-eps-convert
+ed-to.pdf abrak/feladat1.eps>
+(epstopdf)             \includegraphics on input line 30.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat1-eps-converted-to.pdf, id=122, 770.88pt x 380.42125pt>
+File: abrak/feladat1-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat1-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat1-eps-converted-to.pdf  used on input lin
+e 30.
+(pdftex.def)             Requested size: 284.52756pt x 140.41116pt.
+[31
 
 ]
-File: abrak/feladat2.eps Graphic file (type eps)
- <abrak/feladat2.eps>
-[32]
-File: abrak/feladat3nyv.eps Graphic file (type eps)
- <abrak/feladat3nyv.eps>
-File: abrak/feladat3.eps Graphic file (type eps)
- <abrak/feladat3.eps>
+Package epstopdf Info: Source file: <abrak/feladat2.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 15655 bytes
+(epstopdf)             Output file: <abrak/feladat2-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:13
+(epstopdf)                    size: 8522 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat2-eps-convert
+ed-to.pdf abrak/feladat2.eps>
+(epstopdf)             \includegraphics on input line 55.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat2-eps-converted-to.pdf, id=127, 770.88pt x 380.42125pt>
+File: abrak/feladat2-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat2-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat2-eps-converted-to.pdf  used on input lin
+e 55.
+(pdftex.def)             Requested size: 284.52756pt x 140.41116pt.
+ [32 <./abrak/feladat1-eps-converted-to.pdf> <./abrak/feladat2-eps-converted-to
+.pdf>]
+Package epstopdf Info: Source file: <abrak/feladat3nyv.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 11375 bytes
+(epstopdf)             Output file: <abrak/feladat3nyv-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:14
+(epstopdf)                    size: 6008 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat3nyv-eps-conv
+erted-to.pdf abrak/feladat3nyv.eps>
+(epstopdf)             \includegraphics on input line 70.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat3nyv-eps-converted-to.pdf, id=141, 963.6pt x 700.6175pt>
+File: abrak/feladat3nyv-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat3nyv-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat3nyv-eps-converted-to.pdf  used on input 
+line 70.
+(pdftex.def)             Requested size: 284.52756pt x 206.8728pt.
+Package epstopdf Info: Source file: <abrak/feladat3.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 11726 bytes
+(epstopdf)             Output file: <abrak/feladat3-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:14
+(epstopdf)                    size: 6977 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat3-eps-convert
+ed-to.pdf abrak/feladat3.eps>
+(epstopdf)             \includegraphics on input line 95.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat3-eps-converted-to.pdf, id=142, 764.8575pt x 253.94875pt>
+File: abrak/feladat3-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat3-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat3-eps-converted-to.pdf  used on input lin
+e 95.
+(pdftex.def)             Requested size: 284.52756pt x 94.46718pt.
+
 Underfull \vbox (badness 1231) has occurred while \output is active []
 
  [33
 
+ <./abrak/feladat3nyv-eps-converted-to.pdf> <./abrak/feladat3-eps-converted-to.
+pdf>]
+Package epstopdf Info: Source file: <abrak/feladat4cso1.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 11296 bytes
+(epstopdf)             Output file: <abrak/feladat4cso1-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:15
+(epstopdf)                    size: 6987 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat4cso1-eps-con
+verted-to.pdf abrak/feladat4cso1.eps>
+(epstopdf)             \includegraphics on input line 110.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat4cso1-eps-converted-to.pdf, id=157, 770.88pt x 380.42125pt>
+File: abrak/feladat4cso1-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat4cso1-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat4cso1-eps-converted-to.pdf  used on input
+ line 110.
+(pdftex.def)             Requested size: 284.52756pt x 140.41116pt.
+Package epstopdf Info: Source file: <abrak/feladat4cso2.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 11492 bytes
+(epstopdf)             Output file: <abrak/feladat4cso2-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:15
+(epstopdf)                    size: 6830 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat4cso2-eps-con
+verted-to.pdf abrak/feladat4cso2.eps>
+(epstopdf)             \includegraphics on input line 117.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat4cso2-eps-converted-to.pdf, id=158, 764.8575pt x 253.94875pt>
+File: abrak/feladat4cso2-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat4cso2-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat4cso2-eps-converted-to.pdf  used on input
+ line 117.
+(pdftex.def)             Requested size: 284.52756pt x 94.46718pt.
+
+[34 <./abrak/feladat4cso1-eps-converted-to.pdf> <./abrak/feladat4cso2-eps-conve
+rted-to.pdf>]
+Package epstopdf Info: Source file: <abrak/feladat5.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 11034 bytes
+(epstopdf)             Output file: <abrak/feladat5-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:16
+(epstopdf)                    size: 6866 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat5-eps-convert
+ed-to.pdf abrak/feladat5.eps>
+(epstopdf)             \includegraphics on input line 143.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat5-eps-converted-to.pdf, id=172, 770.88pt x 380.42125pt>
+File: abrak/feladat5-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat5-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat5-eps-converted-to.pdf  used on input lin
+e 143.
+(pdftex.def)             Requested size: 284.52756pt x 140.41116pt.
+ [35 <./abrak/feladat5-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <abrak/feladat6.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 20564 bytes
+(epstopdf)             Output file: <abrak/feladat6-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:16
+(epstopdf)                    size: 15686 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat6-eps-convert
+ed-to.pdf abrak/feladat6.eps>
+(epstopdf)             \includegraphics on input line 189.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat6-eps-converted-to.pdf, id=182, 770.88pt x 380.42125pt>
+File: abrak/feladat6-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat6-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat6-eps-converted-to.pdf  used on input lin
+e 189.
+(pdftex.def)             Requested size: 284.52756pt x 140.41116pt.
+Package epstopdf Info: Source file: <abrak/feladat7qt.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 26554 bytes
+(epstopdf)             Output file: <abrak/feladat7qt-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:17
+(epstopdf)                    size: 13728 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat7qt-eps-conve
+rted-to.pdf abrak/feladat7qt.eps>
+(epstopdf)             \includegraphics on input line 209.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat7qt-eps-converted-to.pdf, id=183, 963.6pt x 700.6175pt>
+File: abrak/feladat7qt-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat7qt-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat7qt-eps-converted-to.pdf  used on input l
+ine 209.
+(pdftex.def)             Requested size: 284.52756pt x 206.8728pt.
+Package epstopdf Info: Source file: <abrak/feladat7yt.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 25303 bytes
+(epstopdf)             Output file: <abrak/feladat7yt-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:17
+(epstopdf)                    size: 13474 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat7yt-eps-conve
+rted-to.pdf abrak/feladat7yt.eps>
+(epstopdf)             \includegraphics on input line 216.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat7yt-eps-converted-to.pdf, id=184, 963.6pt x 700.6175pt>
+File: abrak/feladat7yt-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat7yt-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat7yt-eps-converted-to.pdf  used on input l
+ine 216.
+(pdftex.def)             Requested size: 284.52756pt x 206.8728pt.
+ [36 <./abrak/feladat6-eps-converted-to.pdf>] [37 <./abrak/feladat7qt-eps-conve
+rted-to.pdf> <./abrak/feladat7yt-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <abrak/feladat8at01.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 10731 bytes
+(epstopdf)             Output file: <abrak/feladat8at01-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:18
+(epstopdf)                    size: 7146 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat8at01-eps-con
+verted-to.pdf abrak/feladat8at01.eps>
+(epstopdf)             \includegraphics on input line 278.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat8at01-eps-converted-to.pdf, id=207, 957.5775pt x 573.14125pt>
+File: abrak/feladat8at01-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat8at01-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat8at01-eps-converted-to.pdf  used on input
+ line 278.
+(pdftex.def)             Requested size: 284.52756pt x 170.29956pt.
+ [38
+
 ]
-File: abrak/feladat4cso1.eps Graphic file (type eps)
+Package epstopdf Info: Source file: <abrak/feladat8szat01.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 10582 bytes
+(epstopdf)             Output file: <abrak/feladat8szat01-eps-converted-to.pdf>
 
-<abrak/feladat4cso1.eps>
-File: abrak/feladat4cso2.eps Graphic file (type eps)
- <abrak/feladat4cso2.eps> [34]
-File: abrak/feladat5.eps Graphic file (type eps)
- <abrak/feladat5.eps>
-[35]
-File: abrak/feladat6.eps Graphic file (type eps)
- <abrak/feladat6.eps>
-File: abrak/feladat7qt.eps Graphic file (type eps)
- <abrak/feladat7qt.eps>
-File: abrak/feladat7yt.eps Graphic file (type eps)
- <abrak/feladat7yt.eps>
-[36] [37]
-File: abrak/feladat8at01.eps Graphic file (type eps)
- <abrak/feladat8at01.eps> [38
-
-]
-File: abrak/feladat8szat01.eps Graphic file (type eps)
- <abrak/feladat8szat01.eps>
-File: abrak/feladat8szat01s.eps Graphic file (type eps)
-
-<abrak/feladat8szat01s.eps> [39]
+(epstopdf)                    date: 2024-04-23 13:06:18
+(epstopdf)                    size: 6303 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat8szat01-eps-c
+onverted-to.pdf abrak/feladat8szat01.eps>
+(epstopdf)             \includegraphics on input line 285.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat8szat01-eps-converted-to.pdf, id=211, 770.88pt x 380.42125pt>
+File: abrak/feladat8szat01-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat8szat01-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat8szat01-eps-converted-to.pdf  used on inp
+ut line 285.
+(pdftex.def)             Requested size: 284.52756pt x 140.41116pt.
+Package epstopdf Info: Source file: <abrak/feladat8szat01s.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 10583 bytes
+(epstopdf)             Output file: <abrak/feladat8szat01s-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2024-04-23 13:06:19
+(epstopdf)                    size: 6265 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat8szat01s-eps-
+converted-to.pdf abrak/feladat8szat01s.eps>
+(epstopdf)             \includegraphics on input line 292.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat8szat01s-eps-converted-to.pdf, id=212, 770.88pt x 380.42125pt>
+File: abrak/feladat8szat01s-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat8szat01s-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat8szat01s-eps-converted-to.pdf  used on in
+put line 292.
+(pdftex.def)             Requested size: 284.52756pt x 140.41116pt.
+ [39 <./abrak/feladat8at01-eps-converted-to.pdf> <./abrak/feladat8szat01-eps-co
+nverted-to.pdf> <./abrak/feladat8szat01s-eps-converted-to.pdf>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [40
 
 ]
-File: abrak/feladat9.eps Graphic file (type eps)
+Package epstopdf Info: Source file: <abrak/feladat9.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 35004 bytes
+(epstopdf)             Output file: <abrak/feladat9-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:19
+(epstopdf)                    size: 19086 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/feladat9-eps-convert
+ed-to.pdf abrak/feladat9.eps>
+(epstopdf)             \includegraphics on input line 377.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/feladat9-eps-converted-to.pdf, id=234, 770.88pt x 380.42125pt>
+File: abrak/feladat9-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/feladat9-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/feladat9-eps-converted-to.pdf  used on input lin
+e 377.
+(pdftex.def)             Requested size: 284.52756pt x 140.41116pt.
+)
+[41 <./abrak/feladat9-eps-converted-to.pdf>] [42
 
-<abrak/feladat9.eps>) [41] [42
 
-
-] (C:\Munkakönyvtár\TRSZ\uj_dok\megoldas.tex
+] (./megoldas.tex
 5. fejezet.
 [43
 
@@ -515,7 +802,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 252--56
 
  []
 
-[48] (C:\Munkakönyvtár\TRSZ\uj_dok\fejlesztok.tex
+[48] (./fejlesztok.tex
 6. fejezet.
 [49
 
@@ -526,8 +813,23 @@ Underfull \vbox (badness 1902) has occurred while \output is active []
 
  [52]
 [53]
-File: abrak/top_pelda.eps Graphic file (type eps)
- <abrak/top_pelda.eps>) [54] [55] [56
+Package epstopdf Info: Source file: <abrak/top_pelda.eps>
+(epstopdf)                    date: 2021-06-30 23:50:20
+(epstopdf)                    size: 15056 bytes
+(epstopdf)             Output file: <abrak/top_pelda-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-04-23 13:06:20
+(epstopdf)                    size: 12661 bytes
+(epstopdf)             Command: <repstopdf --outfile=abrak/top_pelda-eps-conver
+ted-to.pdf abrak/top_pelda.eps>
+(epstopdf)             \includegraphics on input line 276.
+Package epstopdf Info: Output file is already uptodate.
+<abrak/top_pelda-eps-converted-to.pdf, id=281, 653.44125pt x 294.09875pt>
+File: abrak/top_pelda-eps-converted-to.pdf Graphic file (type pdf)
+<use abrak/top_pelda-eps-converted-to.pdf>
+Package pdftex.def Info: abrak/top_pelda-eps-converted-to.pdf  used on input li
+ne 276.
+(pdftex.def)             Requested size: 341.43306pt x 153.66818pt.
+) [54] [55 <./abrak/top_pelda-eps-converted-to.pdf>] [56
 
 
 ]
@@ -537,20 +839,53 @@ File: abrak/top_pelda.eps Graphic file (type eps)
 ] [58
 
 
-]
-No file tranziens_manual.bbl.
-(C:\Munkakönyvtár\TRSZ\uj_dok\tranziens_manual.aux)
+] (./tranziens_manual.bbl
+
+LaTeX Warning: Empty `thebibliography' environment on input line 3.
+
+) [59
+
+] [60
+
+
+] (./tranziens_manual.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 2378 strings out of 494020
- 30477 string characters out of 3148625
- 100941 words of memory out of 3000000
- 5573 multiletter control sequences out of 15000+200000
- 94239 words of font info for 60 fonts, out of 3000000 for 9000
- 714 hyphenation exceptions out of 8191
- 33i,12n,43p,1244b,377s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 4251 strings out of 492616
+ 66218 string characters out of 6129481
+ 158462 words of memory out of 5000000
+ 8012 multiletter control sequences out of 15000+600000
+ 94239 words of font info for 60 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 41i,12n,43p,1244b,408s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/
+texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2019/t
+exmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2019/texmf-dist/
+fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2019/texmf-dist/fonts/enc/
+dvips/lm/lm-mathsy.enc}</usr/local/texlive/2019/texmf-dist/fonts/type1/public/l
+m/lmbx10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmbx12.p
+fb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/l
+ocal/texlive/2019/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texli
+ve/2019/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></usr/local/texlive/2019/tex
+mf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2019/texmf-dist/fon
+ts/type1/public/lm/lmr10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/pu
+blic/lm/lmr12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmr
+17.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmr5.pfb></usr
+/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texli
+ve/2019/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2019/texm
+f-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2019/texmf-dist/fonts
+/type1/public/lm/lmri10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/pub
+lic/lm/lmro10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lms
+y10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></u
+sr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/t
+exlive/2019/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
+Output written on tranziens_manual.pdf (60 pages, 593270 bytes).
+PDF statistics:
+ 382 PDF objects out of 1000 (max. 8388607)
+ 266 compressed objects within 3 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 81 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-Output written on tranziens_manual.dvi (58 pages, 215388 bytes).

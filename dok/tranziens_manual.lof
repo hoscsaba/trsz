@@ -1,25 +1,24 @@
-\select@language {magyar}
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1.}{\ignorespaces L\'eg\"ust modell}}{11}
-\addvspace {10\p@ }
-\addvspace {10\p@ }
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1.}{\ignorespaces 1. feladat v\'azlata}}{31}
-\contentsline {figure}{\numberline {4.2.}{\ignorespaces 1. feladat megold\'asa}}{32}
-\contentsline {figure}{\numberline {4.3.}{\ignorespaces 2. feladat megold\'asa}}{32}
-\contentsline {figure}{\numberline {4.4.}{\ignorespaces A cs\H o nyomvonala a 3. feladathoz.}}{33}
-\contentsline {figure}{\numberline {4.5.}{\ignorespaces A 3. feladat megold\'asa}}{33}
-\contentsline {figure}{\numberline {4.6.}{\ignorespaces A 4. feladat megold\'asa. $cso1$ Nyom\'as-grafikonja.}}{34}
-\contentsline {figure}{\numberline {4.7.}{\ignorespaces A 4. feladat megold\'asa. $cso2$ Nyom\'as-grafikonja.}}{34}
-\contentsline {figure}{\numberline {4.8.}{\ignorespaces Az 5. feladat megold\'asa.}}{35}
-\contentsline {figure}{\numberline {4.9.}{\ignorespaces A 6. feladat megold\'asa.}}{36}
-\contentsline {figure}{\numberline {4.10.}{\ignorespaces A 7. feladat megold\'asa. $Q-t$ diagram.}}{37}
-\contentsline {figure}{\numberline {4.11.}{\ignorespaces A 7. feladat megold\'asa. $y-t$ diagram.}}{37}
-\contentsline {figure}{\numberline {4.12.}{\ignorespaces A 8. feladat megold\'asa. \textit {at01} akna v\IeC {\'\i }zszintv\'altoz\'asa}}{39}
-\contentsline {figure}{\numberline {4.13.}{\ignorespaces A 8. feladat megold\'asa. \textit {szat01} szivatty\'u fordulatsz\'ama}}{39}
-\contentsline {figure}{\numberline {4.14.}{\ignorespaces A 8. feladat megold\'asa. \textit {szat01} szivatty\'u fordulatsz\'ama}}{39}
-\contentsline {figure}{\numberline {4.15.}{\ignorespaces A 9. feladat megold\'asa}}{41}
-\addvspace {10\p@ }
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1.}{\ignorespaces P\'elda topol\'oig\'ara, a megfelel\H o {\tt tjcs} m\'atrix a \ref {top_pelda_tablazat}. t\'abl\'azatban l\'athat\'o.}}{55}
-\addvspace {10\p@ }
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \contentsline {figure}{\numberline {1.1}{\ignorespaces L\'eg\"ust modell}}{11}% 
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \contentsline {figure}{\numberline {4.1}{\ignorespaces 1. feladat v\'azlata}}{31}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.2}{\ignorespaces 1. feladat megold\'asa}}{32}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.3}{\ignorespaces 2. feladat megold\'asa}}{32}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.4}{\ignorespaces A cs\H o nyomvonala a 3. feladathoz.}}{33}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.5}{\ignorespaces A 3. feladat megold\'asa}}{33}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.6}{\ignorespaces A 4. feladat megold\'asa. $cso1$ Nyom\'as-grafikonja.}}{34}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.7}{\ignorespaces A 4. feladat megold\'asa. $cso2$ Nyom\'as-grafikonja.}}{34}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.8}{\ignorespaces Az 5. feladat megold\'asa.}}{35}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.9}{\ignorespaces A 6. feladat megold\'asa.}}{36}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.10}{\ignorespaces A 7. feladat megold\'asa. $Q-t$ diagram.}}{37}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.11}{\ignorespaces A 7. feladat megold\'asa. $y-t$ diagram.}}{37}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.12}{\ignorespaces A 8. feladat megold\'asa. \textit {at01} akna v\IeC {\'\i }zszintv\'altoz\'asa}}{39}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.13}{\ignorespaces A 8. feladat megold\'asa. \textit {szat01} szivatty\'u fordulatsz\'ama}}{39}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.14}{\ignorespaces A 8. feladat megold\'asa. \textit {szat01} szivatty\'u fordulatsz\'ama}}{39}% 
+\select@language {magyar} \contentsline {figure}{\numberline {4.15}{\ignorespaces A 9. feladat megold\'asa}}{41}% 
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \contentsline {figure}{\numberline {6.1}{\ignorespaces P\'elda topol\'oig\'ara, a megfelel\H o {\tt tjcs} m\'atrix a \ref {top_pelda_tablazat}. t\'abl\'azatban l\'athat\'o.}}{55}% 
+\select@language {magyar} \addvspace {10\p@ }

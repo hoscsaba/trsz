@@ -1,6 +1,6 @@
 Tranziens szimulator
 ------------------------------------
- A szamitas vege: 2010.7.19  13:5
+ A szamitas vege: 2024.4.23  13:10
  Adatfile: feladat1.tpr
 
  Az utolso lepes eredmenyei:
@@ -14,7 +14,7 @@ Tranziens szimulator
     Nev      |        eleje         |        vege          |          
              |   p[bar]    Q[m3/s]  |   p[bar]    Q[m3/s]  |  m[kg/s] 
 -------------+----------------------+----------------------+-----------
-       cso  |     3.00    +0.0040  |     3.63    +0.0000  |   +0.00 
+       cso  |     3.00    +0.0040  |     3.63    -0.0000  |   -0.00 
 
-szamitasi ido:   0h  0min  43.3281s
+szamitasi ido:   0h  0min  4.24s
 
